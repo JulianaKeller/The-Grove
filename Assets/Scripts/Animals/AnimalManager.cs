@@ -45,16 +45,19 @@ public class AnimalManager : MonoBehaviour
 
             views.Add(view);
             animals.Add(data);
+
+            Debug.Log("Spwaned a " + data.species.name);
         }
     }
 
     public void UpdateAnimals(float timeStep, int tick)
     {
         //Reset interpolation factors for all animal views
-        foreach (var view in AnimalManager.Instance.views)
+        /*foreach (var view in AnimalManager.Instance.views)
         {
+            Debug.Log("Resetting Interpolation...");
             view.ResetInterpolation();
-        }
+        }*/
 
         for (int i = animals.Count - 1; i >= 0; i--)
         {
@@ -63,6 +66,7 @@ public class AnimalManager : MonoBehaviour
             // update 1/3 of animals per tick
             if ((tick + animal.id) % 3 == 0)
             {
+                animal.view.ResetInterpolation();
                 animal.UpdateAI(timeStep);
             }
         }

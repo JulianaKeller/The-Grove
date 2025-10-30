@@ -6,6 +6,7 @@ public class SeekFoodState : AnimalState
 
     public override void Enter(Animal a) {
         targetFood = FindNearestFood(a);
+        Debug.Log(a.species.name + " is now seeking food.");
     }
 
     public override void Execute(Animal a, float dt) {

@@ -7,6 +7,7 @@ public class IdleState : AnimalState
     public override void Enter(Animal a)
     {
         idleTimer = Random.Range(1f, 4f);
+        Debug.Log(a.species.name + " is now idle.");
     }
 
     public override void Execute(Animal a, float dt)

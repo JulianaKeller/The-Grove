@@ -13,6 +13,7 @@ public class EatState : AnimalState
 
     public override void Enter(Animal a) {
         eatTimer = Random.Range(2f, 4f);
+        Debug.Log(a.species.name + " is now eating.");
     }
     public override void Execute(Animal a, float timeStep) {
         if (targetFood == null)

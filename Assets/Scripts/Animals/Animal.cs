@@ -22,6 +22,8 @@ public class Animal : Entity
         thirst = 0;
         energy = 100;
         age = 0;
+
+        Debug.Log("Animal created.");
     }
 
     public void UpdateAI(float timeStep)
@@ -31,9 +33,10 @@ public class Animal : Entity
         thirst += species.thirstRate * timeStep;
         energy -= 0.1f * timeStep;
 
-        if(age > species.lifespan)
+        if(age > species.lifespan) //ToDo Animal should also die if hunger or thirst reaches 100
         {
             Die();
+            Debug.Log(species.name + " died.");
         }
 
         currentState?.Execute(this, timeStep);
@@ -41,6 +44,7 @@ public class Animal : Entity
 
     public void ChangeState(AnimalState newState)
     {
+        Debug.Log("Changing State...");
         currentState?.Exit(this);
         currentState = newState;
         currentState?.Enter(this);

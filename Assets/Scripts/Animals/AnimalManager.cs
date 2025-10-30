@@ -12,6 +12,8 @@ public class AnimalManager : MonoBehaviour
 
     public AnimalSpeciesData startingSpecies;
 
+    private static int nextId = 0;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -34,7 +36,7 @@ public class AnimalManager : MonoBehaviour
     {
         if (species.prefab != null)
         {
-            Animal data = new Animal(species, pos);
+            Animal data = new Animal(species, pos, nextId++);
             GameObject obj = Instantiate(species.prefab, pos, Quaternion.identity);
             AnimalView view = obj.GetComponent<AnimalView>();
 
@@ -54,10 +56,15 @@ public class AnimalManager : MonoBehaviour
             view.ResetInterpolation();
         }
 
-        foreach (var animal in animals)
+        for (int i = animals.Count - 1; i >= 0; i--)
         {
-            if ((tick + animal.id) % 3 == 0)  // update 1/3 of animals per tick
+            var animal = animals[i];
+
+            // update 1/3 of animals per tick
+            if ((tick + animal.id) % 3 == 0)
+            {
                 animal.UpdateAI(timeStep);
+            }
         }
     }
 

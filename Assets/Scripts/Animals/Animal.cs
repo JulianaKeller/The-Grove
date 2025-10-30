@@ -10,8 +10,9 @@ public class Animal : Entity
     public Entity target;
     public AnimalView view;
 
-    public Animal(AnimalSpeciesData species, Vector3 position)
+    public Animal(AnimalSpeciesData species, Vector3 position, int Id)
     {
+        base.id = Id;
         base.position = position;
         prevPosition = position;
         this.species = species;
@@ -35,7 +36,14 @@ public class Animal : Entity
             Die();
         }
 
-        currentState.Execute(this, timeStep);
+        currentState?.Execute(this, timeStep);
+    }
+
+    public void ChangeState(AnimalState newState)
+    {
+        currentState?.Exit(this);
+        currentState = newState;
+        currentState?.Enter(this);
     }
 
     Entity FindNearestFood(Vector3 pos, float range)

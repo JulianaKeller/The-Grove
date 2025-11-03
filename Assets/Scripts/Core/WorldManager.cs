@@ -37,6 +37,7 @@ public class WorldManager : MonoBehaviour
 
     private void Tick()
     {
+        //Debug.Log("Tick");
         EnvironmentGrid.Instance.UpdateGrid(timeStep);
         PlantManager.Instance.UpdatePlants(timeStep, tickCount);
         AnimalManager.Instance.UpdateAnimals(timeStep, tickCount);

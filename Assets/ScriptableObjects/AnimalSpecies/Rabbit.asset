@@ -16,7 +16,7 @@ MonoBehaviour:
   prefab: {fileID: 4780922654011921019, guid: 2589f50234a432641954c6a059df09b4, type: 3}
   moveSpeed: 1
   sightRange: 1
-  hungerRate: 0.01
-  thirstRate: 0.01
+  hungerRate: 0.1
+  thirstRate: 0.1
   lifespan: 300
   isPredator: 0

@@ -44,6 +44,14 @@ public class Animal : Entity
 
     public void ChangeState(AnimalState newState)
     {
+        // Sync the animal position with the visual position before changing states
+        if (view != null)
+        {
+            Vector3 interpolated = view.GetInterpolatedPosition();
+            prevPosition = interpolated;
+            position = interpolated;
+        }
+
         Debug.Log("Changing State...");
         currentState?.Exit(this);
         currentState = newState;

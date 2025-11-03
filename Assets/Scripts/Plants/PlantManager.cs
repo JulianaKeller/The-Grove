@@ -6,6 +6,8 @@ public class PlantManager : MonoBehaviour
     //Updates all plants (growth, death, reproduction)
     public static PlantManager Instance { get; private set; }
 
+    public int updateSubsetCount;
+
     private List<Plant> plants = new List<Plant>();
 
     void Awake()
@@ -33,7 +35,7 @@ public class PlantManager : MonoBehaviour
     {
         foreach (var plant in plants)
         {
-            if ((tick + plant.id) % 5 == 0)  // slower updates
+            if ((tick + plant.id) % updateSubsetCount == 0)  // slower updates
                 plant.UpdatePlant(timeStep);
         }
     }

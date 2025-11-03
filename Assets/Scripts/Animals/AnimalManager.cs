@@ -7,6 +7,8 @@ public class AnimalManager : MonoBehaviour
     //Updates all animals (state transitions, needs, movement)
     public static AnimalManager Instance { get; private set; }
 
+    public int updateSubsetCount = 3;
+
     private List<Animal> animals = new List<Animal>();
     private List<AnimalView> views = new List<AnimalView>();
 
@@ -64,7 +66,7 @@ public class AnimalManager : MonoBehaviour
             var animal = animals[i];
 
             // update 1/3 of animals per tick
-            if ((tick + animal.id) % 3 == 0)
+            if ((tick + animal.id) % updateSubsetCount == 0)
             {
                 animal.view.ResetInterpolation();
                 animal.UpdateAI(timeStep);

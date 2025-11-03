@@ -7,6 +7,7 @@ public class Animal : Entity
     public AnimalState currentState;
     public Vector3 prevPosition;
     public float hunger, thirst, energy, age;
+    public float speciesLifespan;
     public Entity target;
     public AnimalView view;
 
@@ -17,6 +18,10 @@ public class Animal : Entity
         prevPosition = position;
         this.species = species;
         currentState = new IdleState(); //ToDo correct?
+
+        float variation = species.lifespanVariation * species.lifespan;
+        float randomizedLifespan = species.lifespan + Random.Range(-variation, variation);
+        this.speciesLifespan = randomizedLifespan;
 
         hunger = 0;
         thirst = 0;
@@ -33,7 +38,7 @@ public class Animal : Entity
         thirst += species.thirstRate * timeStep;
         energy -= 0.1f * timeStep;
 
-        if(age > species.lifespan) //ToDo Animal should also die if hunger or thirst reaches 100
+        if (age > speciesLifespan) //ToDo Animal should also die if hunger or thirst reaches 100
         {
             Die();
             Debug.Log(species.name + " died.");

@@ -30,8 +30,11 @@ public class AnimalManager : MonoBehaviour
     private void Start()
     {
         //ToDo Testing Setup, initial spawn should be initiated by player later
-        Vector3 SpawnPosition = new Vector3(Random.Range(-50.0f, 50.0f), 0.5f, Random.Range(-50.0f, 50.0f));
-        SpawnAnimal(startingSpecies, SpawnPosition);
+        for(int i = 0; i<5; i++)
+        {
+            Vector3 SpawnPosition = new Vector3(Random.Range(-50.0f, 50.0f), 0.5f, Random.Range(-50.0f, 50.0f));
+            SpawnAnimal(startingSpecies, SpawnPosition);
+        }
     }
 
     public void SpawnAnimal(AnimalSpeciesData species, Vector3 pos)
@@ -47,6 +50,19 @@ public class AnimalManager : MonoBehaviour
 
             views.Add(view);
             animals.Add(data);
+
+            // Assign random color
+            if (species.colorVariants != null && species.colorVariants.Length > 0)
+            {
+                Color selectedColor = species.colorVariants[Random.Range(0, species.colorVariants.Length)];
+                Renderer rend = view.GetComponentInChildren<Renderer>();
+                if (rend != null)
+                {
+                    // Use a new material instance so that color changes don't affect shared material
+                    rend.material = new Material(rend.material);
+                    rend.material.color = selectedColor;
+                }
+            }
 
             Debug.Log("Spwaned a " + data.species.name);
         }

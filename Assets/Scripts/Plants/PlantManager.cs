@@ -7,8 +7,12 @@ public class PlantManager : MonoBehaviour
     public static PlantManager Instance { get; private set; }
 
     public int updateSubsetCount;
+    public PlantSpeciesData startingSpecies;
 
     private List<Plant> plants = new List<Plant>();
+    private List<PlantView> views = new List<PlantView>();
+
+    private static int nextId = 0;
 
     void Awake()
     {
@@ -23,20 +27,54 @@ public class PlantManager : MonoBehaviour
 
     void Start()
     {
-        
+        for (int i = 0; i < 5; i++)
+        {
+            Vector3 SpawnPosition = new Vector3(Random.Range(-50.0f, 50.0f), 0.5f, Random.Range(-50.0f, 50.0f));
+            SpawnPlant(startingSpecies, SpawnPosition);
+        }
     }
 
-    void Update()
+    public void SpawnPlant(PlantSpeciesData species, Vector3 pos)
     {
-        
+        if (species.prefab != null)
+        {
+            Plant data = new Plant(species, pos, nextId++);
+            GameObject obj = Instantiate(species.prefab, pos, Quaternion.identity);
+            PlantView view = obj.GetComponent<PlantView>();
+
+            view.data = data;
+            data.view = view;
+
+            views.Add(view);
+            plants.Add(data);
+
+            // Assign random color
+            if (species.colorVariants != null && species.colorVariants.Length > 0)
+            {
+                Color selectedColor = species.colorVariants[Random.Range(0, species.colorVariants.Length)];
+                Renderer rend = view.GetComponentInChildren<Renderer>();
+                if (rend != null)
+                {
+                    // Use a new material instance so that color changes don't affect shared material
+                    rend.material = new Material(rend.material);
+                    rend.material.color = selectedColor;
+                }
+            }
+
+            Debug.Log("Spwaned a " + data.species.name);
+        }
     }
 
     public void UpdatePlants(float timeStep, int tick)
     {
         foreach (var plant in plants)
         {
-            if ((tick + plant.id) % updateSubsetCount == 0)  // slower updates
+            if ((tick + plant.id) % updateSubsetCount == 0)
+            {
+                plant.view.ResetInterpolation();
                 plant.UpdatePlant(timeStep);
+            }
+                
         }
     }
 

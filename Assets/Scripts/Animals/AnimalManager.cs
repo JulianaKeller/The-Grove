@@ -30,7 +30,7 @@ public class AnimalManager : MonoBehaviour
     private void Start()
     {
         //ToDo Testing Setup, initial spawn should be initiated by player later
-        for(int i = 0; i<5; i++)
+        for(int i = 0; i<1; i++)
         {
             Vector3 SpawnPosition = new Vector3(Random.Range(EnvironmentGrid.Instance.gridCenter.x - EnvironmentGrid.Instance.gridSize * 0.5f, EnvironmentGrid.Instance.gridCenter.x + EnvironmentGrid.Instance.gridSize * 0.5f), 0f, Random.Range(EnvironmentGrid.Instance.gridCenter.z - EnvironmentGrid.Instance.gridSize * 0.5f, EnvironmentGrid.Instance.gridCenter.z + EnvironmentGrid.Instance.gridSize * 0.5f));
             SpawnAnimal(startingSpecies, SpawnPosition);

@@ -39,10 +39,7 @@ public class WanderState : AnimalState
 
         //-----Decision making-----
 
-        if(wanderTimer < wanderTimer - wanderTimeMin) //wander for the minimum amount of time
-        {
-            a.EvaluateNeeds();
-        }
+        a.EvaluateNeeds();
 
         if (currentWanderTimer <= 0f || a.position == targetPos)
         {

@@ -101,6 +101,7 @@ public class Animal : Entity
     {
         timeSinceLastDecision += WorldManager.Instance.timeStep;
         if (timeSinceLastDecision < decisionCooldown) return;
+
         timeSinceLastDecision = 0f;
 
         // Hunger/food seeking
@@ -154,7 +155,7 @@ public class Animal : Entity
             position = interpolated;
         }
 
-        Debug.Log("Changing State...");
+        //Debug.Log("Changing State...");
         currentState?.Exit(this);
         currentState = newState;
         currentState?.Enter(this);

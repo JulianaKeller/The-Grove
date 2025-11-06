@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
@@ -44,8 +45,49 @@ public class WorldManager : MonoBehaviour
         //EventManager.Instance.UpdateEvents(timeStep);
     }
 
+    private List<Entity> GetNearbyEntities(Vector3 pos, float range, bool getAnimals, bool getPlants)
+    {
+        List<Entity> nearby = new List<Entity>();
+        int cellRange = Mathf.CeilToInt(range / EnvironmentGrid.Instance.cellSize);
+
+        Vector2Int center = EnvironmentGrid.Instance.GetCellCoords(pos);
+
+        for (int x = -cellRange; x <= cellRange; x++)
+        {
+            for (int y = -cellRange; y <= cellRange; y++)
+            {
+                int gx = center.x + x;
+                int gz = center.y + y;
+
+                if (gx < 0 || gz < 0 || gx >= EnvironmentGrid.Instance.gridSize || gz >= EnvironmentGrid.Instance.gridSize)
+                    continue;
+
+                var cell = EnvironmentGrid.Instance.grid[gx, gz];
+                if (getAnimals)
+                {
+                    nearby.AddRange(cell.animals);
+                }
+                if (getPlants)
+                {
+                    nearby.AddRange(cell.plants);
+                }
+            }
+        }
+        return nearby;
+    }
+
     public List<Entity> GetNearbyEntities(Vector3 pos, float range)
     {
-        return new List<Entity>();
+        return GetNearbyEntities(pos, range, true, true);
+    }
+
+    public List<Entity> GetNearbyAnimals(Vector3 pos, float range)
+    {
+        return GetNearbyEntities(pos, range, true, false);
+    }
+
+    public List<Entity> GetNearbyPlants(Vector3 pos, float range)
+    {
+        return GetNearbyEntities(pos, range, false, true);
     }
 }

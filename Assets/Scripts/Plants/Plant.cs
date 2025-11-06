@@ -39,7 +39,9 @@ public class Plant : Entity
         age += timeStep;
         prevSize = size;
         float growth = species.growthRate * timeStep;
-        size += Vector3.one * growth; //Use a more natural, nonlinear growth pattern
+        size += Vector3.one * growth; //ToDo Use a more natural, nonlinear growth pattern
+        //ToDo calculate current nutrition value based on baseNutrition and plantsize along a normal distribution (x value being the plant age) or something like that
+        //ToDo also calculate current spead chance based on base spread chance and plant age along a normal distribution (x value being the plant age) or something like that
 
         if (age > speciesLifespan) //ToDo plant should also die if health reaches 0
         {

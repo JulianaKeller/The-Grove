@@ -30,4 +30,17 @@ public class AnimalView : MonoBehaviour
     {
         interpolationFactor = 0f;
     }
+
+    public void FaceTowards(Vector3 targetPos)
+    {
+        Vector3 direction = targetPos - transform.position;
+        direction.y = 0f; // ignore vertical difference
+
+        Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            Time.deltaTime * 50f
+        );
+    }
 }

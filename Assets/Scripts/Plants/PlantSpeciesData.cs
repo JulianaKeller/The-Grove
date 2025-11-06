@@ -8,9 +8,10 @@ public class PlantSpeciesData : ScriptableObject
     [Header("Visual Variation")]
     public Color[] colorVariants;
     public float growthRate;
-    public float nutritionValue;
+    public float nutritionBaseValue; //grows with growthRate
     public float lifespan;
     [Range(0f, 1f)]
     public float lifespanVariation = 0.1f;
     public float spreadChance;
+    public bool isEdible;
 }

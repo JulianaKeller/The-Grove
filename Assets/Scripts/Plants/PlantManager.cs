@@ -32,6 +32,8 @@ public class PlantManager : MonoBehaviour
             Vector3 SpawnPosition = new Vector3(Random.Range(-50.0f, 50.0f), 0.5f, Random.Range(-50.0f, 50.0f));
             SpawnPlant(startingSpecies, SpawnPosition);
         }
+
+        EnvironmentGrid.Instance.PrintGridPlants();
     }
 
     public void SpawnPlant(PlantSpeciesData species, Vector3 pos)
@@ -61,6 +63,9 @@ public class PlantManager : MonoBehaviour
                 }
             }
 
+            //-----Add to Grid-----
+            EnvironmentGrid.Instance.RegisterPlant(data);
+
             Debug.Log("Spwaned a " + data.species.name);
         }
     }
@@ -81,5 +86,11 @@ public class PlantManager : MonoBehaviour
     public void RemovePlant(Plant p)
     {
         plants.Remove(p);
+        if (p.view != null)
+        {
+            views.Remove(p.view);
+            Destroy(p.view.gameObject);
+        }
+        EnvironmentGrid.Instance.DeregisterPlant(p);
     }
 }

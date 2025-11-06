@@ -10,17 +10,11 @@ public class IdleState : AnimalState
         Debug.Log(a.species.name + " is now idle.");
     }
 
-    public override void Execute(Animal a, float dt)
+    public override void Execute(Animal a, float timeStep)
     {
-        idleTimer -= dt;
+        idleTimer -= timeStep;
 
-        if (a.hunger > 0.6f) //Todo introduce some randomness to treshold
-        {
-            a.ChangeState(new SeekFoodState());
-            return;
-        }
-
-        //ToDo check thirst, mate etc thresholds
+        a.EvaluateNeeds();
 
         if (idleTimer <= 0f)
         {

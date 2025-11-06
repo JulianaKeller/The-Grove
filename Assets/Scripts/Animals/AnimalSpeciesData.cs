@@ -7,12 +7,27 @@ public class AnimalSpeciesData : ScriptableObject
     public GameObject prefab;
     [Header("Visual Variation")]
     public Color[] colorVariants;
-    public float moveSpeed;
-    public float sightRange;
+    public int dominance; //indicates spot in the foodchain
+    public float walkingSpeed;
+    public float runningSpeed;
+    public float stamina; //for how long an animal can run
+    public float power; //attack strength
+    public float defense; //how much damage from an attack/injury is dampened, 1 = full damage deflection
+    public float maxHP;
+    public float aggression; //how likely the animal is to retaliate against attacks vs running away
+    public float awarenessRange;
+    public float stealth; //how likely the animal is to not be spotted
+    public float energyDepletionRate;
+    public float hpRecoveryRate;
     public float hungerRate;
     public float thirstRate;
-    public float lifespan; //ToDo randomness
+    public float lifespan;
     [Range(0f, 1f)]
     public float lifespanVariation = 0.1f;
-    public bool isPredator;
+    public bool isCarnivore;
+    public bool isHerbivore;
+
+    // List of entity types this species can consume
+    public PlantSpeciesData[] ediblePlants;
+    public AnimalSpeciesData[] edibleAnimals;
 }

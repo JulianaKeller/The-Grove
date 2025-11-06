@@ -16,8 +16,9 @@ MonoBehaviour:
   prefab: {fileID: 97176055403355019, guid: 21e35349765c11e4d84fbc31e82310fa, type: 3}
   colorVariants:
   - {r: 1, g: 1, b: 1, a: 0}
-  growthRate: 1
-  nutritionValue: 10
-  lifespan: 1000
-  lifespanVariation: 0.1
+  growthRate: 0.005
+  nutritionBaseValue: 1
+  lifespan: 5000
+  lifespanVariation: 0.226
   spreadChance: 1
+  isEdible: 1

@@ -32,9 +32,11 @@ public class AnimalManager : MonoBehaviour
         //ToDo Testing Setup, initial spawn should be initiated by player later
         for(int i = 0; i<5; i++)
         {
-            Vector3 SpawnPosition = new Vector3(Random.Range(-50.0f, 50.0f), 0.5f, Random.Range(-50.0f, 50.0f));
+            Vector3 SpawnPosition = new Vector3(Random.Range(EnvironmentGrid.Instance.gridCenter.x - EnvironmentGrid.Instance.gridSize * 0.5f, EnvironmentGrid.Instance.gridCenter.x + EnvironmentGrid.Instance.gridSize * 0.5f), 0f, Random.Range(EnvironmentGrid.Instance.gridCenter.z - EnvironmentGrid.Instance.gridSize * 0.5f, EnvironmentGrid.Instance.gridCenter.z + EnvironmentGrid.Instance.gridSize * 0.5f));
             SpawnAnimal(startingSpecies, SpawnPosition);
         }
+
+        EnvironmentGrid.Instance.PrintGridAnimals();
     }
 
     public void SpawnAnimal(AnimalSpeciesData species, Vector3 pos)
@@ -63,6 +65,9 @@ public class AnimalManager : MonoBehaviour
                     rend.material.color = selectedColor;
                 }
             }
+
+            //-----Add to Grid-----
+            EnvironmentGrid.Instance.RegisterAnimal(data);
 
             Debug.Log("Spwaned a " + data.species.name);
         }
@@ -98,5 +103,6 @@ public class AnimalManager : MonoBehaviour
             views.Remove(a.view);
             Destroy(a.view.gameObject);
         }
+        EnvironmentGrid.Instance.DeregisterAnimal(a);
     }
 }

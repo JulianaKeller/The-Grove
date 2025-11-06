@@ -3,10 +3,10 @@ using static UnityEngine.GraphicsBuffer;
 
 public class EatState : AnimalState
 {
-    private Plant targetFood;
+    private Entity targetFood;
     private float eatTimer;
 
-    public EatState(Plant targetFood)
+    public EatState(Entity targetFood)
     {
         this.targetFood = targetFood;
     }

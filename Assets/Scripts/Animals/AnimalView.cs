@@ -40,7 +40,7 @@ public class AnimalView : MonoBehaviour
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             targetRotation,
-            Time.deltaTime * 50f
+            Time.deltaTime * 100f
         );
     }
 }

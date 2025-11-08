@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c870713db7414e45a5a19055933bc8e, type: 3}
+  m_Name: Deer
+  m_EditorClassIdentifier: 
+  speciesName: Deer
+  prefab: {fileID: 4780922654011921019, guid: 9576f6cecedd7804aafbd488a696c06f, type: 3}
+  colorVariants:
+  - {r: 0.3584906, g: 0.13959038, b: 0, a: 0}
+  - {r: 0.9622642, g: 0.9128509, b: 0.8079387, a: 0}
+  - {r: 0.66666657, g: 0.66666657, b: 0.66666657, a: 0}
+  dominance: 1
+  walkingSpeed: 2
+  runningSpeed: 5
+  stamina: 10
+  power: 2
+  defense: 2
+  maxHP: 20
+  aggression: 2
+  awarenessRange: 100
+  stealth: 6
+  energyDepletionRate: 0.5
+  hpRecoveryRate: 0.5
+  hungerRate: 1
+  thirstRate: 0.1
+  lifespan: 300
+  lifespanVariation: 0.1
+  isCarnivore: 0
+  isHerbivore: 1
+  ediblePlants: []
+  edibleAnimals: []

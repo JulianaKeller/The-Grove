@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: CoffeePlant
   m_EditorClassIdentifier: 
   speciesName: CoffeePlant
-  prefab: {fileID: 97176055403355019, guid: 21e35349765c11e4d84fbc31e82310fa, type: 3}
+  prefabs:
+  - {fileID: 97176055403355019, guid: 21e35349765c11e4d84fbc31e82310fa, type: 3}
   colorVariants:
   - {r: 1, g: 1, b: 1, a: 0}
+  waterNeed: 0.1
+  waterCapacity: 10
+  groundFertilityUsage: 0.1
+  minGroundFertility: 0.1
   growthRate: 0.005
-  nutritionBaseValue: 1
-  lifespan: 5000
+  nutritionBaseValue: 2
+  lifespan: 300
   lifespanVariation: 0.226
-  spreadChance: 1
+  spreadChance: 0.3
   isEdible: 1

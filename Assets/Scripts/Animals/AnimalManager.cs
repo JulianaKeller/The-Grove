@@ -12,7 +12,7 @@ public class AnimalManager : MonoBehaviour
     private List<Animal> animals = new List<Animal>();
     private List<AnimalView> views = new List<AnimalView>();
 
-    public AnimalSpeciesData startingSpecies;
+    public AnimalSpeciesData[] startingSpecies;
 
     private static int nextId = 0;
 
@@ -30,21 +30,17 @@ public class AnimalManager : MonoBehaviour
     private void Start()
     {
         //ToDo Testing Setup, initial spawn should be initiated by player later
-        for(int i = 0; i<1; i++)
-        {
-            Vector3 SpawnPosition = new Vector3(Random.Range(EnvironmentGrid.Instance.gridCenter.x - EnvironmentGrid.Instance.gridSize * 0.5f, EnvironmentGrid.Instance.gridCenter.x + EnvironmentGrid.Instance.gridSize * 0.5f), 0f, Random.Range(EnvironmentGrid.Instance.gridCenter.z - EnvironmentGrid.Instance.gridSize * 0.5f, EnvironmentGrid.Instance.gridCenter.z + EnvironmentGrid.Instance.gridSize * 0.5f));
-            SpawnAnimal(startingSpecies, SpawnPosition);
-        }
+        WorldManager.Instance.SpawnStartingSpecies<AnimalSpeciesData>(startingSpecies, SpawnAnimal);
 
         EnvironmentGrid.Instance.PrintGridAnimals();
     }
 
     public void SpawnAnimal(AnimalSpeciesData species, Vector3 pos)
     {
-        if (species.prefab != null)
+        if (species.prefabs != null && species.prefabs.Length >= 1)
         {
             Animal data = new Animal(species, pos, nextId++);
-            GameObject obj = Instantiate(species.prefab, pos, Quaternion.identity);
+            GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length-1)], pos, Quaternion.identity);
             AnimalView view = obj.GetComponent<AnimalView>();
 
             view.data = data;
@@ -52,6 +48,8 @@ public class AnimalManager : MonoBehaviour
 
             views.Add(view);
             animals.Add(data);
+
+            data.animator = view.GetComponentInChildren<Animator>();
 
             // Assign random color
             if (species.colorVariants != null && species.colorVariants.Length > 0)

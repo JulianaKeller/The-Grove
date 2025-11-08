@@ -4,9 +4,10 @@ using UnityEngine;
 public class AnimalSpeciesData : ScriptableObject
 {
     public string speciesName;
-    public GameObject prefab;
+    public GameObject[] prefabs;
     [Header("Visual Variation")]
     public Color[] colorVariants;
+    public bool female;
     public int dominance; //indicates spot in the foodchain
     public float walkingSpeed;
     public float runningSpeed;
@@ -20,7 +21,9 @@ public class AnimalSpeciesData : ScriptableObject
     public float energyDepletionRate;
     public float hpRecoveryRate;
     public float hungerRate;
+    public float foodNeed; //1-100
     public float thirstRate;
+    public float waterNeed; //1-100
     public float lifespan;
     [Range(0f, 1f)]
     public float lifespanVariation = 0.1f;

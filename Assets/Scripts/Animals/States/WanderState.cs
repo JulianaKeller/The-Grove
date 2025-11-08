@@ -19,6 +19,8 @@ public class WanderState : AnimalState
         wanderTimer = Random.Range(wanderTimeMin, wanderTimeMax);
         currentWanderTimer = wanderTimer;
 
+        //ToDO facilitate migrating behavior to find food by taking a direction close to the previous one
+
         a.isWalking = true;
         a.isRunning = false;
 
@@ -33,6 +35,8 @@ public class WanderState : AnimalState
         a.prevPosition = a.position;
         a.position = newPos;
 
+        Debug.Log($"{a.species.name} wandering. Timer: {currentWanderTimer:F2}, Distance: {Vector3.Distance(a.position, targetPos):F2}");
+
         // Face target direction
         if (a.view != null)
             a.view.FaceTowards(newPos);
@@ -41,7 +45,7 @@ public class WanderState : AnimalState
 
         a.EvaluateNeeds();
 
-        if (currentWanderTimer <= 0f || a.position == targetPos)
+        if (currentWanderTimer <= 0f || Vector3.Distance(a.position, targetPos) < 0.1f)
         {
             a.ChangeState(new IdleState());
             return;

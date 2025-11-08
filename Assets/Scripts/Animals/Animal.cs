@@ -18,6 +18,8 @@ public class Animal : Entity
     private float decisionCooldown = 2f;
     private float timeSinceLastDecision = 0f;
 
+    public Animator animator;
+
     public Animal(AnimalSpeciesData species, Vector3 position, int Id)
     {
         base.id = Id;
@@ -39,6 +41,9 @@ public class Animal : Entity
         stamina = species.stamina;
         health = species.maxHP;
 
+        //animator = species.prefab.GetComponentInChildren<Animator>();
+        
+
         Debug.Log($"{species.speciesName} created with lifespan {speciesLifespan:F1}.");
     }
 
@@ -48,8 +53,8 @@ public class Animal : Entity
         age += timeStep;
         hunger = Mathf.Min(100f, hunger + species.hungerRate * timeStep);
         thirst = Mathf.Min(100f, thirst + species.thirstRate * timeStep);
-        //matingDrive = 
-        
+        matingDrive = Mathf.Min(100f, matingDrive + 0.1f * timeStep);
+
         if (isRunning)
         {
             stamina = Mathf.Max(0f, stamina - timeStep);
@@ -65,6 +70,8 @@ public class Animal : Entity
             stamina = Mathf.Min(species.stamina, stamina + timeStep);
             energy = Mathf.Max(0f, energy - species.energyDepletionRate * 0.5f * timeStep);
         }
+
+        updateAnimations();
 
         //-----Health & Death management-----
         if (hunger >= 100f || thirst >= 100f || energy <= 0)
@@ -136,12 +143,41 @@ public class Animal : Entity
 
         // Mate seeking
         float matingThreshold = 50f + Random.Range(-10f, 10f);
-        float matingProbability = Mathf.InverseLerp(matingThreshold, 0f, matingDrive);
+        float matingProbability = Mathf.InverseLerp(matingThreshold, 100f, matingDrive);
+        float matingRandomValue = Random.value;
 
-        if (Random.value < matingProbability)
+        //Debug.Log("Mating Drive: " + matingDrive);
+        //Debug.Log("Mating Threshold: " + matingThreshold);
+        //Debug.Log("Mating Probability: " + matingProbability);
+        //Debug.Log("Random Mating Value: " + matingRandomValue);
+
+        if (matingRandomValue < matingProbability)
         {
             ChangeState(new SeekMateState());
             return;
+        }
+    }
+
+    public void updateAnimations()
+    {
+        if (animator == null)
+        {
+            return;
+        }
+        if (isRunning)
+        {
+            animator.SetBool("isRunning", true);
+            animator.SetBool("isWalking", false);
+        }
+        else if (isWalking)
+        {
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            animator.SetBool("isRunning", false);
+            animator.SetBool("isWalking", false);
         }
     }
 

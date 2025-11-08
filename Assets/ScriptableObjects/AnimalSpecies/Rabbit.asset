@@ -19,8 +19,8 @@ MonoBehaviour:
   - {r: 0.9622642, g: 0.9128509, b: 0.8079387, a: 0}
   - {r: 0.66666657, g: 0.66666657, b: 0.66666657, a: 0}
   dominance: 1
-  walkingSpeed: 1
-  runningSpeed: 2
+  walkingSpeed: 4
+  runningSpeed: 5
   stamina: 10
   power: 2
   defense: 2

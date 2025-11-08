@@ -8,8 +8,8 @@ public class EnvironmentGrid
     public struct GridCell
     {
         public float temperature;
-        public float moisture;
-        public float fertility;
+        public float moisture; //0-1
+        public float fertility; //0-1
         public List<Animal> animals;
         public List<Plant> plants;
     }
@@ -29,9 +29,17 @@ public class EnvironmentGrid
     }
 
     public int gridSize = 100;
-    public float cellSize = 1f;
+    public int cellSize = 10;
     public Vector3 gridCenter = Vector3.zero;
     public GridCell[,] grid;
+
+    [Header("Regeneration/usage constants")]
+    public float fertilityRegenRate = 0.005f;  // fertility gained per update
+    public float moistureRegenRate = 0.002f;   // moisture gained per update
+    public float minFertility = 0f;
+    public float maxFertility = 1f;
+    public float minMoisture = 0f;
+    public float maxMoisture = 1f;
 
     private EnvironmentGrid()
     {
@@ -45,8 +53,8 @@ public class EnvironmentGrid
                 grid[x, z] = new GridCell
                 {
                     temperature = Random.Range(15f, 25f),
-                    moisture = Random.Range(0.4f, 0.8f),
-                    fertility = Random.Range(0.3f, 0.9f),
+                    moisture = maxMoisture,
+                    fertility = maxFertility,
                     animals = new List<Animal>(),
                     plants = new List<Plant>()
                 };
@@ -57,10 +65,10 @@ public class EnvironmentGrid
     public Vector2Int GetCellCoords(Vector3 position)
     {
         int x = Mathf.Clamp(
-            Mathf.FloorToInt((position.x + gridSize * 0.5f) / cellSize),
+            Mathf.FloorToInt((position.x + (gridSize * cellSize * 0.5f)) / cellSize),
             0, gridSize - 1);
         int z = Mathf.Clamp(
-            Mathf.FloorToInt((position.z + gridSize * 0.5f) / cellSize),
+            Mathf.FloorToInt((position.z + (gridSize * cellSize * 0.5f)) / cellSize),
             0, gridSize - 1);
         return new Vector2Int(x, z);
     }
@@ -150,6 +158,67 @@ public class EnvironmentGrid
 
     public void UpdateGrid(float dt)
     {
-        //e.g. update fertility
+        UpdateGroundFertility();
+        UpdateGroundMoisture();
+    }
+
+    private void UpdateGroundFertility()
+    {
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int z = 0; z < gridSize; z++)
+            {
+                GridCell cell = grid[x, z];
+
+                float fertilityLoss = 0f;
+
+                foreach (Plant p in cell.plants)
+                {
+                    float maturity = Mathf.Clamp01(p.age / p.species.lifespan);
+                    fertilityLoss += p.species.groundFertilityUsage * maturity;
+                }
+
+                // fertility decreases due to plants
+                cell.fertility = Mathf.Clamp(
+                    cell.fertility - fertilityLoss,
+                    minFertility, maxFertility
+                );
+
+                // natural fertility regeneration
+                //cell.fertility = Mathf.Clamp(cell.fertility + fertilityRegenRate, minFertility, maxFertility);
+
+                grid[x, z] = cell;
+            }
+        }
+    }
+
+    private void UpdateGroundMoisture()
+    {
+        for (int x = 0; x < gridSize; x++)
+        {
+            for (int z = 0; z < gridSize; z++)
+            {
+                GridCell cell = grid[x, z];
+
+                float moistureLoss = 0f;
+
+                //Moisture loss due to plants
+                foreach (Plant p in cell.plants)
+                {
+                    float maturity = Mathf.Clamp01(p.age / p.species.lifespan);
+                    moistureLoss += p.species.waterNeed * maturity;
+                }
+
+                cell.moisture = Mathf.Clamp(
+                    cell.moisture - moistureLoss,
+                    minMoisture, maxMoisture
+                );
+
+                // natural moisture regeneration
+                //cell.moisture = Mathf.Clamp(cell.moisture + moistureRegenRate, minMoisture, maxMoisture);
+
+                grid[x, z] = cell;
+            }
+        }
     }
 }

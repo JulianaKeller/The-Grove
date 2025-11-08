@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
@@ -8,6 +9,8 @@ public class WorldManager : MonoBehaviour
 {
     //This script manages time steps and updates all systems
     public static WorldManager Instance { get; private set; }
+
+    public GroundFertilityTexture groundFertilityTexture;
 
     public float timeStep = 0.1f;
     private float accumulator = 0f;
@@ -43,6 +46,30 @@ public class WorldManager : MonoBehaviour
         PlantManager.Instance.UpdatePlants(timeStep, tickCount);
         AnimalManager.Instance.UpdateAnimals(timeStep, tickCount);
         //EventManager.Instance.UpdateEvents(timeStep);
+
+        if (tickCount % 10 == 0 && groundFertilityTexture != null)
+        {
+            EnvironmentGrid.Instance.UpdateGrid(timeStep);
+            groundFertilityTexture.UpdateFertilityTexture();
+        }
+    }
+
+    public void SpawnStartingSpecies<T>(T[] startingSpecies, Action<T, Vector3> spawnAction)
+    {
+        if (startingSpecies != null && startingSpecies.Length > 0)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                for (int k = 0; k < startingSpecies.Length; k++)
+                {
+                    float gridCenterX = EnvironmentGrid.Instance.gridCenter.x;
+                    float gridCenterZ = EnvironmentGrid.Instance.gridCenter.z;
+                    float gridSpan = EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+                    Vector3 SpawnPosition = new Vector3(UnityEngine.Random.Range(gridCenterX - gridSpan, gridCenterX + gridSpan), 0f, UnityEngine.Random.Range(gridCenterZ - gridSpan, gridCenterZ + gridSpan));
+                    spawnAction(startingSpecies[k], SpawnPosition);
+                }
+            }
+        }
     }
 
     private List<Entity> GetNearbyEntities(Vector3 pos, float range, bool getAnimals, bool getPlants)

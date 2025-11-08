@@ -7,7 +7,7 @@ public class PlantManager : MonoBehaviour
     public static PlantManager Instance { get; private set; }
 
     public int updateSubsetCount;
-    public PlantSpeciesData startingSpecies;
+    public PlantSpeciesData[] startingSpecies;
 
     private List<Plant> plants = new List<Plant>();
     private List<PlantView> views = new List<PlantView>();
@@ -27,21 +27,17 @@ public class PlantManager : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 5; i++)
-        {
-            Vector3 SpawnPosition = new Vector3(Random.Range(-50.0f, 50.0f), 0.5f, Random.Range(-50.0f, 50.0f));
-            SpawnPlant(startingSpecies, SpawnPosition);
-        }
+        WorldManager.Instance.SpawnStartingSpecies<PlantSpeciesData>(startingSpecies, SpawnPlant);
 
         EnvironmentGrid.Instance.PrintGridPlants();
     }
 
     public void SpawnPlant(PlantSpeciesData species, Vector3 pos)
     {
-        if (species.prefab != null)
+        if (species.prefabs != null)
         {
             Plant data = new Plant(species, pos, nextId++);
-            GameObject obj = Instantiate(species.prefab, pos, Quaternion.identity);
+            GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length)], pos, Quaternion.identity);
             PlantView view = obj.GetComponent<PlantView>();
 
             view.data = data;

@@ -4,9 +4,13 @@ using UnityEngine;
 public class PlantSpeciesData : ScriptableObject
 {
     public string speciesName;
-    public GameObject prefab;
+    public GameObject[] prefabs;
     [Header("Visual Variation")]
     public Color[] colorVariants;
+    public float waterNeed; //water usage per time step
+    public float waterCapacity; //1-100 how much water can be stored in the plant
+    public float groundFertilityUsage;
+    public float minGroundFertility; //plant will lose health points if positioned on ground with lower fertility
     public float growthRate;
     public float nutritionBaseValue; //grows with growthRate
     public float lifespan;

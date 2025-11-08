@@ -11,6 +11,7 @@ public class Animal : Entity
     public float speciesLifespan; //max age
     public Entity target;
     public AnimalView view;
+    public bool isFemale = true;
 
     public bool isRunning = false;
     public bool isWalking = false;
@@ -40,9 +41,10 @@ public class Animal : Entity
         age = 0;
         stamina = species.stamina;
         health = species.maxHP;
+        isFemale = Random.value >= 0.5f;
 
         //animator = species.prefab.GetComponentInChildren<Animator>();
-        
+
 
         Debug.Log($"{species.speciesName} created with lifespan {speciesLifespan:F1}.");
     }

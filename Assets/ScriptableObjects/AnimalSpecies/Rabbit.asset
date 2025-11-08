@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Rabbit
   m_EditorClassIdentifier: 
   speciesName: Rabbit
-  prefab: {fileID: 4780922654011921019, guid: 2589f50234a432641954c6a059df09b4, type: 3}
+  prefabs:
+  - {fileID: 4780922654011921019, guid: 2589f50234a432641954c6a059df09b4, type: 3}
   colorVariants:
   - {r: 0.3584906, g: 0.13959038, b: 0, a: 0}
   - {r: 0.9622642, g: 0.9128509, b: 0.8079387, a: 0}
@@ -31,7 +32,9 @@ MonoBehaviour:
   energyDepletionRate: 0.5
   hpRecoveryRate: 0.5
   hungerRate: 1
+  foodNeed: 0
   thirstRate: 0.1
+  waterNeed: 0
   lifespan: 300
   lifespanVariation: 0.1
   isCarnivore: 0

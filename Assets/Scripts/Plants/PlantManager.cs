@@ -5,7 +5,7 @@ public class PlantManager : MonoBehaviour
 {
     //Updates all plants (growth, death, reproduction)
     public static PlantManager Instance { get; private set; }
-
+    public bool spawnStartingSpecies = false;
     public int updateSubsetCount;
     public PlantSpeciesData[] startingSpecies;
 
@@ -27,7 +27,10 @@ public class PlantManager : MonoBehaviour
 
     void Start()
     {
-        WorldManager.Instance.SpawnStartingSpecies<PlantSpeciesData>(startingSpecies, SpawnPlant);
+        if (spawnStartingSpecies)
+        {
+            WorldManager.Instance.SpawnStartingSpecies<PlantSpeciesData>(startingSpecies, SpawnPlant);
+        }
 
         EnvironmentGrid.Instance.PrintGridPlants();
     }

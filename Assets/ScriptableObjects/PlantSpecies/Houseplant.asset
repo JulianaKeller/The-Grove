@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c050c93323f68704d946af945870ef1b, type: 3}
+  m_Name: Houseplant
+  m_EditorClassIdentifier: 
+  speciesName: Houseplant
+  prefabs:
+  - {fileID: 1002873037712949629, guid: 4c146913886323547976e7c921057230, type: 3}
+  colorVariants: []
+  maxHP: 0
+  waterNeed: 0.1
+  waterCapacity: 10
+  groundFertilityUsage: 0.1
+  minGroundFertility: 0.1
+  growthRate: 0.005
+  nutritionBaseValue: 2
+  lifespan: 300
+  lifespanVariation: 0.226
+  baseSpreadChance: 0
+  isEdible: 1

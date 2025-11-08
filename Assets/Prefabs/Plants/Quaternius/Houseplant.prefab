@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3974710407823326676}
+  - component: {fileID: 9175619120909712236}
   m_Layer: 0
   m_Name: Houseplant
   m_TagString: Untagged
@@ -32,6 +33,18 @@ Transform:
   - {fileID: 6899578604146561291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9175619120909712236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002873037712949629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdbd1661172230a40809b8c9ed5eb413, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6362041812474394336
 PrefabInstance:
   m_ObjectHideFlags: 0

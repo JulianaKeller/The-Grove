@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c870713db7414e45a5a19055933bc8e, type: 3}
-  m_Name: Wolf
+  m_Name: Zebra
   m_EditorClassIdentifier: 
-  speciesName: Wolf
+  speciesName: Zebra
   prefabs:
-  - {fileID: 1468635677983306922, guid: 4db5f6330bad9474f8d3810220dff2fc, type: 3}
+  - {fileID: 463552413072890039, guid: 391bbf42f2005144ea75cc3a5b000854, type: 3}
   colorVariants: []
   dominance: 1
   walkingSpeed: 1

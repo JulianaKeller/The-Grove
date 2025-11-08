@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c870713db7414e45a5a19055933bc8e, type: 3}
-  m_Name: Wolf
+  m_Name: Horse
   m_EditorClassIdentifier: 
-  speciesName: Wolf
+  speciesName: Horse
   prefabs:
-  - {fileID: 1468635677983306922, guid: 4db5f6330bad9474f8d3810220dff2fc, type: 3}
+  - {fileID: 1378763495059668493, guid: 405492dda85b57c4696ed0f399f8893e, type: 3}
+  - {fileID: 4528997070121481225, guid: ed3964366ea347f48be5382c9f577024, type: 3}
   colorVariants: []
   dominance: 1
   walkingSpeed: 1

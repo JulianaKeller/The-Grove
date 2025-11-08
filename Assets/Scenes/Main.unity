@@ -694,9 +694,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7e052fc337a9847ac3b14bd207b2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnStartingSpecies: 0
   updateSubsetCount: 3
   startingSpecies:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 32c5fde9686685741a0f01c9d96e5a0e, type: 2}
+  - {fileID: 11400000, guid: ab7dcc4a38f5b7443a3a1ac2d41f9fa4, type: 2}
+  - {fileID: 11400000, guid: e8cd2143a8dc03f448b93428ac90e8bc, type: 2}
+  - {fileID: 11400000, guid: 80471db1ceeaa9b4fada8700fae1770e, type: 2}
+  - {fileID: 11400000, guid: 26a84149ad7d2b94cad1da46d4098417, type: 2}
+  - {fileID: 11400000, guid: 43465dc5634a50a4b8aa89c32f13a2ee, type: 2}
+  - {fileID: 11400000, guid: 428626c4fc733af4e88ac3c691aba075, type: 2}
+  - {fileID: 11400000, guid: 59e9042d7e068fd4ab6c7d7420559ee3, type: 2}
+  - {fileID: 11400000, guid: 22cb8dbd0ceb43044b9b26791376721b, type: 2}
+  - {fileID: 11400000, guid: 27cffdd6eb26fec43968e7baf994663e, type: 2}
+  - {fileID: 11400000, guid: 4c30e71aea876ea439413d8bc2580a93, type: 2}
+  - {fileID: 11400000, guid: 13e2401461513444d97736bf11cc4f54, type: 2}
+  - {fileID: 11400000, guid: f42584f51286a194bb3c05b2697cdb47, type: 2}
+  - {fileID: 11400000, guid: 718409bc3204450489fc220eab553774, type: 2}
+  - {fileID: 11400000, guid: c8e5f68ab91b36344a50be59a4df2766, type: 2}
 --- !u!114 &415286986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -709,9 +724,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f78268faec606e14f811d1fbfef9f59a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnStartingSpecies: 1
   updateSubsetCount: 5
   startingSpecies:
   - {fileID: 11400000, guid: 8d4a7b1e9c048134cbf5c0cb3b08861e, type: 2}
+  - {fileID: 11400000, guid: 1a742f48ab7076249b8191f271e202d0, type: 2}
+  - {fileID: 11400000, guid: 14fb4dd31c38a554fbc50221ea4511ed, type: 2}
+  - {fileID: 11400000, guid: 38ba5a92ea7d2384abc61dae81d6b406, type: 2}
+  - {fileID: 11400000, guid: 6aaff5cd5083fdb42bb2484874c0b54d, type: 2}
 --- !u!114 &415286988
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,6 @@ public class AnimalSpeciesData : ScriptableObject
     public GameObject[] prefabs;
     [Header("Visual Variation")]
     public Color[] colorVariants;
-    public bool female;
     public int dominance; //indicates spot in the foodchain
     public float walkingSpeed;
     public float runningSpeed;

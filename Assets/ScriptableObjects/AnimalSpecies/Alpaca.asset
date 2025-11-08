@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c870713db7414e45a5a19055933bc8e, type: 3}
-  m_Name: Wolf
+  m_Name: Alpaca
   m_EditorClassIdentifier: 
-  speciesName: Wolf
+  speciesName: Alpaca
   prefabs:
-  - {fileID: 1468635677983306922, guid: 4db5f6330bad9474f8d3810220dff2fc, type: 3}
+  - {fileID: 951685227528730239, guid: 46f3a2b51be89ba4c992e179b2a34bf5, type: 3}
   colorVariants: []
   dominance: 1
   walkingSpeed: 1

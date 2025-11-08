@@ -38,6 +38,7 @@ public class AnimalViewEditor : Editor
             EditorGUI.ProgressBar(EditorGUILayout.GetControlRect(), a.matingDrive / 100f, $"{a.matingDrive:F1}/100");
             EditorGUILayout.LabelField("Is Running", a.isRunning.ToString());
             EditorGUILayout.LabelField("Is Walking", a.isWalking.ToString());
+            EditorGUILayout.LabelField("Is Female", a.isFemale.ToString());
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("=== Species Stats ===", EditorStyles.boldLabel);

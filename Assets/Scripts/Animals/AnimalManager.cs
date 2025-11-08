@@ -6,7 +6,7 @@ public class AnimalManager : MonoBehaviour
 {
     //Updates all animals (state transitions, needs, movement)
     public static AnimalManager Instance { get; private set; }
-
+    public bool spawnStartingSpecies = false;
     public int updateSubsetCount = 3;
 
     private List<Animal> animals = new List<Animal>();
@@ -30,7 +30,10 @@ public class AnimalManager : MonoBehaviour
     private void Start()
     {
         //ToDo Testing Setup, initial spawn should be initiated by player later
-        WorldManager.Instance.SpawnStartingSpecies<AnimalSpeciesData>(startingSpecies, SpawnAnimal);
+        if (spawnStartingSpecies)
+        {
+            WorldManager.Instance.SpawnStartingSpecies<AnimalSpeciesData>(startingSpecies, SpawnAnimal);
+        }
 
         EnvironmentGrid.Instance.PrintGridAnimals();
     }

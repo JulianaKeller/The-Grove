@@ -13,27 +13,28 @@ MonoBehaviour:
   m_Name: Deer
   m_EditorClassIdentifier: 
   speciesName: Deer
-  prefab: {fileID: 4780922654011921019, guid: 9576f6cecedd7804aafbd488a696c06f, type: 3}
+  prefabs:
+  - {fileID: 2519874481195740135, guid: 4fd5cefe8d1574d48b2b284ee891b95f, type: 3}
   colorVariants:
-  - {r: 0.3584906, g: 0.13959038, b: 0, a: 0}
-  - {r: 0.9622642, g: 0.9128509, b: 0.8079387, a: 0}
-  - {r: 0.66666657, g: 0.66666657, b: 0.66666657, a: 0}
+  - {r: 1, g: 1, b: 1, a: 0}
   dominance: 1
-  walkingSpeed: 2
-  runningSpeed: 5
+  walkingSpeed: 1
+  runningSpeed: 1
   stamina: 10
-  power: 2
-  defense: 2
-  maxHP: 20
-  aggression: 2
-  awarenessRange: 100
-  stealth: 6
-  energyDepletionRate: 0.5
-  hpRecoveryRate: 0.5
+  power: 10
+  defense: 10
+  maxHP: 100
+  aggression: 1
+  awarenessRange: 10
+  stealth: 1
+  energyDepletionRate: 1
+  hpRecoveryRate: 1
   hungerRate: 1
-  thirstRate: 0.1
+  foodNeed: 1
+  thirstRate: 1
+  waterNeed: 1
   lifespan: 300
-  lifespanVariation: 0.1
+  lifespanVariation: 0.69
   isCarnivore: 0
   isHerbivore: 1
   ediblePlants: []

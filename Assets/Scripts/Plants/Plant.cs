@@ -13,6 +13,9 @@ public class Plant : Entity
     public Vector3 prevSize;
     public float health;
     public float speciesLifespan;
+    public float waterMeter;
+    public float spreadChance;
+    public float nutritionValue;
 
     public PlantView view;
 

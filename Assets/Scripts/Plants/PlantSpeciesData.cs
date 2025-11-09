@@ -12,11 +12,13 @@ public class PlantSpeciesData : ScriptableObject
     public float waterCapacity; //1-100 how much water can be stored in the plant
     public float groundFertilityUsage;
     public float minGroundFertility; //plant will lose health points if positioned on ground with lower fertility
-    public float growthRate;
+    //public float growthRate;
     public float nutritionBaseValue; //grows with growthRate
     public float lifespan;
     [Range(0f, 1f)]
     public float lifespanVariation = 0.1f;
+    public Vector3 maxSizeVariation;
     public float baseSpreadChance;
+    public float spreadingRadius = EnvironmentGrid.Instance.cellSize;
     public bool isEdible;
 }

@@ -694,8 +694,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7e052fc337a9847ac3b14bd207b2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnStartingSpecies: 0
+  spawnStartingSpecies: 1
   updateSubsetCount: 3
+  spawnedAnimalsParent: {fileID: 754262262}
   startingSpecies:
   - {fileID: 11400000, guid: 32c5fde9686685741a0f01c9d96e5a0e, type: 2}
   - {fileID: 11400000, guid: ab7dcc4a38f5b7443a3a1ac2d41f9fa4, type: 2}
@@ -712,6 +713,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f42584f51286a194bb3c05b2697cdb47, type: 2}
   - {fileID: 11400000, guid: 718409bc3204450489fc220eab553774, type: 2}
   - {fileID: 11400000, guid: c8e5f68ab91b36344a50be59a4df2766, type: 2}
+  initialSpawnAmount: 0
 --- !u!114 &415286986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,12 +728,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnStartingSpecies: 1
   updateSubsetCount: 5
+  spawnedPlantsParent: {fileID: 590613845}
   startingSpecies:
   - {fileID: 11400000, guid: 8d4a7b1e9c048134cbf5c0cb3b08861e, type: 2}
   - {fileID: 11400000, guid: 1a742f48ab7076249b8191f271e202d0, type: 2}
   - {fileID: 11400000, guid: 14fb4dd31c38a554fbc50221ea4511ed, type: 2}
   - {fileID: 11400000, guid: 38ba5a92ea7d2384abc61dae81d6b406, type: 2}
   - {fileID: 11400000, guid: 6aaff5cd5083fdb42bb2484874c0b54d, type: 2}
+  initialSpawnAmount: 1
 --- !u!114 &415286988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -753,6 +757,68 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 415286984}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &590613845
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 590613846}
+  m_Layer: 0
+  m_Name: Plants
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &590613846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 590613845}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &754262262
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 754262263}
+  m_Layer: 0
+  m_Name: Animals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &754262263
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754262262}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1204,3 +1270,5 @@ SceneRoots:
   - {fileID: 194337668}
   - {fileID: 1920568633}
   - {fileID: 124634704}
+  - {fileID: 590613846}
+  - {fileID: 754262263}

@@ -14,8 +14,8 @@ public class AnimalSpeciesData : ScriptableObject
     public float power; //attack strength
     public float defense; //how much damage from an attack/injury is dampened, 1 = full damage deflection
     public float maxHP;
-    public float aggression; //how likely the animal is to retaliate against attacks vs running away
-    public float awarenessRange;
+    public float aggression; //0-1, how likely the animal is to retaliate against attacks vs running away
+    public int awarenessRange; //In cells
     public float stealth; //how likely the animal is to not be spotted
     public float energyDepletionRate;
     public float hpRecoveryRate;

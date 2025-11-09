@@ -4,6 +4,7 @@ public class GroundFertilityTexture : MonoBehaviour
 {
     public float updateInterval = 10f;  // Update every x timesteps
     public int texSizeMultiplier = 4;
+    public int kernelRadius = 2; // 1 = 3x3 box blur
 
     private Texture2D fertilityTexture;
     private Renderer groundRenderer;
@@ -83,7 +84,6 @@ public class GroundFertilityTexture : MonoBehaviour
         Color[] pixels = tex.GetPixels();
         Color[] blurred = new Color[pixels.Length];
 
-        int kernelRadius = 2; // 1 = 3x3 box blur
         for (int y = 0; y < h; y++)
         {
             for (int x = 0; x < w; x++)

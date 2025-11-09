@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -11,10 +12,15 @@ public class Animal : Entity
     public float speciesLifespan; //max age
     public Entity target;
     public AnimalView view;
+    public Animal mother;
+    //public Animal[] herd; //better way to save?
     public bool isFemale = true;
 
     public bool isRunning = false;
     public bool isWalking = false;
+    public bool isFleeing = false;
+    public bool isFighting = false;
+    public bool isSleeping = false;
 
     private float decisionCooldown = 2f;
     private float timeSinceLastDecision = 0f;
@@ -43,15 +49,34 @@ public class Animal : Entity
         health = species.maxHP;
         isFemale = Random.value >= 0.5f;
 
-        //animator = species.prefab.GetComponentInChildren<Animator>();
-
-
         Debug.Log($"{species.speciesName} created with lifespan {speciesLifespan:F1}.");
     }
 
     public void UpdateAI(float timeStep)
     {
-        //-----Core biological updates-----
+        BiologicalUpdates(timeStep);
+
+        updateAnimations();
+
+        UpdateHealth(timeStep);
+
+        EvaluateNeeds();
+
+        PerceptionCheck();
+
+        currentState?.Execute(this, timeStep);
+
+        //-----Update Grid-----
+
+        if ((int)(prevPosition.x) != (int)(position.x) || (int)(prevPosition.z) != (int)(position.z))
+        {
+            EnvironmentGrid.Instance.DeregisterAnimal(this);
+            EnvironmentGrid.Instance.RegisterAnimal(this);
+        }
+    }
+
+    private void BiologicalUpdates(float timeStep)
+    {
         age += timeStep;
         hunger = Mathf.Min(100f, hunger + species.hungerRate * timeStep);
         thirst = Mathf.Min(100f, thirst + species.thirstRate * timeStep);
@@ -60,7 +85,7 @@ public class Animal : Entity
         if (isRunning)
         {
             stamina = Mathf.Max(0f, stamina - timeStep);
-            energy -= species.energyDepletionRate * 2 * timeStep; // deplete energy faster while running
+            energy = Mathf.Max(0f, energy - species.energyDepletionRate * 2 * timeStep);
         }
         else if (isWalking)
         {
@@ -70,15 +95,14 @@ public class Animal : Entity
         else
         {
             stamina = Mathf.Min(species.stamina, stamina + timeStep);
-            energy = Mathf.Max(0f, energy - species.energyDepletionRate * 0.5f * timeStep);
+            energy = Mathf.Min(0f, energy + species.energyDepletionRate * 0.5f * timeStep);
         }
+    }
 
-        updateAnimations();
-
-        //-----Health & Death management-----
+    private void UpdateHealth(float timeStep)
+    {
         if (hunger >= 100f || thirst >= 100f || energy <= 0)
         {
-            //starvation, exhaustion or dehydration damage
             health -= timeStep;
         }
         else
@@ -92,22 +116,60 @@ public class Animal : Entity
             Debug.Log($"{species.speciesName} died. Age: {age:F1}");
             return;
         }
+    }
 
-        //-----State update-----
+    public void PerceptionCheck()
+    {
+        //change State (FightOrFlight()) when enemy near and perceived
+        //awarenessRange in AnimalSpeciesData
+        //Probability of percepting a threat, depending on awake/asleep
 
-        currentState?.Execute(this, timeStep);
+        float perceptionChance = isSleeping ? 0.2f : 0.9f;
 
-        //-----Update Grid-----
+        if (Random.value > perceptionChance) // ToDo distance to enemy should influence probability
+            return;
 
-        if ((int)(prevPosition.x) != (int)(position.x) || (int)(prevPosition.z) != (int)(position.z))
+        Animal nearestThreat = null;
+        float nearestDist = float.MaxValue;
+
+        FightOrFlight();
+    }
+
+    public void FightOrFlight(Animal enemy)
+    {
+        if(species.dominance > enemy.species.dominance && species.aggression > 0.4f) //ToDo add some randomness/probability calculations, closeness to enemy should be an influence
         {
-            EnvironmentGrid.Instance.DeregisterAnimal(this);
-            EnvironmentGrid.Instance.RegisterAnimal(this);
+            ChangeState(new FightState());
+        }
+        else if(species.aggression > 0.6f)
+        {
+            ChangeState(new FightState());
+        }
+        else
+        {
+            ChangeState(new FleeState());
         }
     }
 
+    public void MoveTo(Vector3 targetPos, float timeStep)
+    {
+        float speed = (ShouldRun(timeStep) ? species.runningSpeed : species.walkingSpeed);
+
+        Vector3 newPos = Vector3.MoveTowards(position, targetPos, speed * timeStep);
+        prevPosition = position;
+        position = newPos;
+
+        if (view != null)
+            view.FaceTowards(newPos);
+    }
+    
     public void EvaluateNeeds()
     {
+        if(isFleeing || isFighting)
+        {
+            return;
+        }
+
         timeSinceLastDecision += WorldManager.Instance.timeStep;
         if (timeSinceLastDecision < decisionCooldown) return;
 
@@ -115,9 +177,9 @@ public class Animal : Entity
 
         // Hunger/food seeking
         float hungerThreshold = 50f + Random.Range(-10f, 10f); // adds per-animal variation
-        //float hungerProbability = Mathf.InverseLerp(hungerThreshold, 100f, hunger);
+        float hungerProbability = Mathf.InverseLerp(hungerThreshold, 100f, hunger);
 
-        if (hunger > hungerThreshold)
+        if (Random.value > hungerProbability)
         {
             ChangeState(new SeekFoodState());
             return;
@@ -147,11 +209,6 @@ public class Animal : Entity
         float matingThreshold = 50f + Random.Range(-10f, 10f);
         float matingProbability = Mathf.InverseLerp(matingThreshold, 100f, matingDrive);
         float matingRandomValue = Random.value;
-
-        //Debug.Log("Mating Drive: " + matingDrive);
-        //Debug.Log("Mating Threshold: " + matingThreshold);
-        //Debug.Log("Mating Probability: " + matingProbability);
-        //Debug.Log("Random Mating Value: " + matingRandomValue);
 
         if (matingRandomValue < matingProbability)
         {
@@ -185,6 +242,9 @@ public class Animal : Entity
 
     public void ChangeState(AnimalState newState)
     {
+        isRunning = false;
+        isWalking = false;
+
         // Sync the animal position with the visual position before changing states
         if (view != null)
         {
@@ -193,7 +253,6 @@ public class Animal : Entity
             position = interpolated;
         }
 
-        //Debug.Log("Changing State...");
         currentState?.Exit(this);
         currentState = newState;
         currentState?.Enter(this);
@@ -202,7 +261,6 @@ public class Animal : Entity
     public Entity FindNearestFood()
     {
         Vector3 pos = this.position;
-        float range = species.awarenessRange;
 
         Entity nearest = null;
 
@@ -210,7 +268,7 @@ public class Animal : Entity
         {
             Animal edible = null;
 
-            foreach (var entity in WorldManager.Instance.GetNearbyAnimals(pos, range))
+            foreach (var entity in WorldManager.Instance.GetNearbyAnimals(pos, species.awarenessRange))
             {
                 if (entity is Animal prey)
                 {
@@ -238,7 +296,7 @@ public class Animal : Entity
         {
             Plant edible = null;
 
-            foreach (var entity in WorldManager.Instance.GetNearbyPlants(pos, range))
+            foreach (var entity in WorldManager.Instance.GetNearbyPlants(pos, species.awarenessRange))
             {
                 if (entity is Plant plant)
                 {
@@ -260,6 +318,7 @@ public class Animal : Entity
                 }
             }
         }
+
         return nearest;
     }
 
@@ -291,8 +350,10 @@ public class Animal : Entity
 
     public bool ShouldRun(float timeStep)
     {
-        return ((hunger < timeStep * species.hungerRate) &&
-            (energy > species.energyDepletionRate * timeStep) &&
-            (stamina >= 1));
+        //ToDo dont run if low on hunger, energy, health
+        return (stamina >= 1) && 
+                ((isFleeing) ||
+                ((hunger < timeStep * species.hungerRate) &&
+                (energy > species.energyDepletionRate * timeStep)));
     }
 }

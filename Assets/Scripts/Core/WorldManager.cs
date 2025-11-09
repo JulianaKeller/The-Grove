@@ -13,6 +13,7 @@ public class WorldManager : MonoBehaviour
     public GroundFertilityTexture groundFertilityTexture;
 
     public float timeStep = 0.1f;
+
     private float accumulator = 0f;
     private int tickCount = 0;
 
@@ -54,11 +55,11 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    public void SpawnStartingSpecies<T>(T[] startingSpecies, Action<T, Vector3> spawnAction)
+    public void SpawnStartingSpecies<T>(T[] startingSpecies, Action<T, Vector3> spawnAction, int amount)
     {
         if (startingSpecies != null && startingSpecies.Length > 0)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < amount; i++)
             {
                 for (int k = 0; k < startingSpecies.Length; k++)
                 {
@@ -72,16 +73,15 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    private List<Entity> GetNearbyEntities(Vector3 pos, float range, bool getAnimals, bool getPlants)
+    private List<Entity> GetNearbyEntities(Vector3 pos, int range, bool getAnimals, bool getPlants, bool getPredatorsOnly)
     {
         List<Entity> nearby = new List<Entity>();
-        int cellRange = Mathf.CeilToInt(range / EnvironmentGrid.Instance.cellSize);
 
         Vector2Int center = EnvironmentGrid.Instance.GetCellCoords(pos);
 
-        for (int x = -cellRange; x <= cellRange; x++)
+        for (int x = -range; x <= range; x++)
         {
-            for (int y = -cellRange; y <= cellRange; y++)
+            for (int y = -range; y <= range; y++)
             {
                 int gx = center.x + x;
                 int gz = center.y + y;
@@ -90,6 +90,16 @@ public class WorldManager : MonoBehaviour
                     continue;
 
                 var cell = EnvironmentGrid.Instance.grid[gx, gz];
+                if (getPredatorsOnly)
+                {
+                    foreach(Animal a in cell.animals)
+                    {
+                        if (a.species.isCarnivore) //add a flag to animal that lets other animals know if they should perceive them as a predator/threat?
+                        {
+                            nearby.Add(a);
+                        }
+                    }
+                }
                 if (getAnimals)
                 {
                     nearby.AddRange(cell.animals);
@@ -103,18 +113,23 @@ public class WorldManager : MonoBehaviour
         return nearby;
     }
 
-    public List<Entity> GetNearbyEntities(Vector3 pos, float range)
+    public List<Entity> GetNearbyEntities(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, true, true);
+        return GetNearbyEntities(pos, range, true, true, false);
     }
 
-    public List<Entity> GetNearbyAnimals(Vector3 pos, float range)
+    public List<Entity> GetNearbyAnimals(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, true, false);
+        return GetNearbyEntities(pos, range, true, false, false);
     }
 
-    public List<Entity> GetNearbyPlants(Vector3 pos, float range)
+    public List<Entity> GetNearbyPlants(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, false, true);
+        return GetNearbyEntities(pos, range, false, true, false);
+    }
+
+    public List<Entity> GetNearbyPredators(Vector3 pos, int range)
+    {
+        return GetNearbyEntities(pos, range, true, false, false);
     }
 }

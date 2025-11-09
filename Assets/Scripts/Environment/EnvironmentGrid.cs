@@ -34,8 +34,8 @@ public class EnvironmentGrid
     public GridCell[,] grid;
 
     [Header("Regeneration/usage constants")]
-    public float fertilityRegenRate = 0.005f;  // fertility gained per update
-    public float moistureRegenRate = 0.002f;   // moisture gained per update
+    public float fertilityRegenRate = 0.05f;  // fertility gained per update
+    public float moistureLossRate = 0.001f;   // moisture gained per update
     public float minFertility = 0f;
     public float maxFertility = 1f;
     public float minMoisture = 0f;
@@ -158,12 +158,6 @@ public class EnvironmentGrid
 
     public void UpdateGrid(float dt)
     {
-        UpdateGroundFertility();
-        UpdateGroundMoisture();
-    }
-
-    private void UpdateGroundFertility()
-    {
         for (int x = 0; x < gridSize; x++)
         {
             for (int z = 0; z < gridSize; z++)
@@ -171,11 +165,14 @@ public class EnvironmentGrid
                 GridCell cell = grid[x, z];
 
                 float fertilityLoss = 0f;
+                float moistureLoss = 0f;
 
                 foreach (Plant p in cell.plants)
                 {
                     float maturity = Mathf.Clamp01(p.age / p.species.lifespan);
+
                     fertilityLoss += p.species.groundFertilityUsage * maturity;
+                    moistureLoss += p.species.waterNeed * maturity;
                 }
 
                 // fertility decreases due to plants
@@ -184,38 +181,17 @@ public class EnvironmentGrid
                     minFertility, maxFertility
                 );
 
-                // natural fertility regeneration
-                //cell.fertility = Mathf.Clamp(cell.fertility + fertilityRegenRate, minFertility, maxFertility);
-
-                grid[x, z] = cell;
-            }
-        }
-    }
-
-    private void UpdateGroundMoisture()
-    {
-        for (int x = 0; x < gridSize; x++)
-        {
-            for (int z = 0; z < gridSize; z++)
-            {
-                GridCell cell = grid[x, z];
-
-                float moistureLoss = 0f;
-
-                //Moisture loss due to plants
-                foreach (Plant p in cell.plants)
-                {
-                    float maturity = Mathf.Clamp01(p.age / p.species.lifespan);
-                    moistureLoss += p.species.waterNeed * maturity;
-                }
-
+                // moisture decreases due to plants
                 cell.moisture = Mathf.Clamp(
                     cell.moisture - moistureLoss,
                     minMoisture, maxMoisture
                 );
 
-                // natural moisture regeneration
-                //cell.moisture = Mathf.Clamp(cell.moisture + moistureRegenRate, minMoisture, maxMoisture);
+                // natural moisture loss
+                cell.moisture = Mathf.Clamp(cell.moisture - moistureLossRate, minMoisture, maxMoisture);
+
+                // natural fertility regeneration
+                cell.fertility = Mathf.Clamp(cell.fertility + fertilityRegenRate, minFertility, maxFertility);
 
                 grid[x, z] = cell;
             }

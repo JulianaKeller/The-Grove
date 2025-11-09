@@ -7,7 +7,10 @@ public class PlantManager : MonoBehaviour
     public static PlantManager Instance { get; private set; }
     public bool spawnStartingSpecies = false;
     public int updateSubsetCount;
+    public GameObject spawnedPlantsParent;
+
     public PlantSpeciesData[] startingSpecies;
+    public int initialSpawnAmount;
 
     private List<Plant> plants = new List<Plant>();
     private List<PlantView> views = new List<PlantView>();
@@ -29,7 +32,7 @@ public class PlantManager : MonoBehaviour
     {
         if (spawnStartingSpecies)
         {
-            WorldManager.Instance.SpawnStartingSpecies<PlantSpeciesData>(startingSpecies, SpawnPlant);
+            WorldManager.Instance.SpawnStartingSpecies<PlantSpeciesData>(startingSpecies, SpawnPlant, initialSpawnAmount);
         }
 
         EnvironmentGrid.Instance.PrintGridPlants();
@@ -40,8 +43,16 @@ public class PlantManager : MonoBehaviour
         if (species.prefabs != null)
         {
             Plant data = new Plant(species, pos, nextId++);
-            GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length)], pos, Quaternion.identity);
+            GameObject original = species.prefabs[Random.Range(0, species.prefabs.Length)];
+
+            GameObject obj = Instantiate(original, pos, Quaternion.identity, spawnedPlantsParent ? spawnedPlantsParent.transform : null);
+
             PlantView view = obj.GetComponent<PlantView>();
+
+            data.maxSize = original.transform.localScale;
+            float variation = Random.Range(-species.maxSizeVariation.x, species.maxSizeVariation.x);
+
+            data.maxSize = data.maxSize + new Vector3(variation, variation, variation);
 
             view.data = data;
             data.view = view;
@@ -71,8 +82,9 @@ public class PlantManager : MonoBehaviour
 
     public void UpdatePlants(float timeStep, int tick)
     {
-        foreach (var plant in plants)
+        for (int i = plants.Count - 1; i >= 0; i--)
         {
+            Plant plant = plants[i];
             if ((tick + plant.id) % updateSubsetCount == 0)
             {
                 plant.view.ResetInterpolation();

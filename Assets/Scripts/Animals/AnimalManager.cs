@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 public class AnimalManager : MonoBehaviour
 {
@@ -8,11 +9,13 @@ public class AnimalManager : MonoBehaviour
     public static AnimalManager Instance { get; private set; }
     public bool spawnStartingSpecies = false;
     public int updateSubsetCount = 3;
+    public GameObject spawnedAnimalsParent;
 
     private List<Animal> animals = new List<Animal>();
     private List<AnimalView> views = new List<AnimalView>();
 
     public AnimalSpeciesData[] startingSpecies;
+    public int initialSpawnAmount;
 
     private static int nextId = 0;
 
@@ -32,7 +35,7 @@ public class AnimalManager : MonoBehaviour
         //ToDo Testing Setup, initial spawn should be initiated by player later
         if (spawnStartingSpecies)
         {
-            WorldManager.Instance.SpawnStartingSpecies<AnimalSpeciesData>(startingSpecies, SpawnAnimal);
+            WorldManager.Instance.SpawnStartingSpecies<AnimalSpeciesData>(startingSpecies, SpawnAnimal, initialSpawnAmount);
         }
 
         EnvironmentGrid.Instance.PrintGridAnimals();
@@ -43,7 +46,9 @@ public class AnimalManager : MonoBehaviour
         if (species.prefabs != null && species.prefabs.Length >= 1)
         {
             Animal data = new Animal(species, pos, nextId++);
-            GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length-1)], pos, Quaternion.identity);
+
+            GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length - 1)], pos, Quaternion.identity, spawnedAnimalsParent ? spawnedAnimalsParent.transform : null);
+
             AnimalView view = obj.GetComponent<AnimalView>();
 
             view.data = data;

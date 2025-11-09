@@ -16,13 +16,11 @@ public class WanderState : AnimalState
         targetPos = a.position + new Vector3(
                 Random.Range(-wanderRange, wanderRange), 0,
                 Random.Range(-wanderRange, wanderRange));
+
         wanderTimer = Random.Range(wanderTimeMin, wanderTimeMax);
         currentWanderTimer = wanderTimer;
 
         //ToDO facilitate migrating behavior to find food by taking a direction close to the previous one
-
-        a.isWalking = true;
-        a.isRunning = false;
 
         Debug.Log(a.species.name + " is now wandering.");
     }
@@ -31,19 +29,10 @@ public class WanderState : AnimalState
 
         currentWanderTimer -= timeStep;
 
-        Vector3 newPos = Vector3.MoveTowards(a.position, targetPos, a.species.walkingSpeed * timeStep);
-        a.prevPosition = a.position;
-        a.position = newPos;
-
+        a.MoveTo(targetPos, timeStep);
         Debug.Log($"{a.species.name} wandering. Timer: {currentWanderTimer:F2}, Distance: {Vector3.Distance(a.position, targetPos):F2}");
 
-        // Face target direction
-        if (a.view != null)
-            a.view.FaceTowards(newPos);
-
         //-----Decision making-----
-
-        a.EvaluateNeeds();
 
         if (currentWanderTimer <= 0f || Vector3.Distance(a.position, targetPos) < 0.1f)
         {
@@ -53,8 +42,6 @@ public class WanderState : AnimalState
     }
 
     public override void Exit(Animal a) {
-        a.isWalking = false;
-        a.isRunning = false;
         a.prevPosition = a.position;
     }
 }

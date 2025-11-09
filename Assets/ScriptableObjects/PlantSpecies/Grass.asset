@@ -13,13 +13,20 @@ MonoBehaviour:
   m_Name: Grass
   m_EditorClassIdentifier: 
   speciesName: Grass
-  prefab: {fileID: 0}
+  prefabs: []
   colorVariants:
   - {r: 0.39346024, g: 0.7484276, b: 0, a: 0}
   - {r: 0, g: 0.36477977, b: 0.112647206, a: 0}
   - {r: 0.5409389, g: 0.55345905, b: 0, a: 0}
-  growthRate: 3
-  nutritionValue: 1
-  lifespan: 100
+  maxHP: 100
+  waterNeed: 0
+  waterCapacity: 0
+  groundFertilityUsage: 0
+  minGroundFertility: 0
+  nutritionBaseValue: 0
+  lifespan: 30
   lifespanVariation: 0.1
-  spreadChance: 3
+  maxSizeVariation: {x: 1, y: 1, z: 1}
+  baseSpreadChance: 0.5
+  spreadingRadius: 20
+  isEdible: 0

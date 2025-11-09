@@ -22,7 +22,7 @@ public class WanderState : AnimalState
 
         //ToDO facilitate migrating behavior to find food by taking a direction close to the previous one
 
-        Debug.Log(a.species.name + " is now wandering.");
+        //Debug.Log(a.species.name + " is now wandering.");
     }
 
     public override void Execute(Animal a, float timeStep) {
@@ -30,7 +30,7 @@ public class WanderState : AnimalState
         currentWanderTimer -= timeStep;
 
         a.MoveTo(targetPos, timeStep);
-        Debug.Log($"{a.species.name} wandering. Timer: {currentWanderTimer:F2}, Distance: {Vector3.Distance(a.position, targetPos):F2}");
+        //Debug.Log($"{a.species.name} wandering. Timer: {currentWanderTimer:F2}, Distance: {Vector3.Distance(a.position, targetPos):F2}");
 
         //-----Decision making-----
 

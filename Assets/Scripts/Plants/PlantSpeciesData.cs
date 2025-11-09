@@ -19,6 +19,6 @@ public class PlantSpeciesData : ScriptableObject
     public float lifespanVariation = 0.1f;
     public Vector3 maxSizeVariation;
     public float baseSpreadChance;
-    public float spreadingRadius = EnvironmentGrid.Instance.cellSize;
+    public float spreadingRadius;
     public bool isEdible;
 }

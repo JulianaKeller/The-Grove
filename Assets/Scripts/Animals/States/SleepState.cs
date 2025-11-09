@@ -9,5 +9,7 @@ public class SleepState : AnimalState
         //regenerate health
         //
     }
-    public override void Exit(Animal a) { }
+    public override void Exit(Animal a) {
+        a.isSleeping = false;
+    }
 }

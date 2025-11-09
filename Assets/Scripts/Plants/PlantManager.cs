@@ -30,6 +30,8 @@ public class PlantManager : MonoBehaviour
 
     void Start()
     {
+        PlantSpeciesInitializer.InitializePlantValues();
+
         if (spawnStartingSpecies)
         {
             WorldManager.Instance.SpawnStartingSpecies<PlantSpeciesData>(startingSpecies, SpawnPlant, initialSpawnAmount);
@@ -88,7 +90,7 @@ public class PlantManager : MonoBehaviour
             if ((tick + plant.id) % updateSubsetCount == 0)
             {
                 plant.view.ResetInterpolation();
-                plant.UpdatePlant(timeStep);
+                plant.UpdatePlant(timeStep * updateSubsetCount);
             }
                 
         }

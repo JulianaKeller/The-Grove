@@ -45,7 +45,8 @@ public class AnimalViewEditor : Editor
 
             EditorGUILayout.LabelField("Walking Speed", s.walkingSpeed.ToString("F1"));
             EditorGUILayout.LabelField("Running Speed", s.runningSpeed.ToString("F1"));
-            EditorGUILayout.LabelField("Dominance", s.dominance.ToString());
+            EditorGUILayout.LabelField("Base Dominance", s.baseDominance.ToString());
+            EditorGUILayout.LabelField("Dominance Variation", s.dominanceVariation.ToString());
             EditorGUILayout.LabelField("Aggression", s.aggression.ToString("F2"));
             EditorGUILayout.LabelField("Awareness Range", s.awarenessRange.ToString("F1"));
             EditorGUILayout.LabelField("Stealth", s.stealth.ToString("F2"));

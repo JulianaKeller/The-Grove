@@ -10,22 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c050c93323f68704d946af945870ef1b, type: 3}
-  m_Name: CoffeePlant
+  m_Name: YellowFlower
   m_EditorClassIdentifier: 
-  speciesName: CoffeePlant
+  speciesName: Yellow Flower
   prefabs:
-  - {fileID: 97176055403355019, guid: 21e35349765c11e4d84fbc31e82310fa, type: 3}
-  colorVariants:
-  - {r: 1, g: 1, b: 1, a: 0}
+  - {fileID: 6947741436486312648, guid: cbbaf45db7f88f646b40c726e9067942, type: 3}
+  colorVariants: []
   maxHP: 100
-  waterNeed: 0.1
+  waterNeed: 0.001
   waterCapacity: 10
-  groundFertilityUsage: 0.1
+  groundFertilityUsage: 0.001
   minGroundFertility: 0.1
   nutritionBaseValue: 2
-  lifespan: 30
+  lifespan: 5000
   lifespanVariation: 0.226
   maxSizeVariation: {x: 1, y: 1, z: 1}
   baseSpreadChance: 0.5
-  spreadingRadius: 20
+  spreadingRadius: 2e+14
   isEdible: 1

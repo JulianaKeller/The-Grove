@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
@@ -10,6 +11,7 @@ public class Animal : Entity
     public float hunger, thirst, energy, matingDrive; //max 100, min 0
     public float age, stamina, health; //current values of the maximums in AnimalSpeciesData
     public float speciesLifespan; //max age
+    public int dominance;
     public Entity target;
     public AnimalView view;
     public Animal mother;
@@ -21,6 +23,7 @@ public class Animal : Entity
     public bool isFleeing = false;
     public bool isFighting = false;
     public bool isSleeping = false;
+    public bool isMating = false;
 
     private float decisionCooldown = 2f;
     private float timeSinceLastDecision = 0f;
@@ -39,6 +42,8 @@ public class Animal : Entity
         float variation = species.lifespanVariation * species.lifespan;
         float randomizedLifespan = species.lifespan + Random.Range(-variation, variation);
         this.speciesLifespan = randomizedLifespan;
+
+        dominance = species.baseDominance + Random.Range(-species.dominanceVariation, species.dominanceVariation);
 
         hunger = 0;
         thirst = 0;
@@ -60,7 +65,7 @@ public class Animal : Entity
 
         UpdateHealth(timeStep);
 
-        EvaluateNeeds();
+        EvaluateNeeds(timeStep);
 
         PerceptionCheck();
 
@@ -80,7 +85,7 @@ public class Animal : Entity
         age += timeStep;
         hunger = Mathf.Min(100f, hunger + species.hungerRate * timeStep);
         thirst = Mathf.Min(100f, thirst + species.thirstRate * timeStep);
-        matingDrive = Mathf.Min(100f, matingDrive + 0.1f * timeStep);
+        matingDrive = Mathf.Min(100f, matingDrive + 0.1f * timeStep); //ToDo dependent on age see plants
 
         if (isRunning)
         {
@@ -95,7 +100,7 @@ public class Animal : Entity
         else
         {
             stamina = Mathf.Min(species.stamina, stamina + timeStep);
-            energy = Mathf.Min(0f, energy + species.energyDepletionRate * 0.5f * timeStep);
+            energy = Mathf.Min(100f, energy + species.energyDepletionRate * 0.1f * timeStep);
         }
     }
 
@@ -120,24 +125,31 @@ public class Animal : Entity
 
     public void PerceptionCheck()
     {
-        //change State (FightOrFlight()) when enemy near and perceived
-        //awarenessRange in AnimalSpeciesData
-        //Probability of percepting a threat, depending on awake/asleep
+        Animal nearestThreat = ClosestEntity(GetNearbyThreats()) as Animal;
+
+        if (nearestThreat == null)
+        {
+            return;
+        }
 
         float perceptionChance = isSleeping ? 0.2f : 0.9f;
+        float distance = Vector3.Distance(position, nearestThreat.position);
+        float distanceModifier = Mathf.Clamp01(1f - (distance / species.awarenessRange));
+        perceptionChance = perceptionChance * distanceModifier;
 
-        if (Random.value > perceptionChance) // ToDo distance to enemy should influence probability
+        if (Random.value > perceptionChance)
             return;
 
-        Animal nearestThreat = null;
-        float nearestDist = float.MaxValue;
-
-        FightOrFlight();
+        if (nearestThreat != null )
+        {
+            FightOrFlight(nearestThreat);
+        }
     }
 
     public void FightOrFlight(Animal enemy)
     {
-        if(species.dominance > enemy.species.dominance && species.aggression > 0.4f) //ToDo add some randomness/probability calculations, closeness to enemy should be an influence
+        //ToDo health should be an influence
+        if(dominance > enemy.dominance && species.aggression > 0.4f) //ToDo add some randomness/probability calculations, closeness to enemy should be an influence
         {
             ChangeState(new FightState());
         }
@@ -163,23 +175,23 @@ public class Animal : Entity
             view.FaceTowards(newPos);
     }
     
-    public void EvaluateNeeds()
+    public void EvaluateNeeds(float timeStep)
     {
         if(isFleeing || isFighting)
         {
             return;
         }
 
-        timeSinceLastDecision += WorldManager.Instance.timeStep;
+        timeSinceLastDecision += timeStep;
         if (timeSinceLastDecision < decisionCooldown) return;
 
         timeSinceLastDecision = 0f;
 
         // Hunger/food seeking
         float hungerThreshold = 50f + Random.Range(-10f, 10f); // adds per-animal variation
-        float hungerProbability = Mathf.InverseLerp(hungerThreshold, 100f, hunger);
+        //float hungerProbability = Mathf.InverseLerp(hungerThreshold, 100f, hunger);
 
-        if (Random.value > hungerProbability)
+        if (hunger > hungerThreshold)
         {
             ChangeState(new SeekFoodState());
             return;
@@ -187,9 +199,9 @@ public class Animal : Entity
 
         // Thirst/water seeking
         float thirstThreshold = 50f + Random.Range(-10f, 10f);
-        float thirstProbability = Mathf.InverseLerp(thirstThreshold, 100f, thirst);
+        //float thirstProbability = Mathf.InverseLerp(thirstThreshold, 100f, thirst);
 
-        if (Random.value < thirstProbability)
+        if (thirst > thirstThreshold)
         {
             ChangeState(new SeekWaterState());
             return;
@@ -197,9 +209,9 @@ public class Animal : Entity
 
         // Rest seeking
         float energyThreshold = 50f + Random.Range(-10f, 10f);
-        float restProbability = Mathf.InverseLerp(energyThreshold, 0f, energy);
+        //float restProbability = Mathf.InverseLerp(energyThreshold, 0f, energy);
 
-        if (Random.value < restProbability)
+        if (energy < energyThreshold)
         {
             ChangeState(new SleepState());
             return;
@@ -207,10 +219,9 @@ public class Animal : Entity
 
         // Mate seeking
         float matingThreshold = 50f + Random.Range(-10f, 10f);
-        float matingProbability = Mathf.InverseLerp(matingThreshold, 100f, matingDrive);
-        float matingRandomValue = Random.value;
+        //float matingProbability = Mathf.InverseLerp(matingThreshold, 100f, matingDrive);
 
-        if (matingRandomValue < matingProbability)
+        if (matingDrive > matingThreshold)
         {
             ChangeState(new SeekMateState());
             return;
@@ -286,7 +297,7 @@ public class Animal : Entity
                     }
                     else
                     {
-                        if (prey.species.dominance < species.dominance)
+                        if (prey.dominance < dominance && prey.species != species)
                             edible = (Animal) ClosestEntity(edible, prey);
                     }
                 }
@@ -340,6 +351,40 @@ public class Animal : Entity
         {
             return entityB;
         }
+    }
+
+    private Entity ClosestEntity<T>(List<T> entities) where T : Entity
+    {
+        Entity closest = null;
+
+        foreach (var entity in entities)
+        {
+            if(entity == this)
+            {
+                continue;
+            }
+            closest = ClosestEntity(closest, entity);
+        }
+
+        return closest;
+    }
+
+    private List<Animal> GetNearbyThreats()
+    {
+        List<Animal> threats = new List<Animal>();
+        foreach(Animal a in WorldManager.Instance.GetNearbyPredators(position, species.awarenessRange))
+        {
+            if (IsThreat(a))
+            {
+                threats.Add(a);
+            }
+        }
+        return threats;
+    }
+
+    public bool IsThreat(Animal other)
+    {
+        return species.fearedAnimals != null && species.fearedAnimals.Contains(other.species);
     }
 
     public override void Die()

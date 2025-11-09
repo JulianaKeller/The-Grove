@@ -243,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateInterval: 10
   texSizeMultiplier: 4
+  kernelRadius: 2
   lowFertilityDry: {r: 0.76729554, g: 0.69082433, b: 0.37882197, a: 1}
   lowFertilityWet: {r: 0.40251565, g: 0.30634978, b: 0.11771679, a: 1}
   highFertilityDry: {r: 0.27020285, g: 0.8679245, b: 0.27020285, a: 1}
@@ -277,6 +278,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 77616359}
+  - {fileID: 1441794768}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &194337663
@@ -713,7 +715,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f42584f51286a194bb3c05b2697cdb47, type: 2}
   - {fileID: 11400000, guid: 718409bc3204450489fc220eab553774, type: 2}
   - {fileID: 11400000, guid: c8e5f68ab91b36344a50be59a4df2766, type: 2}
-  initialSpawnAmount: 0
+  initialSpawnAmount: 1
 --- !u!114 &415286986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,7 +737,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 14fb4dd31c38a554fbc50221ea4511ed, type: 2}
   - {fileID: 11400000, guid: 38ba5a92ea7d2384abc61dae81d6b406, type: 2}
   - {fileID: 11400000, guid: 6aaff5cd5083fdb42bb2484874c0b54d, type: 2}
-  initialSpawnAmount: 1
+  initialSpawnAmount: 100
 --- !u!114 &415286988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -920,12 +922,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1441794766}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 124634704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1441794769
 MeshCollider:
@@ -1265,7 +1267,6 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 832575519}
   - {fileID: 415286989}
-  - {fileID: 1441794768}
   - {fileID: 1716199355}
   - {fileID: 194337668}
   - {fileID: 1920568633}

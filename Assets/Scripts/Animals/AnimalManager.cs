@@ -32,6 +32,8 @@ public class AnimalManager : MonoBehaviour
 
     private void Start()
     {
+        AnimalSpeciesInitializer.InitializeFearedAnimals();
+
         //ToDo Testing Setup, initial spawn should be initiated by player later
         if (spawnStartingSpecies)
         {
@@ -96,7 +98,7 @@ public class AnimalManager : MonoBehaviour
             if ((tick + animal.id) % updateSubsetCount == 0)
             {
                 animal.view.ResetInterpolation();
-                animal.UpdateAI(timeStep);
+                animal.UpdateAI(timeStep * updateSubsetCount);
             }
         }
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewAnimalSpecies", menuName = "Species/AnimalSpecies")]
@@ -7,7 +8,8 @@ public class AnimalSpeciesData : ScriptableObject
     public GameObject[] prefabs;
     [Header("Visual Variation")]
     public Color[] colorVariants;
-    public int dominance; //indicates spot in the foodchain
+    public int baseDominance; //indicates spot in the foodchain
+    public int dominanceVariation;
     public float walkingSpeed;
     public float runningSpeed;
     public float stamina; //for how long an animal can run
@@ -32,4 +34,17 @@ public class AnimalSpeciesData : ScriptableObject
     // List of entity types this species can consume
     public PlantSpeciesData[] ediblePlants;
     public AnimalSpeciesData[] edibleAnimals;
+    [HideInInspector] public HashSet<AnimalSpeciesData> fearedAnimals; // auto-filled at startup
+
+    public static bool operator ==(AnimalSpeciesData a, AnimalSpeciesData b)
+    {
+        if (a is null || b is null) return false;
+
+        return a.speciesName == b.speciesName;
+    }
+
+    public static bool operator !=(AnimalSpeciesData a, AnimalSpeciesData b)
+    {
+        return !(a == b);
+    }
 }

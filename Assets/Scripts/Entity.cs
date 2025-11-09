@@ -12,6 +12,16 @@ public abstract class Entity
     {
         isAlive = false;
     }
+    public static bool operator ==(Entity a, Entity b)
+    {
+        if (a is null && b is null) return true;
+        if (a is null || b is null) return false;
 
-    
+        return a.id == b.id;
+    }
+
+    public static bool operator !=(Entity a, Entity b)
+    {
+        return !(a == b);
+    }
 }

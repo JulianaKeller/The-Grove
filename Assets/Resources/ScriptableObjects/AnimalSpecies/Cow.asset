@@ -10,21 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c870713db7414e45a5a19055933bc8e, type: 3}
-  m_Name: Wolf
+  m_Name: Cow
   m_EditorClassIdentifier: 
-  speciesName: Wolf
+  speciesName: Cow
   prefabs:
-  - {fileID: 1468635677983306922, guid: 4db5f6330bad9474f8d3810220dff2fc, type: 3}
+  - {fileID: 6464630266782404258, guid: 3eb60d6d52671c1458b3bbbae71861f4, type: 3}
   colorVariants: []
-  dominance: 1
+  baseDominance: 1
+  dominanceVariation: 1
   walkingSpeed: 1
-  runningSpeed: 1
+  runningSpeed: 2
   stamina: 10
-  power: 10
-  defense: 10
+  power: 1
+  defense: 1
   maxHP: 100
   aggression: 1
-  awarenessRange: 10
+  awarenessRange: 5
   stealth: 1
   energyDepletionRate: 1
   hpRecoveryRate: 1
@@ -33,8 +34,8 @@ MonoBehaviour:
   thirstRate: 1
   waterNeed: 1
   lifespan: 300
-  lifespanVariation: 0.69
+  lifespanVariation: 0.446
   isCarnivore: 0
-  isHerbivore: 0
+  isHerbivore: 1
   ediblePlants: []
   edibleAnimals: []

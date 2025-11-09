@@ -2,6 +2,7 @@ using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
@@ -118,18 +119,19 @@ public class WorldManager : MonoBehaviour
         return GetNearbyEntities(pos, range, true, true, false);
     }
 
-    public List<Entity> GetNearbyAnimals(Vector3 pos, int range)
+    public List<Animal> GetNearbyAnimals(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, true, false, false);
+        return GetNearbyEntities(pos, range, true, false, false).Cast<Animal>().ToList();
     }
 
-    public List<Entity> GetNearbyPlants(Vector3 pos, int range)
+    public List<Plant> GetNearbyPlants(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, false, true, false);
+        return GetNearbyEntities(pos, range, false, true, false).Cast<Plant>().ToList();
     }
 
-    public List<Entity> GetNearbyPredators(Vector3 pos, int range)
+    public List<Animal> GetNearbyPredators(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, true, false, false);
+        //ToDo use fearedAnimals list
+        return GetNearbyEntities(pos, range, true, false, false).Cast<Animal>().ToList();
     }
 }

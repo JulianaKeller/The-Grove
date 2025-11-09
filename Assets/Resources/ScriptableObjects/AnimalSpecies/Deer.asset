@@ -10,21 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c870713db7414e45a5a19055933bc8e, type: 3}
-  m_Name: Bull
+  m_Name: Deer
   m_EditorClassIdentifier: 
-  speciesName: Bull
+  speciesName: Deer
   prefabs:
-  - {fileID: 2926689348878480569, guid: 3cd0b9664a34027498e737bdf19c41e1, type: 3}
-  colorVariants: []
-  dominance: 1
+  - {fileID: 2519874481195740135, guid: 4fd5cefe8d1574d48b2b284ee891b95f, type: 3}
+  colorVariants:
+  - {r: 1, g: 1, b: 1, a: 0}
+  baseDominance: 1
+  dominanceVariation: 1
   walkingSpeed: 1
-  runningSpeed: 1
+  runningSpeed: 2
   stamina: 10
-  power: 10
-  defense: 10
+  power: 1
+  defense: 1
   maxHP: 100
   aggression: 1
-  awarenessRange: 10
+  awarenessRange: 5
   stealth: 1
   energyDepletionRate: 1
   hpRecoveryRate: 1
@@ -33,8 +35,8 @@ MonoBehaviour:
   thirstRate: 1
   waterNeed: 1
   lifespan: 300
-  lifespanVariation: 0.69
+  lifespanVariation: 0.446
   isCarnivore: 0
-  isHerbivore: 0
+  isHerbivore: 1
   ediblePlants: []
   edibleAnimals: []

@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c870713db7414e45a5a19055933bc8e, type: 3}
+  m_Name: Wolf
+  m_EditorClassIdentifier: 
+  speciesName: Wolf
+  prefabs:
+  - {fileID: 1468635677983306922, guid: 4db5f6330bad9474f8d3810220dff2fc, type: 3}
+  colorVariants: []
+  baseDominance: 3
+  dominanceVariation: 1
+  walkingSpeed: 1
+  runningSpeed: 2
+  stamina: 10
+  power: 1
+  defense: 1
+  maxHP: 100
+  aggression: 0.5
+  awarenessRange: 5
+  stealth: 1
+  energyDepletionRate: 1
+  hpRecoveryRate: 1
+  hungerRate: 1
+  foodNeed: 1
+  thirstRate: 1
+  waterNeed: 1
+  lifespan: 300
+  lifespanVariation: 0.446
+  isCarnivore: 1
+  isHerbivore: 0
+  ediblePlants: []
+  edibleAnimals:
+  - {fileID: 11400000, guid: 22cb8dbd0ceb43044b9b26791376721b, type: 2}
+  - {fileID: 11400000, guid: 27cffdd6eb26fec43968e7baf994663e, type: 2}
+  - {fileID: 11400000, guid: 4c30e71aea876ea439413d8bc2580a93, type: 2}
+  - {fileID: 11400000, guid: 80471db1ceeaa9b4fada8700fae1770e, type: 2}
+  - {fileID: 11400000, guid: f42584f51286a194bb3c05b2697cdb47, type: 2}
+  - {fileID: 11400000, guid: 13e2401461513444d97736bf11cc4f54, type: 2}

@@ -20,6 +20,16 @@ public class PlantView : MonoBehaviour
         interpolationFactor = Mathf.Clamp01(interpolationFactor);
     }
 
+    private Vector3 ClampScale(Vector3 scale)
+    {
+        float minScale = 0.01f;
+        float maxScale = 50f;
+        scale.x = Mathf.Clamp(scale.x, minScale, data.maxSize.x * maxScale);
+        scale.y = Mathf.Clamp(scale.y, minScale, data.maxSize.y * maxScale);
+        scale.z = Mathf.Clamp(scale.z, minScale, data.maxSize.z * maxScale);
+        return scale;
+    }
+
     public void ResetInterpolation()
     {
         interpolationFactor = 0f;

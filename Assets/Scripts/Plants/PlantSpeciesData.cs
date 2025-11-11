@@ -17,7 +17,8 @@ public class PlantSpeciesData : ScriptableObject
     public float lifespan;
     [Range(0f, 1f)]
     public float lifespanVariation = 0.1f;
-    public Vector3 maxSizeVariation;
+    public float growthRate;
+    public Vector2 maxSizeVariation;
     public float baseSpreadChance;
     public float spreadingRadius;
     public bool isEdible;

@@ -13,6 +13,7 @@ public class WanderState : AnimalState
 
     public override void Enter(Animal a) {
 
+
         targetPos = a.position + new Vector3(
                 Random.Range(-wanderRange, wanderRange), 0,
                 Random.Range(-wanderRange, wanderRange));
@@ -31,8 +32,6 @@ public class WanderState : AnimalState
 
         a.MoveTo(targetPos, timeStep);
         //Debug.Log($"{a.species.name} wandering. Timer: {currentWanderTimer:F2}, Distance: {Vector3.Distance(a.position, targetPos):F2}");
-
-        //-----Decision making-----
 
         if (currentWanderTimer <= 0f || Vector3.Distance(a.position, targetPos) < 0.1f)
         {

@@ -21,11 +21,12 @@ MonoBehaviour:
   waterNeed: 0.001
   waterCapacity: 10
   groundFertilityUsage: 0.001
-  minGroundFertility: 0.1
-  nutritionBaseValue: 2
+  minGroundFertility: 0
+  nutritionBaseValue: 1
   lifespan: 5000
   lifespanVariation: 0.226
-  maxSizeVariation: {x: 1, y: 1, z: 1}
+  growthRate: 0.1
+  maxSizeVariation: {x: 1, y: 2}
   baseSpreadChance: 0.5
-  spreadingRadius: 2e+14
+  spreadingRadius: 200000
   isEdible: 1

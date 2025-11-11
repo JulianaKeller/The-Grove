@@ -24,6 +24,8 @@ public class Animal : Entity
     public bool isFighting = false;
     public bool isSleeping = false;
     public bool isMating = false;
+    public bool isEating = false;
+    public bool isDrinking = false;
 
     private float decisionCooldown = 2f;
     private float timeSinceLastDecision = 0f;
@@ -78,6 +80,29 @@ public class Animal : Entity
             EnvironmentGrid.Instance.DeregisterAnimal(this);
             EnvironmentGrid.Instance.RegisterAnimal(this);
         }
+    }
+
+    public void ChangeState(AnimalState newState)
+    {
+        if (newState == currentState)
+        {
+            return;
+        }
+
+        isRunning = false;
+        isWalking = false;
+
+        // Sync the animal position with the visual position before changing states
+        if (view != null)
+        {
+            Vector3 interpolated = view.GetInterpolatedPosition();
+            prevPosition = interpolated;
+            position = interpolated;
+        }
+
+        currentState?.Exit(this);
+        currentState = newState;
+        currentState?.Enter(this);
     }
 
     private void BiologicalUpdates(float timeStep)
@@ -165,16 +190,47 @@ public class Animal : Entity
 
     public void MoveTo(Vector3 targetPos, float timeStep)
     {
-        float speed = (ShouldRun(timeStep) ? species.runningSpeed : species.walkingSpeed);
+        if (!IsValidVector(targetPos))
+        {
+            targetPos = position; //fallback to current position
+        }
 
-        Vector3 newPos = Vector3.MoveTowards(position, targetPos, speed * timeStep);
+        float maxX = EnvironmentGrid.Instance.gridCenter.x + EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+        float maxZ = EnvironmentGrid.Instance.gridCenter.z + EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+        float minX = EnvironmentGrid.Instance.gridCenter.x - EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+        float minZ = EnvironmentGrid.Instance.gridCenter.z - EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+
+        targetPos.x = Mathf.Clamp(targetPos.x, minX, maxX);
+        targetPos.z = Mathf.Clamp(targetPos.z, minZ, maxZ);
+
+        float speed = 0;
+
+        if (ShouldRun(timeStep))
+        {
+            speed = species.runningSpeed;
+            isRunning = true;
+        }
+        else
+        {
+            speed = species.walkingSpeed;
+            isWalking = true;
+        }
+
+            Vector3 newPos = Vector3.MoveTowards(position, targetPos, speed * timeStep);
         prevPosition = position;
         position = newPos;
 
         if (view != null)
             view.FaceTowards(newPos);
     }
-    
+
+    private bool IsValidVector(Vector3 v)
+    {
+        return !(float.IsNaN(v.x) || float.IsInfinity(v.x) ||
+                 float.IsNaN(v.y) || float.IsInfinity(v.y) ||
+                 float.IsNaN(v.z) || float.IsInfinity(v.z));
+    }
+
     public void EvaluateNeeds(float timeStep)
     {
         if(isFleeing || isFighting)
@@ -234,39 +290,41 @@ public class Animal : Entity
         {
             return;
         }
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isEating", false);
+        animator.SetBool("isDrinking", false);
+        animator.SetBool("isSleeping", false);
+        animator.SetBool("isFighting", false);
+
         if (isRunning)
         {
             animator.SetBool("isRunning", true);
-            animator.SetBool("isWalking", false);
         }
         else if (isWalking)
         {
-            animator.SetBool("isRunning", false);
             animator.SetBool("isWalking", true);
         }
-        else
+        else if (isSleeping)
         {
-            animator.SetBool("isRunning", false);
-            animator.SetBool("isWalking", false);
+            animator.SetBool("isSleeping", true);
         }
-    }
-
-    public void ChangeState(AnimalState newState)
-    {
-        isRunning = false;
-        isWalking = false;
-
-        // Sync the animal position with the visual position before changing states
-        if (view != null)
+        else if (isEating)
         {
-            Vector3 interpolated = view.GetInterpolatedPosition();
-            prevPosition = interpolated;
-            position = interpolated;
+            animator.SetBool("isEating", true);
         }
-
-        currentState?.Exit(this);
-        currentState = newState;
-        currentState?.Enter(this);
+        else if (isDrinking)
+        {
+            animator.SetBool("isDrinking", true);
+        }
+        else if (isFighting)
+        {
+            animator.SetBool("isFighting", true);
+        }
+        if(health <= 0)
+        {
+            animator.SetBool("isDead", true);
+        }
     }
 
     public Entity FindNearestFood()
@@ -302,6 +360,7 @@ public class Animal : Entity
                     }
                 }
             }
+            nearest = edible;
         }
         else if (species.isHerbivore)
         {
@@ -328,6 +387,7 @@ public class Animal : Entity
                     }
                 }
             }
+            nearest = edible;
         }
 
         return nearest;

@@ -14,7 +14,7 @@ public class AnimalView : MonoBehaviour
             interpolationFactor
         );
 
-        transform.position = interpolated;
+        transform.position = interpolated; //ToDo local or word space?
 
         // Update interpolation factor relative to simulation time step
         interpolationFactor += Time.deltaTime / WorldManager.Instance.timeStep / AnimalManager.Instance.updateSubsetCount;

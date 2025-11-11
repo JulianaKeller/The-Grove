@@ -44,6 +44,7 @@ public class PlantViewEditor : Editor
             EditorGUILayout.LabelField("Ground Fertility Usage", s.groundFertilityUsage.ToString("F1"));
             EditorGUILayout.LabelField("Minimum Ground Fertility", s.minGroundFertility.ToString("F1"));
             EditorGUILayout.LabelField("Maximum Size Variation", s.maxSizeVariation.ToString("F1"));
+            EditorGUILayout.LabelField("Growth Rate", s.growthRate.ToString("F1"));
             EditorGUILayout.LabelField("Nutrition Base Value", s.nutritionBaseValue.ToString("F1"));
             EditorGUILayout.LabelField("Spread Chance", s.baseSpreadChance.ToString("F1"));
             EditorGUILayout.LabelField("Is Edible", s.isEdible.ToString());

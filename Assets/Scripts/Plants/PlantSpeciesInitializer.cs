@@ -10,6 +10,15 @@ public class PlantSpeciesInitializer
         foreach (var s in allSpecies)
         {
            s.spreadingRadius = EnvironmentGrid.Instance.cellSize * s.spreadingRadius;
+
+            if (s.maxSizeVariation.x <= 0)
+            {
+                s.maxSizeVariation.x = 1f;
+            }
+            if (s.maxSizeVariation.y <= 0)
+            {
+                s.maxSizeVariation.y = 1f;
+            }
         }
 
         Debug.Log($"Initialized fear relationships for {allSpecies.Length} animal species.");

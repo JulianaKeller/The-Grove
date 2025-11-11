@@ -52,9 +52,9 @@ public class PlantManager : MonoBehaviour
             PlantView view = obj.GetComponent<PlantView>();
 
             data.maxSize = original.transform.localScale;
-            float variation = Random.Range(-species.maxSizeVariation.x, species.maxSizeVariation.x);
-
-            data.maxSize = data.maxSize + new Vector3(variation, variation, variation);
+            float variation = Random.Range(species.maxSizeVariation.x, species.maxSizeVariation.y);
+            data.maxSize = data.maxSize * variation;
+            data.maxSize.x = Mathf.Clamp(data.maxSize.x, 0f, 500f);
 
             view.data = data;
             data.view = view;

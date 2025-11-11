@@ -38,6 +38,12 @@ public class AnimalViewEditor : Editor
             EditorGUI.ProgressBar(EditorGUILayout.GetControlRect(), a.matingDrive / 100f, $"{a.matingDrive:F1}/100");
             EditorGUILayout.LabelField("Is Running", a.isRunning.ToString());
             EditorGUILayout.LabelField("Is Walking", a.isWalking.ToString());
+            EditorGUILayout.LabelField("Is Eating", a.isEating.ToString());
+            EditorGUILayout.LabelField("Is Drinking", a.isDrinking.ToString());
+            EditorGUILayout.LabelField("Is Sleeping", a.isSleeping.ToString());
+            EditorGUILayout.LabelField("Is Mating", a.isMating.ToString());
+            EditorGUILayout.LabelField("Is Fighting", a.isFighting.ToString());
+            EditorGUILayout.LabelField("Is Fleeing", a.isFleeing.ToString());
             EditorGUILayout.LabelField("Is Female", a.isFemale.ToString());
 
             EditorGUILayout.Space();

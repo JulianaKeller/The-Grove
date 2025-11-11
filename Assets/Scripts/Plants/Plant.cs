@@ -85,13 +85,16 @@ public class Plant : Entity
 
             //---Age-based values---
 
-            float growthSharpness = 2f; // higher = faster early growth, flatter later
-            float growthFactor = 1f - Mathf.Exp(-growthSharpness * ageFactor);
+            /*float growthFactor = 1f / (1f + Mathf.Exp(-10f * (normalizedAge - 0.5f))); 
+            float remaining = 1f - (size.x / species.maxSize.x);
+            float growth = species.growthRate * growthFactor * remaining * timeStep;
+            */
 
-            size = maxSize * growthFactor;
-
-            //float growth = species.growthRate * timeStep;
-            //size += Vector3.one * growth; //ToDo Use a more natural, nonlinear growth pattern
+            float growth = species.growthRate * timeStep;
+            size += Vector3.one * growth; //ToDo Use a more natural, nonlinear growth pattern based on plant age
+            size.x = Mathf.Clamp(size.x, 0, maxSize.x);
+            size.y = Mathf.Clamp(size.y, 0, maxSize.y);
+            size.z = Mathf.Clamp(size.z, 0, maxSize.z);
 
             // Nutrition follows a bell curve (max in middle age)
             float peakAge = 0.5f;

@@ -32,8 +32,8 @@ public class PlantViewEditor : Editor
             EditorGUILayout.LabelField("Maximum Size", p.maxSize.ToString());
             EditorGUILayout.LabelField("Size Y");
             EditorGUI.ProgressBar(EditorGUILayout.GetControlRect(), p.size.y / p.maxSize.y, $"{p.size.y:F1}/{p.maxSize.y}");
-            EditorGUILayout.LabelField("Current Cell Fertility", p.currentFertility.ToString("F1"));
-            EditorGUILayout.LabelField("Current Cell Moisture", p.currentMoisture.ToString("F1"));
+            EditorGUILayout.LabelField("Current Cell Fertility", p.currentFertility.ToString("F3"));
+            EditorGUILayout.LabelField("Current Cell Moisture", p.currentMoisture.ToString("F3"));
             EditorGUILayout.LabelField("Can Grow", p.canGrow.ToString());
 
             EditorGUILayout.Space();

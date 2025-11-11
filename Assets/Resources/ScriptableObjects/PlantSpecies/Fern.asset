@@ -17,15 +17,15 @@ MonoBehaviour:
   - {fileID: 7899497194966569234, guid: f8ef3f98a12a40d4794fde24bc84cea6, type: 3}
   colorVariants: []
   maxHP: 100
-  waterNeed: 0.001
-  waterCapacity: 10
-  groundFertilityUsage: 0.001
+  waterNeed: 0.1
+  waterCapacity: 100
+  groundFertilityUsage: 0.1
   minGroundFertility: 0
   nutritionBaseValue: 1
-  lifespan: 5000
+  lifespan: 300
   lifespanVariation: 0.226
   growthRate: 0.1
   maxSizeVariation: {x: 1, y: 2}
   baseSpreadChance: 0.5
-  spreadingRadius: 200000
+  spreadingRadius: 2e+17
   isEdible: 1

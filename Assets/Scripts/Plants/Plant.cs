@@ -37,7 +37,7 @@ public class Plant : Entity
         size = new Vector3(0,0,0);
         prevSize = new Vector3(0, 0, 0);
         health = 100;
-        waterMeter = 0f;
+        waterMeter = species.waterCapacity;
         spreadChance = 0f;
         nutritionValue = 0f;
 
@@ -53,18 +53,23 @@ public class Plant : Entity
         currentFertility = cell.fertility;
         currentMoisture = cell.moisture;
 
+        float maturity = Mathf.Clamp01(age / species.lifespan);
+
         //---Environmental checks---
         canGrow = true;
         prevSize = size;
 
-        waterMeter -= species.waterNeed * timeStep;
+        waterMeter -= species.waterNeed * timeStep * maturity;
 
-        float refill = 2f * species.waterNeed * timeStep;
+        //cell.fertility -= species.groundFertilityUsage * timeStep; //done in EnvironmentGrid currently
+        //cell.fertility = Mathf.Max(0, cell.fertility);
+
+        float refill = 2f * species.waterNeed * timeStep * maturity;
 
         if (currentMoisture > refill && waterMeter < species.waterCapacity)
         {
             waterMeter = Mathf.Min(waterMeter + refill, species.waterCapacity);
-            cell.moisture -= refill;
+            cell.moisture = Mathf.Max(0, cell.moisture - refill);
         }
 
         if (currentFertility < species.minGroundFertility || waterMeter <= 0f)

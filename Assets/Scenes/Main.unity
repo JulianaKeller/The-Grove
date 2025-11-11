@@ -737,7 +737,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 14fb4dd31c38a554fbc50221ea4511ed, type: 2}
   - {fileID: 11400000, guid: 38ba5a92ea7d2384abc61dae81d6b406, type: 2}
   - {fileID: 11400000, guid: 6aaff5cd5083fdb42bb2484874c0b54d, type: 2}
-  initialSpawnAmount: 100
+  initialSpawnAmount: 1
 --- !u!114 &415286988
 MonoBehaviour:
   m_ObjectHideFlags: 0

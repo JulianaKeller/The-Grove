@@ -35,7 +35,7 @@ public class EnvironmentGrid
 
     [Header("Regeneration/usage constants")]
     public float fertilityRegenRate = 0.05f;  // fertility gained per update
-    public float moistureLossRate = 0.001f;   // moisture gained per update
+    public float moistureLossRate = 0.0001f;   // moisture gained per update
     public float minFertility = 0f;
     public float maxFertility = 1f;
     public float minMoisture = 0f;
@@ -172,7 +172,7 @@ public class EnvironmentGrid
                     float maturity = Mathf.Clamp01(p.age / p.species.lifespan);
 
                     fertilityLoss += p.species.groundFertilityUsage * maturity;
-                    moistureLoss += p.species.waterNeed * maturity;
+                    //moistureLoss += p.species.waterNeed * maturity; //done in Plant
                 }
 
                 // fertility decreases due to plants
@@ -181,11 +181,8 @@ public class EnvironmentGrid
                     minFertility, maxFertility
                 );
 
-                // moisture decreases due to plants
-                cell.moisture = Mathf.Clamp(
-                    cell.moisture - moistureLoss,
-                    minMoisture, maxMoisture
-                );
+                // moisture decreases due to plants - done in Plant
+                //cell.moisture = Mathf.Clamp(cell.moisture - moistureLoss, minMoisture, maxMoisture);
 
                 // natural moisture loss
                 cell.moisture = Mathf.Clamp(cell.moisture - moistureLossRate, minMoisture, maxMoisture);

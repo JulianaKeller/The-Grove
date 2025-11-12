@@ -29,5 +29,5 @@ MonoBehaviour:
   growthRate: 0.1
   maxSizeVariation: {x: 1, y: 2}
   baseSpreadChance: 0.5
-  spreadingRadius: 2e+16
+  spreadingRadius: 20
   isEdible: 0

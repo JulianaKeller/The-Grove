@@ -63,8 +63,6 @@ public class Animal : Entity
     {
         BiologicalUpdates(timeStep);
 
-        updateAnimations();
-
         UpdateHealth(timeStep);
 
         EvaluateNeeds(timeStep);
@@ -72,6 +70,8 @@ public class Animal : Entity
         PerceptionCheck();
 
         currentState?.Execute(this, timeStep);
+
+        updateAnimations();
 
         //-----Update Grid-----
 

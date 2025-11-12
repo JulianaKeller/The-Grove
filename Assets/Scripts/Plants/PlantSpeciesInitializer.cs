@@ -9,7 +9,7 @@ public class PlantSpeciesInitializer
 
         foreach (var s in allSpecies)
         {
-           s.spreadingRadius = EnvironmentGrid.Instance.cellSize * s.spreadingRadius;
+           //s.spreadingRadius = EnvironmentGrid.Instance.cellSize * s.spreadingRadius;
 
             if (s.maxSizeVariation.x <= 0)
             {

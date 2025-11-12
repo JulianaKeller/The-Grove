@@ -34,7 +34,7 @@ public class EnvironmentGrid
     public GridCell[,] grid;
 
     [Header("Regeneration/usage constants")]
-    public float fertilityRegenRate = 0.05f;  // fertility gained per update
+    public float fertilityRegenRate = 0.005f;  // fertility gained per update
     public float moistureLossRate = 0.0001f;   // moisture gained per update
     public float minFertility = 0f;
     public float maxFertility = 1f;

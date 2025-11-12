@@ -47,6 +47,7 @@ public class PlantViewEditor : Editor
             EditorGUILayout.LabelField("Growth Rate", s.growthRate.ToString("F1"));
             EditorGUILayout.LabelField("Nutrition Base Value", s.nutritionBaseValue.ToString("F1"));
             EditorGUILayout.LabelField("Spread Chance", s.baseSpreadChance.ToString("F1"));
+            EditorGUILayout.LabelField("Spread Radius", s.spreadingRadius.ToString("F2"));
             EditorGUILayout.LabelField("Is Edible", s.isEdible.ToString());
         }
     }

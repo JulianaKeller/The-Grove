@@ -12,6 +12,7 @@ public class Plant : Entity
     public Vector3 size;
     public Vector3 prevSize;
     public Vector3 maxSize;
+    public Vector3 minSize = new Vector3(0.01f, 0.01f, 0.01f);
     public float health;
     public float speciesLifespan;
     public float waterMeter;
@@ -34,8 +35,8 @@ public class Plant : Entity
         this.speciesLifespan = randomizedLifespan;
 
         age = 0;
-        size = new Vector3(0,0,0);
-        prevSize = new Vector3(0, 0, 0);
+        size = minSize;
+        prevSize = minSize;
         health = 100;
         waterMeter = species.waterCapacity;
         spreadChance = 0f;
@@ -97,9 +98,9 @@ public class Plant : Entity
 
             float growth = species.growthRate * timeStep;
             size += Vector3.one * growth; //ToDo Use a more natural, nonlinear growth pattern based on plant age
-            size.x = Mathf.Clamp(size.x, 0, maxSize.x);
-            size.y = Mathf.Clamp(size.y, 0, maxSize.y);
-            size.z = Mathf.Clamp(size.z, 0, maxSize.z);
+            size.x = Mathf.Clamp(size.x, 0.01f, maxSize.x);
+            size.y = Mathf.Clamp(size.y, 0.01f, maxSize.y);
+            size.z = Mathf.Clamp(size.z, 0.01f, maxSize.z);
 
             // Nutrition follows a bell curve (max in middle age)
             float peakAge = 0.5f;

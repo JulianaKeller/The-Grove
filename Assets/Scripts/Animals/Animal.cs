@@ -5,12 +5,11 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class Animal : Entity
 {
-    public AnimalSpeciesData species;
+    public new AnimalSpeciesData species;
     public AnimalState currentState;
     public Vector3 prevPosition;
     public float hunger, thirst, energy, matingDrive; //max 100, min 0
-    public float age, stamina, health; //current values of the maximums in AnimalSpeciesData
-    public float speciesLifespan; //max age
+    public float stamina; //current values of the maximums in AnimalSpeciesData
     public int dominance;
     public Entity target;
     public AnimalView view;
@@ -32,18 +31,16 @@ public class Animal : Entity
 
     public Animator animator;
 
-    public Animal(AnimalSpeciesData species, Vector3 position, int Id)
+    public Animal(AnimalSpeciesData species, Vector3 position, int Id) : base(species)
     {
         base.id = Id;
+        base.isAnimal = true;
         base.position = position;
         prevPosition = position;
         this.species = species;
         currentState = new IdleState();
 
-        //Random lifespan
-        float variation = species.lifespanVariation * species.lifespan;
-        float randomizedLifespan = species.lifespan + Random.Range(-variation, variation);
-        this.speciesLifespan = randomizedLifespan;
+        base.setLifespan();
 
         dominance = species.baseDominance + Random.Range(-species.dominanceVariation, species.dominanceVariation);
 
@@ -51,34 +48,46 @@ public class Animal : Entity
         thirst = 0;
         energy = 100;
         matingDrive = 0;
-        age = 0;
         stamina = species.stamina;
         health = species.maxHP;
         isFemale = Random.value >= 0.5f;
-
-        Debug.Log($"{species.speciesName} created with lifespan {speciesLifespan:F1}.");
     }
 
     public void UpdateAI(float timeStep)
     {
-        BiologicalUpdates(timeStep);
-
-        UpdateHealth(timeStep);
-
-        EvaluateNeeds(timeStep);
-
-        PerceptionCheck();
-
-        currentState?.Execute(this, timeStep);
-
-        updateAnimations();
-
-        //-----Update Grid-----
-
-        if ((int)(prevPosition.x) != (int)(position.x) || (int)(prevPosition.z) != (int)(position.z))
+        if (isAlive)
         {
-            EnvironmentGrid.Instance.DeregisterAnimal(this);
-            EnvironmentGrid.Instance.RegisterAnimal(this);
+            BiologicalUpdates(timeStep);
+
+            UpdateHealth(timeStep);
+
+            if (isAlive) //Check again if still alive
+            {
+                EvaluateNeeds(timeStep);
+
+                PerceptionCheck();
+
+                currentState?.Execute(this, timeStep);
+
+                updateAnimations();
+
+                //-----Update Grid-----
+
+                if ((int)(prevPosition.x) != (int)(position.x) || (int)(prevPosition.z) != (int)(position.z))
+                {
+                    EnvironmentGrid.Instance.DeregisterAnimal(this);
+                    EnvironmentGrid.Instance.RegisterAnimal(this);
+                }
+            }
+        }
+        else
+        {
+            nutritionValue -= 0.2f * timeStep;
+                
+            if(nutritionValue <= 0)
+            {
+                AnimalManager.Instance.RemoveAnimal(this);
+            }
         }
     }
 
@@ -133,7 +142,7 @@ public class Animal : Entity
     {
         if (hunger >= 100f || thirst >= 100f || energy <= 0)
         {
-            health -= timeStep;
+            health = Mathf.Max(0, health - timeStep);
         }
         else
         {
@@ -173,19 +182,48 @@ public class Animal : Entity
 
     public void FightOrFlight(Animal enemy)
     {
-        //ToDo health should be an influence
-        if(dominance > enemy.dominance && species.aggression > 0.4f) //ToDo add some randomness/probability calculations, closeness to enemy should be an influence
+        float healthFactor = Mathf.Clamp01(health / species.maxHP);
+        float hungerFactor = Mathf.Clamp01(hunger / 100);
+        bool canEatEnemy = false;
+
+        if (species.isCarnivore)
         {
-            ChangeState(new FightState());
+            // check if enemy is edible (same logic as your FindNearestFood)
+            if (species.edibleAnimals != null && species.edibleAnimals.Length > 0)
+            {
+                foreach (var allowed in species.edibleAnimals)
+                {
+                    if (enemy.species == allowed)
+                    {
+                        canEatEnemy = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                if (enemy.dominance < dominance)
+                    canEatEnemy = true;
+            }
         }
-        else if(species.aggression > 0.6f)
+
+        if (!canEatEnemy)
         {
-            ChangeState(new FightState());
+            hunger = 0;
         }
+
+        float fightScore = 0f;
+
+        fightScore += species.aggression * 0.3f;
+        fightScore += healthFactor * 0.3f;
+        fightScore += hungerFactor * 0.3f;
+        if (dominance > enemy.dominance)
+            fightScore += 0.3f;
+
+        if (fightScore >= 0.5f)
+            ChangeState(new FightState());
         else
-        {
             ChangeState(new FleeState());
-        }
     }
 
     public void MoveTo(Vector3 targetPos, float timeStep)
@@ -349,7 +387,9 @@ public class Animal : Entity
                         {
                             if (prey.species == allowed)
                             {
-                                edible = (Animal) ClosestEntity(edible, prey);
+                                //ToDo take into account if larger nutrition value and lower dominance & health than current edible
+                                
+                                edible = (Animal) ClosestEntity(edible, prey); //ToDo prefer also already dead animals over alive ones
                             }
                         }
                     }
@@ -450,7 +490,13 @@ public class Animal : Entity
     public override void Die()
     {
         base.Die();
-        AnimalManager.Instance.RemoveAnimal(this); //removes animal and view from lists and destroys gameobject
+
+        currentState = null;
+        StopBehaviors();
+
+        GetNutritionValue();
+
+        //AnimalManager.Instance.RemoveAnimal(this); //removes animal and view from lists and destroys gameobject
     }
 
     public bool ShouldRun(float timeStep)
@@ -460,5 +506,26 @@ public class Animal : Entity
                 ((isFleeing) ||
                 ((hunger < timeStep * species.hungerRate) &&
                 (energy > species.energyDepletionRate * timeStep)));
+    }
+
+    private void StopBehaviors()
+    {
+        isRunning = false;
+        isWalking = false;
+        isFleeing = false;
+        isFighting = false;
+        isSleeping = false;
+        isMating = false;
+        isEating = false;
+        isDrinking = false;
+
+        animator.SetBool("isRunning", false);
+        animator.SetBool("isWalking", false);
+        animator.SetBool("isEating", false);
+        animator.SetBool("isDrinking", false);
+        animator.SetBool("isSleeping", false);
+        animator.SetBool("isMating", false);
+        animator.SetBool("isFighting", false);
+        animator.SetBool("isFleeing", false);
     }
 }

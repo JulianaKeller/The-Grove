@@ -7,42 +7,32 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class Plant : Entity
 {
-    public PlantSpeciesData species;
-    public float age;
+    public new PlantSpeciesData species;
     public Vector3 size;
     public Vector3 prevSize;
     public Vector3 maxSize;
     public Vector3 minSize = new Vector3(0.01f, 0.01f, 0.01f);
-    public float health;
-    public float speciesLifespan;
     public float waterMeter;
     public float spreadChance;
-    public float nutritionValue;
     public bool canGrow;
     public float currentMoisture;
     public float currentFertility;
 
     public PlantView view;
 
-    public Plant(PlantSpeciesData species, Vector3 position, int Id)
+    public Plant(PlantSpeciesData species, Vector3 position, int Id) : base(species)
     {
         base.id = Id;
+        base.isAnimal = false;
         base.position = position;
         this.species = species;
 
-        float variation = species.lifespanVariation * species.lifespan;
-        float randomizedLifespan = species.lifespan + Random.Range(-variation, variation);
-        this.speciesLifespan = randomizedLifespan;
+        base.setLifespan();
 
-        age = 0;
         size = minSize;
         prevSize = minSize;
-        health = 100;
         waterMeter = species.waterCapacity;
         spreadChance = 0f;
-        nutritionValue = 0f;
-
-        Debug.Log("Animal created.");
     }
 
     public void UpdatePlant(float timeStep)
@@ -61,9 +51,6 @@ public class Plant : Entity
         prevSize = size;
 
         waterMeter -= species.waterNeed * timeStep * maturity;
-
-        //cell.fertility -= species.groundFertilityUsage * timeStep; //done in EnvironmentGrid currently
-        //cell.fertility = Mathf.Max(0, cell.fertility);
 
         float refill = 2f * species.waterNeed * timeStep * maturity;
 
@@ -91,24 +78,11 @@ public class Plant : Entity
 
             //---Age-based values---
 
-            /*float growthFactor = 1f / (1f + Mathf.Exp(-10f * (normalizedAge - 0.5f))); 
-            float remaining = 1f - (size.x / species.maxSize.x);
-            float growth = species.growthRate * growthFactor * remaining * timeStep;
-            */
-
             float growth = species.growthRate * timeStep;
             size += Vector3.one * growth; //ToDo Use a more natural, nonlinear growth pattern based on plant age
             size.x = Mathf.Clamp(size.x, 0.01f, maxSize.x);
             size.y = Mathf.Clamp(size.y, 0.01f, maxSize.y);
             size.z = Mathf.Clamp(size.z, 0.01f, maxSize.z);
-
-            // Nutrition follows a bell curve (max in middle age)
-            float peakAge = 0.5f;
-            //width = how sharp or round the peak is
-            float width = Mathf.Lerp(0.1f, 0.4f, Mathf.Clamp01(speciesLifespan / 100f)); // short-lived plants -> narrower curve, long-lived -> wider
-            float gaussian = Mathf.Exp(-Mathf.Pow((ageFactor - peakAge) / width, 2)); //gaussian is simplified normal distribution
-
-            nutritionValue = species.nutritionBaseValue * (0.5f + gaussian);
 
             spreadChance = species.baseSpreadChance * Mathf.Clamp01(ageFactor);
 
@@ -118,7 +92,7 @@ public class Plant : Entity
             }
         }
 
-        if (age > speciesLifespan || health <= 0)
+        if (age > speciesLifespan || health <= 0 || nutritionValue <= 0)
         {
             Die();
             Debug.Log(species.name + " died.");

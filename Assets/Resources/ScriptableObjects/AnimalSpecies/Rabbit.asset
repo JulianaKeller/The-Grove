@@ -19,6 +19,9 @@ MonoBehaviour:
   - {r: 0.3584906, g: 0.13959038, b: 0, a: 0}
   - {r: 0.9622642, g: 0.9128509, b: 0.8079387, a: 0}
   - {r: 0.66666657, g: 0.66666657, b: 0.66666657, a: 0}
+  lifespan: 300
+  lifespanVariation: 0.446
+  nutritionBaseValue: 1
   baseDominance: 1
   dominanceVariation: 1
   walkingSpeed: 1
@@ -36,8 +39,6 @@ MonoBehaviour:
   foodNeed: 1
   thirstRate: 1
   waterNeed: 1
-  lifespan: 300
-  lifespanVariation: 0.446
   isCarnivore: 0
   isHerbivore: 1
   ediblePlants: []

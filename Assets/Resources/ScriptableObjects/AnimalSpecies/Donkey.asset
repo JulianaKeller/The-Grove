@@ -16,6 +16,9 @@ MonoBehaviour:
   prefabs:
   - {fileID: 262573274087167166, guid: ebcd7ee1edd961b449321e51d711a463, type: 3}
   colorVariants: []
+  lifespan: 300
+  lifespanVariation: 0.446
+  nutritionBaseValue: 1
   baseDominance: 1
   dominanceVariation: 1
   walkingSpeed: 1
@@ -33,8 +36,6 @@ MonoBehaviour:
   foodNeed: 1
   thirstRate: 1
   waterNeed: 1
-  lifespan: 300
-  lifespanVariation: 0.446
   isCarnivore: 0
   isHerbivore: 1
   ediblePlants: []

@@ -13,27 +13,27 @@ public class EatState : AnimalState
 
     public override void Enter(Animal a) {
         a.isEating = true;
-        eatTimer = Random.Range(2f, 4f);
         Debug.Log(a.species.name + " is now eating.");
     }
     public override void Execute(Animal a, float timeStep) {
-        if (targetFood == null)
+        if (targetFood == null || targetFood.GetNutritionValue() <= 0 * timeStep) //ToDo bite size
         {
             a.ChangeState(new WanderState());
             return;
         }
 
-        eatTimer -= timeStep;
-        a.hunger -= 0.2f * timeStep;
+        targetFood.isBeingEaten = true; //ToDo bite size
+        targetFood.BeEaten(timeStep);
 
-        if (eatTimer <= 0f || a.hunger <= 0.2f)
+        a.hunger = Mathf.Max(0, a.hunger - 0.2f * timeStep);
+
+        if (a.hunger <= 0f)
         {
-            //PlantManager.Instance.ConsumePlant(targetFood);
             a.ChangeState(new IdleState());
         }
-        //ToDo introduce nutrition parameter in plants, size should influence eatTimer, plant should be smaller but not disappear if not eaten completely
     }
     public override void Exit(Animal a) {
         a.isEating = false;
+        targetFood.isBeingEaten = false;
     }
 }

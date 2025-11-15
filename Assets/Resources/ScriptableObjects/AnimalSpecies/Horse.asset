@@ -17,6 +17,9 @@ MonoBehaviour:
   - {fileID: 1378763495059668493, guid: 405492dda85b57c4696ed0f399f8893e, type: 3}
   - {fileID: 4528997070121481225, guid: ed3964366ea347f48be5382c9f577024, type: 3}
   colorVariants: []
+  lifespan: 300
+  lifespanVariation: 0.446
+  nutritionBaseValue: 1
   baseDominance: 5
   dominanceVariation: 1
   walkingSpeed: 1
@@ -34,8 +37,6 @@ MonoBehaviour:
   foodNeed: 1
   thirstRate: 1
   waterNeed: 1
-  lifespan: 300
-  lifespanVariation: 0.446
   isCarnivore: 0
   isHerbivore: 1
   ediblePlants: []

@@ -24,7 +24,8 @@ public class GroundFertilityTexture : MonoBehaviour
         fertilityTexture.wrapMode = TextureWrapMode.Clamp;
 
         UpdateTexture();
-        groundRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        //groundRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        groundRenderer.material = new Material(Shader.Find("Toon"));
         groundRenderer.material.mainTexture = fertilityTexture;
         groundRenderer.material.mainTextureScale = new Vector2(1,1);
         groundRenderer.material.color = Color.white;

@@ -6,7 +6,6 @@ public class SeekFoodState : AnimalState
 
     public override void Enter(Animal a) {
         targetFood = a.FindNearestFood();
-        Debug.Log(a.species.name + " is now seeking food.");
     }
 
     public override void Execute(Animal a, float timeStep) {
@@ -15,7 +14,6 @@ public class SeekFoodState : AnimalState
         {
             // If no food found, wander
             a.ChangeState(new WanderState());
-            Debug.Log("No food found. ");
             return;
         }
         else
@@ -27,8 +25,15 @@ public class SeekFoodState : AnimalState
 
         if (distance < 0.5f)
         {
-            //ToDo attack or eat
-            a.ChangeState(new EatState(targetFood));
+            if (targetFood.isAnimal && targetFood.isAlive)
+            {
+                a.ChangeState(new FightState());
+            }
+            else
+            {
+                a.ChangeState(new EatState(targetFood));
+            }
+            
             return;
         }
 

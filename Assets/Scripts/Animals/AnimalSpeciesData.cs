@@ -2,12 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewAnimalSpecies", menuName = "Species/AnimalSpecies")]
-public class AnimalSpeciesData : ScriptableObject
+public class AnimalSpeciesData : EntitySpeciesData
 {
-    public string speciesName;
-    public GameObject[] prefabs;
-    [Header("Visual Variation")]
-    public Color[] colorVariants;
     public int baseDominance; //indicates spot in the foodchain
     public int dominanceVariation;
     public float walkingSpeed;
@@ -15,7 +11,7 @@ public class AnimalSpeciesData : ScriptableObject
     public float stamina; //for how long an animal can run
     public float power; //attack strength
     public float defense; //how much damage from an attack/injury is dampened, 1 = full damage deflection
-    public float maxHP;
+    public float maxHP; //ToDo add some randomness
     public float aggression; //0-1, how likely the animal is to retaliate against attacks vs running away
     public int awarenessRange; //In cells
     public float stealth; //how likely the animal is to not be spotted
@@ -25,9 +21,6 @@ public class AnimalSpeciesData : ScriptableObject
     public float foodNeed; //1-100
     public float thirstRate;
     public float waterNeed; //1-100
-    public float lifespan;
-    [Range(0f, 1f)]
-    public float lifespanVariation = 0.1f;
     public bool isCarnivore;
     public bool isHerbivore;
 

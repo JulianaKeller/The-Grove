@@ -27,13 +27,12 @@ public class SeekFoodState : AnimalState
         {
             if (targetFood.isAnimal && targetFood.isAlive)
             {
-                a.ChangeState(new FightState());
+                a.ChangeState(new FightState(targetFood as Animal));
             }
             else
             {
                 a.ChangeState(new EatState(targetFood));
             }
-            
             return;
         }
 

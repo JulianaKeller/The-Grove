@@ -45,9 +45,14 @@ public class AnimalManager : MonoBehaviour
 
     public void SpawnAnimal(AnimalSpeciesData species, Vector3 pos)
     {
+        SpawnAnimal(species, pos, null);
+    }
+
+    public void SpawnAnimal(AnimalSpeciesData species, Vector3 pos, Animal mother)
+    {
         if (species.prefabs != null && species.prefabs.Length >= 1)
         {
-            Animal data = new Animal(species, pos, nextId++);
+            Animal data = new Animal(species, pos, nextId++, mother);
 
             GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length - 1)], pos, Quaternion.identity, spawnedAnimalsParent ? spawnedAnimalsParent.transform : null);
 

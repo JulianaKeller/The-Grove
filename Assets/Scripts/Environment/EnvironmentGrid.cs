@@ -12,6 +12,7 @@ public class EnvironmentGrid
         public float fertility; //0-1
         public List<Animal> animals;
         public List<Plant> plants;
+        public List<WaterSource> waterSources;
     }
 
     //This script stores environment data (moisture, temperature, vegetation density)
@@ -56,7 +57,8 @@ public class EnvironmentGrid
                     moisture = maxMoisture,
                     fertility = maxFertility,
                     animals = new List<Animal>(),
-                    plants = new List<Plant>()
+                    plants = new List<Plant>(),
+                    waterSources = new List<WaterSource>()
                 };
             }
         }
@@ -97,6 +99,18 @@ public class EnvironmentGrid
         grid[coords.x, coords.y].plants.Remove(p);
     }
 
+    public void RegisterWaterSource(WaterSource s)
+    {
+        var coords = GetCellCoords(s.position);
+        grid[coords.x, coords.y].waterSources.Add(s);
+    }
+
+    public void DeregisterWaterSource(WaterSource s)
+    {
+        var coords = GetCellCoords(s.position);
+        grid[coords.x, coords.y].waterSources.Remove(s);
+    }
+
     private string GetPath(string fileName)
     {
         return Path.Combine(Application.persistentDataPath, fileName);
@@ -112,6 +126,12 @@ public class EnvironmentGrid
     {
         string csv = ConvertGridToCsv(cell => cell.plants.Count.ToString());
         WriteCsv("Grid_Plants.csv", csv);
+    }
+
+    public void PrintGridWaterSources()
+    {
+        string csv = ConvertGridToCsv(cell => cell.waterSources.Count.ToString());
+        WriteCsv("Grid_Water_Sources.csv", csv);
     }
 
     public void PrintGridMoisture()
@@ -156,7 +176,7 @@ public class EnvironmentGrid
         return sb.ToString();
     }
 
-    public void UpdateGrid(float dt)
+    public void UpdateGrid(float timeStep)
     {
         for (int x = 0; x < gridSize; x++)
         {
@@ -164,15 +184,19 @@ public class EnvironmentGrid
             {
                 GridCell cell = grid[x, z];
 
+                foreach(WaterSource s in cell.waterSources)
+                {
+                    s.UpdateWaterSource(timeStep);
+                    ApplyWaterInfluence(s, x, z, timeStep);
+                }
+
                 float fertilityLoss = 0f;
-                float moistureLoss = 0f;
 
                 foreach (Plant p in cell.plants)
                 {
                     float maturity = Mathf.Clamp01(p.age / p.species.lifespan);
 
                     fertilityLoss += p.species.groundFertilityUsage * maturity;
-                    //moistureLoss += p.species.waterNeed * maturity; //done in Plant
                 }
 
                 // fertility decreases due to plants
@@ -182,13 +206,43 @@ public class EnvironmentGrid
                 );
 
                 // moisture decreases due to plants - done in Plant
-                //cell.moisture = Mathf.Clamp(cell.moisture - moistureLoss, minMoisture, maxMoisture);
 
                 // natural moisture loss
                 cell.moisture = Mathf.Clamp(cell.moisture - moistureLossRate, minMoisture, maxMoisture);
 
                 // natural fertility regeneration
                 cell.fertility = Mathf.Clamp(cell.fertility + fertilityRegenRate, minFertility, maxFertility);
+
+                grid[x, z] = cell;
+            }
+        }
+    }
+
+    private void ApplyWaterInfluence(WaterSource ws, int cellX, int cellZ, float timeStep) //x and z are the indices of the cell in which the water source is contained
+    {
+        Vector3 size = ws.view.currentScale;
+        float influenceX = size.x * 0.5f + ws.influenceRadius;
+        float influenceZ = size.z * 0.5f + ws.influenceRadius;
+
+        int cellsX = Mathf.CeilToInt(influenceX / cellSize);
+        int cellsZ = Mathf.CeilToInt(influenceZ / cellSize);
+
+        int startX = Mathf.Max(cellX - cellsX, 0);
+        int endX = Mathf.Min(cellX + cellsX, gridSize - 1);
+        int startZ = Mathf.Max(cellZ - cellsZ, 0);
+        int endZ = Mathf.Min(cellZ + cellsZ, gridSize - 1);
+
+        for (int x = startX; x <= endX; x++)
+        {
+            for (int z = startZ; z <= endZ; z++)
+            {
+                GridCell cell = grid[x, z];
+
+                float moistureBonus = ws.moistureBonus * timeStep * (ws.currentWater / ws.capacity);
+                float fertilityBonus = ws.fertilityBonus * timeStep * (ws.currentWater / ws.capacity);
+
+                cell.moisture = Mathf.Clamp(cell.moisture + moistureBonus, minMoisture, maxMoisture);
+                cell.fertility = Mathf.Clamp(cell.fertility + fertilityBonus, minFertility, maxFertility);
 
                 grid[x, z] = cell;
             }

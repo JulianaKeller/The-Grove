@@ -4,7 +4,6 @@ using static UnityEngine.GraphicsBuffer;
 public class EatState : AnimalState
 {
     private Entity targetFood;
-    private float eatTimer;
 
     public EatState(Entity targetFood)
     {

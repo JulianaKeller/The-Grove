@@ -27,7 +27,7 @@ public class WanderState : AnimalState
     }
 
     public override void Execute(Animal a, float timeStep) {
-
+        // A mother should stay close to the child if it's sleeping unless the other needs are over the threshold
         currentWanderTimer -= timeStep;
 
         a.MoveTo(targetPos, timeStep);

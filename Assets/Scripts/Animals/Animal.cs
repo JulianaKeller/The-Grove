@@ -14,7 +14,7 @@ public class Animal : Entity
     public Entity target;
     public AnimalView view;
     public Animal mother;
-    //public Animal[] herd; //better way to save?
+    //public Herd herd; //ToDo implement Herd
     public bool isFemale = true;
 
     public bool isRunning = false;
@@ -28,19 +28,22 @@ public class Animal : Entity
 
     private float decisionCooldown = 2f;
     private float timeSinceLastDecision = 0f;
+    private float followThresholdAge;
 
     public Animator animator;
 
-    public Animal(AnimalSpeciesData species, Vector3 position, int Id) : base(species)
+    public Animal(AnimalSpeciesData species, Vector3 position, int Id, Animal mother) : base(species)
     {
         base.id = Id;
         base.isAnimal = true;
         base.position = position;
         prevPosition = position;
         this.species = species;
+        this.mother = mother;
         currentState = new IdleState();
 
         base.setLifespan();
+        followThresholdAge = speciesLifespan * 0.25f;
 
         dominance = species.baseDominance + Random.Range(-species.dominanceVariation, species.dominanceVariation);
 
@@ -134,7 +137,7 @@ public class Animal : Entity
         else
         {
             stamina = Mathf.Min(species.stamina, stamina + timeStep);
-            energy = Mathf.Min(100f, energy + species.energyDepletionRate * 0.1f * timeStep);
+            energy = Mathf.Max(0f, energy - species.energyDepletionRate * 0.1f * timeStep);
         }
     }
 
@@ -159,6 +162,8 @@ public class Animal : Entity
 
     public void PerceptionCheck()
     {
+        //ToDo Is this efficient enough?
+
         Animal nearestThreat = ClosestEntity(GetNearbyThreats()) as Animal;
 
         if (nearestThreat == null)
@@ -221,9 +226,9 @@ public class Animal : Entity
             fightScore += 0.3f;
 
         if (fightScore >= 0.5f)
-            ChangeState(new FightState());
+            ChangeState(new FightState(enemy));
         else
-            ChangeState(new FleeState());
+            ChangeState(new FleeState(enemy));
     }
 
     public void MoveTo(Vector3 targetPos, float timeStep)
@@ -258,6 +263,11 @@ public class Animal : Entity
         prevPosition = position;
         position = newPos;
 
+        FaceTowards(newPos);
+    }
+
+    public void FaceTowards(Vector3 newPos)
+    {
         if (view != null)
             view.FaceTowards(newPos);
     }
@@ -271,9 +281,27 @@ public class Animal : Entity
 
     public void EvaluateNeeds(float timeStep)
     {
-        if(isFleeing || isFighting)
+        if(isFleeing || isFighting || isMating) //finish these states before switching according to needs
         {
             return;
+        }
+
+        if (age > followThresholdAge && mother != null && mother.isAlive)
+        {
+            float followDistance = 6f; // preferred max distance from mother
+
+            float dist = Vector3.Distance(position, mother.position);
+            if (dist > followDistance)
+            {
+                float followProbability = (dist - followDistance) * 0.1f;
+                followProbability = Mathf.Clamp01(followProbability);
+
+                if (Random.value < followProbability)
+                {
+                    ChangeState(new FollowState(mother));
+                    return;
+                }
+            }
         }
 
         timeSinceLastDecision += timeStep;
@@ -311,14 +339,17 @@ public class Animal : Entity
             return;
         }
 
-        // Mate seeking
-        float matingThreshold = 50f + Random.Range(-10f, 10f);
-        //float matingProbability = Mathf.InverseLerp(matingThreshold, 100f, matingDrive);
-
-        if (matingDrive > matingThreshold)
+        if(age > followThresholdAge)
         {
-            ChangeState(new SeekMateState());
-            return;
+            // Mate seeking
+            float matingThreshold = 50f + Random.Range(-10f, 10f);
+            //float matingProbability = Mathf.InverseLerp(matingThreshold, 100f, matingDrive);
+
+            if (matingDrive > matingThreshold)
+            {
+                ChangeState(new SeekMateState());
+                return;
+            }
         }
     }
 
@@ -328,37 +359,14 @@ public class Animal : Entity
         {
             return;
         }
-        animator.SetBool("isRunning", false);
-        animator.SetBool("isWalking", false);
-        animator.SetBool("isEating", false);
-        animator.SetBool("isDrinking", false);
-        animator.SetBool("isSleeping", false);
-        animator.SetBool("isFighting", false);
 
-        if (isRunning)
-        {
-            animator.SetBool("isRunning", true);
-        }
-        else if (isWalking)
-        {
-            animator.SetBool("isWalking", true);
-        }
-        else if (isSleeping)
-        {
-            animator.SetBool("isSleeping", true);
-        }
-        else if (isEating)
-        {
-            animator.SetBool("isEating", true);
-        }
-        else if (isDrinking)
-        {
-            animator.SetBool("isDrinking", true);
-        }
-        else if (isFighting)
-        {
-            animator.SetBool("isFighting", true);
-        }
+        animator.SetBool("isRunning", isRunning);
+        animator.SetBool("isWalking", isWalking);
+        animator.SetBool("isEating", isEating);
+        animator.SetBool("isDrinking", isDrinking);
+        animator.SetBool("isSleeping", isSleeping);
+        animator.SetBool("isFighting", isFighting);
+
         if(health <= 0)
         {
             animator.SetBool("isDead", true);
@@ -502,7 +510,7 @@ public class Animal : Entity
     public bool ShouldRun(float timeStep)
     {
         //ToDo dont run if low on hunger, energy, health
-        return (stamina >= 1) && 
+        return (stamina >= timeStep) && 
                 ((isFleeing) ||
                 ((hunger < timeStep * species.hungerRate) &&
                 (energy > species.energyDepletionRate * timeStep)));

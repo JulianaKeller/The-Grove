@@ -45,6 +45,7 @@ public class AnimalViewEditor : Editor
             EditorGUILayout.LabelField("Is Fighting", a.isFighting.ToString());
             EditorGUILayout.LabelField("Is Fleeing", a.isFleeing.ToString());
             EditorGUILayout.LabelField("Is Female", a.isFemale.ToString());
+            EditorGUILayout.LabelField("Current State", a.currentState.ToString());
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("=== Species Stats ===", EditorStyles.boldLabel);

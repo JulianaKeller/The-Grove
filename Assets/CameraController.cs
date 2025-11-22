@@ -176,11 +176,13 @@ public class CameraController : MonoBehaviour
     void ZoomForward(float delta)
     {
         targetPosition += transform.forward * delta;
+        targetPosition.y = Mathf.Clamp(targetPosition.y, minDistance, maxDistance);
     }
 
     void ZoomVertical(float delta)
     {
         targetPosition += Vector3.up * delta;
+        targetPosition.y = Mathf.Clamp(targetPosition.y, minDistance, maxDistance);
     }
 
     void ZoomPivotUnderMouse(float delta)
@@ -194,6 +196,7 @@ public class CameraController : MonoBehaviour
 
             Vector3 dir = (transform.position - pivot).normalized;
             targetPosition += dir * delta;
+            targetPosition.y = Mathf.Clamp(targetPosition.y, minDistance, maxDistance);
         }
         else
         {

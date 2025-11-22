@@ -50,6 +50,8 @@ public class FightState : AnimalState
         float damage = a.species.power - enemy.species.defense * randomFactor;
 
         enemy.health -= damage;
+        //Play one-time take hit animation on enemy
+        //Play one-time hit animation
 
         Debug.Log($"{a.species.name} hit {enemy.species.name} for {damage:F1} damage. Enemy HP: {enemy.health:F1}");
 

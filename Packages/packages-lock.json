@@ -1,5 +1,59 @@
 {
   "dependencies": {
+    "com.distantlands.cozy.blocks": {
+      "version": "file:com.distantlands.cozy.blocks",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.distantlands.cozy.core": "3.5.0"
+      }
+    },
+    "com.distantlands.cozy.core": {
+      "version": "file:com.distantlands.cozy.core",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.distantlands.cozy.eclipse": {
+      "version": "file:com.distantlands.cozy.eclipse",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.distantlands.cozy.core": "3.5.0"
+      }
+    },
+    "com.distantlands.cozy.habits": {
+      "version": "file:com.distantlands.cozy.habits",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.distantlands.cozy.core": "3.5.0"
+      }
+    },
+    "com.distantlands.cozy.horizon": {
+      "version": "file:com.distantlands.cozy.horizon",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.distantlands.cozy.core": "3.6.0"
+      }
+    },
+    "com.distantlands.cozy.plume": {
+      "version": "file:com.distantlands.cozy.plume",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.distantlands.cozy.core": "3.6.7"
+      }
+    },
+    "com.distantlands.cozy.resound": {
+      "version": "file:com.distantlands.cozy.resound",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.distantlands.cozy.core": "3.5.0"
+      }
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.5",
       "depth": 0,

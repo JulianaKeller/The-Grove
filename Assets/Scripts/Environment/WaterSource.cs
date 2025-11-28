@@ -6,6 +6,8 @@ public class WaterSource
 
     public WaterSourceView view;
 
+    public float radius;
+
     public float capacity;
     public float currentWater;
 
@@ -17,6 +19,7 @@ public class WaterSource
     public WaterSource(Vector3 pos, float capacity)
     {
         position = pos;
+        radius = 1f;
         this.capacity = capacity;
         currentWater = capacity;
     }

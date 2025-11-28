@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/HUD_StyleSheet.uss?fileID=7433441132597879392&amp;guid=5c9ed6e78564d8e4eb1ddd1e49fb83dd&amp;type=3#HUD_StyleSheet" />
+    <ui:Button text="Button" style="bottom: 0; right: auto; justify-content: flex-start; align-content: flex-start;" />
+</ui:UXML>

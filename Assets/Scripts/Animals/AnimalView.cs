@@ -43,4 +43,9 @@ public class AnimalView : MonoBehaviour
             Time.deltaTime * 100f
         );
     }
+
+    public void SetSelected(bool selected)
+    {
+
+    }
 }

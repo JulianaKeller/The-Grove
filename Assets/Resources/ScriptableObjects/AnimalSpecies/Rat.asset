@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Rat
   prefabs:
-  - {fileID: 8202762137377361577, guid: 4fa74752d89e9794dac5a16f2efa5056, type: 3}
+  - {fileID: 4587416688895063622, guid: dfa671f395ba0f74d9e586066e438176, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

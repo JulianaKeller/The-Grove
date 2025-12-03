@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Stag
   prefabs:
-  - {fileID: 6492592429421199779, guid: 8f76cc423ae4586419f7e25f23829d1a, type: 3}
+  - {fileID: 6551459335401780837, guid: 29d8c87e27e604b40b0a324a218c36dd, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

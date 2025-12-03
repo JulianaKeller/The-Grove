@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Donkey
   prefabs:
-  - {fileID: 262573274087167166, guid: ebcd7ee1edd961b449321e51d711a463, type: 3}
+  - {fileID: 4109213435177309103, guid: 66d52c58471b981458e949b635278cad, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Husky
   prefabs:
-  - {fileID: 4627867191678205430, guid: 53c6bbf07227cde408facc7b0a707a66, type: 3}
+  - {fileID: 6513354577343370261, guid: 3fda7fd9a23792f4fa38ad00c6283e14, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

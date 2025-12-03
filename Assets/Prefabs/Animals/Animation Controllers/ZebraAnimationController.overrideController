@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ZebraAnimationController
+  m_Controller: {fileID: 9100000, guid: b8623defa2fc7cd4d9209b15414f9fbe, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7370985682789098114, guid: 06d6d5edfea0d784094d34a7823217ea, type: 3}
+    m_OverrideClip: {fileID: -982115091633673366, guid: cf6006355974a9448bd1248513dfafed, type: 3}
+  - m_OriginalClip: {fileID: -5105944257485555118, guid: 06d6d5edfea0d784094d34a7823217ea, type: 3}
+    m_OverrideClip: {fileID: -8945691123924629249, guid: cf6006355974a9448bd1248513dfafed, type: 3}
+  - m_OriginalClip: {fileID: 9203789705941672436, guid: 06d6d5edfea0d784094d34a7823217ea, type: 3}
+    m_OverrideClip: {fileID: -8945691123924629249, guid: cf6006355974a9448bd1248513dfafed, type: 3}
+  - m_OriginalClip: {fileID: 9013133730026320192, guid: 06d6d5edfea0d784094d34a7823217ea, type: 3}
+    m_OverrideClip: {fileID: -7551964380084998518, guid: cf6006355974a9448bd1248513dfafed, type: 3}
+  - m_OriginalClip: {fileID: -7666980397028532464, guid: 06d6d5edfea0d784094d34a7823217ea, type: 3}
+    m_OverrideClip: {fileID: -7551964380084998518, guid: cf6006355974a9448bd1248513dfafed, type: 3}
+  - m_OriginalClip: {fileID: -4864718358596981803, guid: 06d6d5edfea0d784094d34a7823217ea, type: 3}
+    m_OverrideClip: {fileID: 8349542763059015795, guid: cf6006355974a9448bd1248513dfafed, type: 3}

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Alpaca
   prefabs:
-  - {fileID: 951685227528730239, guid: 46f3a2b51be89ba4c992e179b2a34bf5, type: 3}
+  - {fileID: 4790875109544566506, guid: e83ae6e01eadc314f9ec7607fdea3868, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

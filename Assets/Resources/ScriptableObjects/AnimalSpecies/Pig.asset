@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Pig
   prefabs:
-  - {fileID: 780370898995042261, guid: 5199711c7b5916445b258788a8710bfa, type: 3}
+  - {fileID: 4220221579436660725, guid: 01a43a61eee88864a9e1db8a07fe399b, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

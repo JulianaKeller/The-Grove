@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Wolf
   prefabs:
-  - {fileID: 1468635677983306922, guid: 4db5f6330bad9474f8d3810220dff2fc, type: 3}
+  - {fileID: 7291373713317239041, guid: 5027c4d441e37424fa0e307d1e49320f, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Deer
   prefabs:
-  - {fileID: 2519874481195740135, guid: 4fd5cefe8d1574d48b2b284ee891b95f, type: 3}
+  - {fileID: 8528287559890633857, guid: dc53775a18b5f894d916cfe866a05666, type: 3}
   colorVariants:
   - {r: 1, g: 1, b: 1, a: 0}
   lifespan: 300

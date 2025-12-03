@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Fox
   prefabs:
-  - {fileID: 8522675805912783151, guid: a3f974fd01435e94ca507850bdc0f152, type: 3}
+  - {fileID: 3085198015196084799, guid: a1458e26745365f4aa4cff501eaf8f2d, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

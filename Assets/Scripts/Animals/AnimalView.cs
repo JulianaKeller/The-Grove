@@ -46,6 +46,10 @@ public class AnimalView : MonoBehaviour
 
     public void SetSelected(bool selected)
     {
-
+        /*var outline = GetComponent<AnimalOutline>();
+        if (outline != null)
+        {
+            outline.SetVisible(selected);
+        }*/
     }
 }

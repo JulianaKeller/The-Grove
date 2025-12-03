@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Cow
   prefabs:
-  - {fileID: 6464630266782404258, guid: 3eb60d6d52671c1458b3bbbae71861f4, type: 3}
+  - {fileID: 1572001851780008503, guid: 20f63b53eb1fb1148b50c2f28f301a8f, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

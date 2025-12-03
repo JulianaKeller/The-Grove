@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Shibainu
   prefabs:
-  - {fileID: 6862265971378460044, guid: 540ec60116864ea44826f60508dea4df, type: 3}
+  - {fileID: 2190559343134609793, guid: 588de95433e5141438360d8d1f691195, type: 3}
   colorVariants: []
   lifespan: 300
   lifespanVariation: 0.446

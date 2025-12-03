@@ -20,9 +20,9 @@ RenderSettings:
   m_FogDensity: 0.003
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.6179006, g: 0.9458927, b: 1.0080419, a: 1.5}
-  m_AmbientEquatorColor: {r: 0.70047164, g: 0.45938522, b: 0.5750396, a: 1.3499999}
-  m_AmbientGroundColor: {r: 0.35023582, g: 0.22969261, b: 0.2875198, a: 1.3499999}
+  m_AmbientSkyColor: {r: 0.63919544, g: 0.9581202, b: 1.018868, a: 1.5}
+  m_AmbientEquatorColor: {r: 0.63583124, g: 0.8300802, b: 0.9169811, a: 1.3499999}
+  m_AmbientGroundColor: {r: 0.31791562, g: 0.4150401, b: 0.45849055, a: 1.3499999}
   m_AmbientIntensity: 1
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
@@ -1079,63 +1079,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &389044507
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1857269604}
-    m_Modifications:
-    - target: {fileID: 3507166052545658689, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_Name
-      value: Tree 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -20.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 11.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 93
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
 --- !u!1001 &399787951
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1526,7 +1469,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.92887807, g: 0.92887807, b: 0.92887807, a: 1}
+      maxColor: {r: 0, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -6116,7 +6059,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 428626c4fc733af4e88ac3c691aba075, type: 2}
   - {fileID: 11400000, guid: 59e9042d7e068fd4ab6c7d7420559ee3, type: 2}
   - {fileID: 11400000, guid: 22cb8dbd0ceb43044b9b26791376721b, type: 2}
-  - {fileID: 11400000, guid: 27cffdd6eb26fec43968e7baf994663e, type: 2}
   - {fileID: 11400000, guid: 4c30e71aea876ea439413d8bc2580a93, type: 2}
   - {fileID: 11400000, guid: 13e2401461513444d97736bf11cc4f54, type: 2}
   - {fileID: 11400000, guid: f42584f51286a194bb3c05b2697cdb47, type: 2}
@@ -6393,7 +6335,7 @@ MonoBehaviour:
   totalSystemWeight: 0
   resoundParent: {fileID: 0}
   DJ: {fileID: 11400000, guid: d8d77ba9731e190468f73f56f4d5bedf, type: 2}
-  setlist: {fileID: 0}
+  setlist: {fileID: 11400000, guid: 0ed3f4e27f0ffd748844ff4f6f5122a8, type: 2}
   songTimer: 0
   paused: 0
   mixerGroup: {fileID: 5699009772604452529, guid: 7657aaa11fc9748449b9a88b6a5dc9ca, type: 2}
@@ -7344,7 +7286,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.28535655
+      time: 0.27578247
       value: 90
       inSlope: 0
       outSlope: 0
@@ -7362,7 +7304,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.7146435
+      time: 0.72421753
       value: 270
       inSlope: 0
       outSlope: 0
@@ -7415,7 +7357,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.28535655
+      time: 0.27578247
       value: 90
       inSlope: 0
       outSlope: 0
@@ -7433,7 +7375,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.7146435
+      time: 0.72421753
       value: 90
       inSlope: 0
       outSlope: 0
@@ -7740,15 +7682,15 @@ MonoBehaviour:
   transit: {fileID: 566144078}
   perennialProfile: {fileID: 11400000, guid: 8ce0d8458b4495b4593c1e03027a0ce5, type: 2}
   overrideDate: {fileID: 0}
-  yearPercentage: 0.110049404
+  yearPercentage: 0.13675
   transitioningTime: 0
   currentTime:
-    hours: 6
-    minutes: 46
-    seconds: 36
-    milliseconds: 886
+    hours: 13
+    minutes: 32
+    seconds: 9
+    milliseconds: 600
     timeAsPercentage: 0
-  currentDay: 5
+  currentDay: 6
   currentYear: 0
   parentModule: {fileID: 0}
 --- !u!114 &566144085
@@ -7826,8 +7768,8 @@ MonoBehaviour:
   controlMethod: 1
   localTemperatureFilter: 0
   localPrecipitationFilter: 0
-  currentTemperature: 19.861706
-  currentPrecipitation: 73.037605
+  currentTemperature: 29.764055
+  currentPrecipitation: 77.179794
   snowAmount: 0
   snowMeltSpeed: 0.35
   groundwaterAmount: 0
@@ -8048,7 +7990,7 @@ Terrain:
   m_StaticShadowCaster: 0
   m_IgnoreQualitySettings: 0
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 04a67c248a6411b4d9fb8bb04ec778fb, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 2c35dba8e7dc08748a03ec86e2d9693f, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -8334,73 +8276,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1995278775820938327, guid: e3ed7d53480140543be149682ec7df37, type: 3}
   m_PrefabInstance: {fileID: 619251590}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &622774581 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-  m_PrefabInstance: {fileID: 389044507}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &638103230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8034200848419691302, guid: a36d492bf1576e943bb6345200186ddf, type: 3}
   m_PrefabInstance: {fileID: 47402388}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &638212630
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1857269604}
-    m_Modifications:
-    - target: {fileID: 3507166052545658689, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_Name
-      value: Tree 10 (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 434.71448
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 186.5199
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
 --- !u!1001 &668486346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8606,7 +8486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LensFlareData: {fileID: 11400000, guid: e3db97a2c8764cf4d9b4e3a9a81e38a7, type: 2}
   version: 0
-  intensity: 0.048004046
+  intensity: 0
   maxAttenuationDistance: 100
   maxAttenuationScale: 100
   distanceAttenuationCurve:
@@ -8773,7 +8653,7 @@ Light:
   m_Enabled: 0
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 0.0048543136, g: 0.0058517745, b: 0.007846696, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
@@ -8836,7 +8716,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692974716}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.21838742, y: 0.7793081, z: -0.4478605, w: 0.3800091}
+  m_LocalRotation: {x: -0.10384576, y: -0.48555404, z: -0.05822067, w: 0.86606216}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8969,11 +8849,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &778918836 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-  m_PrefabInstance: {fileID: 1303693623}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &819701881
 GameObject:
   m_ObjectHideFlags: 0
@@ -9021,35 +8896,35 @@ MonoBehaviour:
   usePhysicalSunHeight: 1
   sunDirection: 120
   sunPitch: 0
-  moonDirection: {x: -0.39667416, y: 0.86402106, z: 0.3100283}
-  skyZenithColor: {r: 0.021465397, g: 0.091339864, b: 0.15502787, a: 1}
-  skyHorizonColor: {r: 0.21975909, g: 0.37072137, b: 0.43598232, a: 1}
-  cloudColor: {r: 0.61784697, g: 0.38053963, b: 0.38812542, a: 1}
-  cloudHighlightColor: {r: 3.333536, g: 1.3607311, b: 1.2392812, a: 1}
-  highAltitudeCloudColor: {r: 1.3461659, g: 1.7393371, b: 1.8604075, a: 1}
-  sunlightColor: {r: 0.5126383, g: 0.29636902, b: 0.2443042, a: 1}
-  starColor: {r: 0.92887807, g: 0.92887807, b: 0.92887807, a: 1}
-  ambientLightHorizonColor: {r: 0.5188679, g: 0.34028533, b: 0.42595527, a: 1}
-  ambientLightZenithColor: {r: 0.41193375, g: 0.63059515, b: 0.6720279, a: 1}
+  moonDirection: {x: 0.828948, y: -0.23641233, z: -0.5069066}
+  skyZenithColor: {r: 0.11064386, g: 0.16188632, b: 0.27385068, a: 1}
+  skyHorizonColor: {r: 0.4194913, g: 0.6811224, b: 0.8439699, a: 1}
+  cloudColor: {r: 0.9431202, g: 0.9431202, b: 0.9431202, a: 1}
+  cloudHighlightColor: {r: 4.9193516, g: 4.204114, b: 3.5502865, a: 1}
+  highAltitudeCloudColor: {r: 1.0833969, g: 1.3920008, b: 1.382235, a: 1}
+  sunlightColor: {r: 1.375392, g: 1.3476623, b: 1.1535546, a: 1}
+  starColor: {r: 0, g: 0, b: 0, a: 1}
+  ambientLightHorizonColor: {r: 0.47098613, g: 0.61487424, b: 0.6792453, a: 1}
+  ambientLightZenithColor: {r: 0.4261303, g: 0.6387468, b: 0.6792453, a: 1}
   ambientLightMultiplier: 1.5
   galaxyIntensity: 0
   fogColor1: {r: 0, g: 0, b: 0, a: 0.007843138}
-  fogColor2: {r: 0.0052678557, g: 0.029798787, b: 0.042572968, a: 0.13725491}
-  fogColor3: {r: 0.023204057, g: 0.08747902, b: 0.14567088, a: 0.5019608}
-  fogColor4: {r: 0.051751442, g: 0.12997535, b: 0.20604305, a: 0.75686276}
-  fogColor5: {r: 0.22118688, g: 0.3719307, b: 0.44230536, a: 1}
-  fogFlareColor: {r: 3.5634727, g: 0.51705223, b: 0.37671703, a: 1}
-  fogMoonFlareColor: {r: 0.42021567, g: 0.86747634, b: 1.746779, a: 1}
+  fogColor2: {r: 0.031124344, g: 0.24298057, b: 0.38722983, a: 0.13725491}
+  fogColor3: {r: 0.07450981, g: 0.30980393, b: 0.5019608, a: 0.5019608}
+  fogColor4: {r: 0.012582014, g: 0.28579295, b: 0.5476937, a: 0.75686276}
+  fogColor5: {r: 0.4233703, g: 0.7328088, b: 0.9251925, a: 1}
+  fogFlareColor: {r: 1.0833969, g: 1.3920008, b: 1.382235, a: 1}
+  fogMoonFlareColor: {r: 0, g: 0, b: 0, a: 1}
   fogShadowColor: {r: 0, g: 0, b: 0, a: 0}
   fogLitColor: {r: 0, g: 0, b: 0, a: 0}
   gradientExponent: 0.549
   sunSize: 1
   sunColor: {r: 10.432951, g: 10.432951, b: 10.432951, a: 1}
-  moonColor: {r: 2, g: 2, b: 2, a: 0.5067274}
+  moonColor: {r: 2, g: 2, b: 2, a: 0.24593069}
   sunFalloff: 0.48
-  sunFlareColor: {r: 0.6505634, g: 0.5369169, b: 0.42704844, a: 1}
+  sunFlareColor: {r: 2.7294118, g: 2.7137256, b: 2.0705884, a: 1}
   moonFalloff: 0.752
-  moonlightColor: {r: 0.101123005, g: 0.12190169, b: 0.16345906, a: 1}
+  moonlightColor: {r: 0, g: 0, b: 0, a: 1}
   moonFlareColor: {r: 0.023529412, g: 0.08627451, b: 0.14901961, a: 1}
   galaxy1Color: {r: 0.10980392, g: 0.23137255, b: 0.67058825, a: 1}
   galaxy2Color: {r: 0.93333334, g: 0.89411765, b: 2, a: 1}
@@ -9068,10 +8943,10 @@ MonoBehaviour:
   fogStart3: 25.8
   fogStart4: 50
   fogHeight: 1
-  fogDensityMultiplier: 0.3
-  fogLightFlareIntensity: 0.9757243
-  fogLightFlareFalloff: 7.392941
-  fogLightFlareSquish: 5.930588
+  fogDensityMultiplier: 0.52
+  fogLightFlareIntensity: 1
+  fogLightFlareFalloff: 86.64056
+  fogLightFlareSquish: 1
   fogSmoothness: 1
   fogVariationAmount: 0.78
   fogVariationDirection: {x: 6, y: 0, z: 0}
@@ -9084,7 +8959,7 @@ MonoBehaviour:
   heightFogTransition: 52
   heightFogDistance: 5000
   heightFogColor: {r: 0.5425863, g: 0.6662698, b: 0.8396226, a: 0.2901961}
-  cloudMoonColor: {r: 0.037198536, g: 0.051505666, b: 0.09728848, a: 1}
+  cloudMoonColor: {r: 0, g: 0, b: 0, a: 1}
   cloudSunHighlightFalloff: 19.1
   cloudMoonHighlightFalloff: 11.9
   cloudWindSpeed: 2.66
@@ -9242,9 +9117,9 @@ MonoBehaviour:
   atmosphereModule: {fileID: 0}
   windModule: {fileID: 566144083}
   events:
-    timeToCheckFor: 0.3125
-    currentMinute: 406
-    currentHour: 6
+    timeToCheckFor: 0.6666667
+    currentMinute: 812
+    currentHour: 13
   cozyTriggerTag: FX Block Zone
   cozyTriggers:
   - {fileID: 0}
@@ -9282,7 +9157,7 @@ Transform:
   m_GameObject: {fileID: 819701881}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000037252899, y: -0, z: -0.0000000074505797, w: 1}
-  m_LocalPosition: {x: 676.69745, y: 406.57123, z: -92.949585}
+  m_LocalPosition: {x: -39.192116, y: 81.757355, z: 78.60112}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9613,7 +9488,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.61784697, g: 0.38053963, b: 0.38812542, a: 1}
+      maxColor: {r: 0.9431202, g: 0.9431202, b: 0.9431202, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -13418,7 +13293,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.61784697, g: 0.38053963, b: 0.38812542, a: 1}
+      maxColor: {r: 0.9431202, g: 0.9431202, b: 0.9431202, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14972,7 +14847,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LensFlareData: {fileID: 11400000, guid: b7bd2fcbf47c015488d42ef693c6db7d, type: 2}
   version: 0
-  intensity: 0.35509813
+  intensity: 1.3338252
   maxAttenuationDistance: 100
   maxAttenuationScale: 100
   distanceAttenuationCurve:
@@ -15137,7 +15012,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 997768504}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.008216171, y: 0, z: 0, w: 0.99996626}
+  m_LocalRotation: {x: 0.84660834, y: 0, z: 0, w: 0.5322164}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15154,7 +15029,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 0.5126383, g: 0.29636902, b: 0.2443042, a: 0}
+  m_Color: {r: 1.375392, g: 1.3476623, b: 1.1535546, a: 0}
   m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
@@ -15300,11 +15175,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!4 &1036627751 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-  m_PrefabInstance: {fileID: 1295619952}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1039710257
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15981,120 +15851,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3919650328075784821, guid: 3d96fa408bea74e4e8fe381d53f8926c, type: 3}
   m_PrefabInstance: {fileID: 1276177611}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1295619952
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1857269604}
-    m_Modifications:
-    - target: {fileID: 3507166052545658689, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_Name
-      value: Tree 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -24.56759
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 105.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: da873a8e94a1ebb4ba023ee1e74c5a98, type: 3}
---- !u!1001 &1303693623
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1857269604}
-    m_Modifications:
-    - target: {fileID: 3507166052545658689, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_Name
-      value: Tree 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 240.72693
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.17494
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 364.65256
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5602657972127736261, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a2d163743418d35448cb44ebe3c757ce, type: 3}
 --- !u!1001 &1333432911
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17090,11 +16846,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0e77b07c59b5eb7408b217af217d2ce6, type: 3}
---- !u!4 &1711075899 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5602657972127736261, guid: 59a387c73ccaf2f438466173edaf31f7, type: 3}
-  m_PrefabInstance: {fileID: 638212630}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1716199353
 GameObject:
   m_ObjectHideFlags: 0
@@ -17312,10 +17063,6 @@ Transform:
   - {fileID: 975656873}
   - {fileID: 1763931360}
   - {fileID: 1565444198}
-  - {fileID: 622774581}
-  - {fileID: 1036627751}
-  - {fileID: 778918836}
-  - {fileID: 1711075899}
   m_Father: {fileID: 124634704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1924100319
@@ -17381,7 +17128,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 702.36774, y: 702.36774, z: 702.36774}
+  m_LocalScale: {x: 114.86671, y: 114.86671, z: 114.86671}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1474866577}
@@ -17851,7 +17598,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.92887807, g: 0.92887807, b: 0.92887807, a: 1}
+      maxColor: {r: 0, g: 0, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}

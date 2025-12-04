@@ -46,6 +46,7 @@ public class CameraController : MonoBehaviour
 
     private float currentAngleY = 0f;
     private float currentAngleX = 20f;
+    public float currentFocusDistance = 6f;
 
     [Header("Focus Transition")]
     public float focusTransitionDuration = 0.7f;
@@ -64,6 +65,10 @@ public class CameraController : MonoBehaviour
     private Vector3 leaveStartPos;
     private Quaternion leaveStartRot;
     private float leaveStartDistance;
+
+    private bool transitionInputLocked = false;
+    private Vector3 focusTransitionAnchor;
+
 
     [Header("Depth Of Field")]
     public Volume volume;
@@ -133,9 +138,14 @@ public class CameraController : MonoBehaviour
 
     public void ToggleFocusMode(Transform target)
     {
+        // If already in a transition for the same target, cancel (explicit user intent)
         if (focusing || leavingFocus)
         {
-            CancelTransitions();
+            // only cancel if target matches or target is null (user forced cancel)
+            if (target == focusTarget || target == null)
+            {
+                CancelTransitions();
+            }
             return;
         }
 
@@ -187,29 +197,32 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        // Orbit with middle mouse
-        if (Input.GetMouseButton(2))
+        // Orbit with middle mouse, but only after transitions are unlocked
+        if (!transitionInputLocked)
         {
-            Vector3 delta = Input.mousePosition - lastMousePos;
-            currentAngleY += delta.x * orbitSensitivity;
-            currentAngleX = Mathf.Clamp(currentAngleX - delta.y * orbitSensitivity, 5f, 80f);
+            if (Input.GetMouseButton(2))
+            {
+                Vector3 delta = Input.mousePosition - lastMousePos;
+                currentAngleY += delta.x * orbitSensitivity;
+                currentAngleX = Mathf.Clamp(currentAngleX - delta.y * orbitSensitivity, 5f, 80f);
+            }
+            lastMousePos = Input.mousePosition;
+
+            // Zoom in/out
+            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (Mathf.Abs(scroll) > 0.0005f)
+                currentFocusDistance = Mathf.Clamp(currentFocusDistance - scroll * zoomSpeed * 0.5f, minDistance, maxDistance);
         }
-        lastMousePos = Input.mousePosition;
 
-        // Zoom in/out
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (Mathf.Abs(scroll) > 0.0005f)
-            focusDistance = Mathf.Clamp(focusDistance - scroll * zoomSpeed * 0.5f, minDistance, maxDistance);
-
-        // Exit when zoomed too far
-        if (focusDistance > zoomExitThreshold)
+        // Exit when zoomed too far (only when actually in focus mode and not transitioning)
+        if (!transitionInputLocked && currentFocusDistance > zoomExitThreshold && !leavingFocus && !focusing)
         {
             BeginLeaveFocus();
             return;
         }
 
         Quaternion rot = Quaternion.Euler(currentAngleX, currentAngleY, 0f);
-        Vector3 offset = rot * (Vector3.back * focusDistance);
+        Vector3 offset = rot * (Vector3.back * currentFocusDistance);
 
         targetPosition = focusTarget.position + offset;
 
@@ -223,13 +236,14 @@ public class CameraController : MonoBehaviour
         if (focusTarget == null)
         {
             focusing = false;
+            transitionInputLocked = false;
             return;
         }
 
         focusTransitionT += Time.deltaTime / focusTransitionDuration;
         float t = Mathf.SmoothStep(0f, 1f, focusTransitionT);
 
-        float dist = Mathf.Lerp(focusStartDistance, focusDistance, t);
+        float dist = Mathf.Lerp(focusStartDistance, currentFocusDistance, t);
 
         Quaternion targetRot = Quaternion.Euler(currentAngleX, currentAngleY, 0f);
         Vector3 targetPos = focusTarget.position - targetRot * Vector3.forward * dist;
@@ -241,6 +255,9 @@ public class CameraController : MonoBehaviour
         {
             focusing = false;
             inFocusMode = true;
+            transitionInputLocked = false;
+            // ensure lastMousePos is reset so first orbit frame isn't a big jump
+            lastMousePos = Input.mousePosition;
         }
     }
 
@@ -256,23 +273,42 @@ public class CameraController : MonoBehaviour
         // Capture starting state
         focusStartPos = transform.position;
         focusStartRot = transform.rotation;
-        focusStartDistance = Vector3.Distance(transform.position, target.position);
+        
 
         // Prepare target state
         Vector3 dir = (transform.position - target.position).normalized;
         currentAngleY = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
         currentAngleX = tiltAngle;
 
-        float dist = Mathf.Clamp(focusStartDistance * 0.6f, minDistance, maxDistance);
-        focusDistance = dist;
+        float scaledFocusDistance = focusDistance;
+
+        var rend = target.GetComponentInChildren<Renderer>();
+        if (rend != null)
+        {
+            float sizeFactor = rend.bounds.extents.magnitude;
+            scaledFocusDistance = sizeFactor * 2.0f;
+        }
+
+        currentFocusDistance = Mathf.Clamp(scaledFocusDistance, minDistance, maxDistance);
 
         focusTransitionT = 0f; // reset blend
+
+        transitionInputLocked = true;
+        lastMousePos = Input.mousePosition;
     }
 
     private void BeginLeaveFocus()
     {
+        if (focusTarget == null) // defensive
+        {
+            inFocusMode = false;
+            leavingFocus = false;
+            return;
+        }
+
         leavingFocus = true;
         focusing = false;
+        transitionInputLocked = true;
 
         leaveStartPos = transform.position;
         leaveStartRot = transform.rotation;

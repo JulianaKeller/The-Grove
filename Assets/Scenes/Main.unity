@@ -827,8 +827,10 @@ GameObject:
   - component: {fileID: 330585545}
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
-  - component: {fileID: 330585548}
   - component: {fileID: 330585549}
+  - component: {fileID: 330585548}
+  - component: {fileID: 330585551}
+  - component: {fileID: 330585550}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -982,6 +984,7 @@ MonoBehaviour:
   focusDistance: 3
   orbitSensitivity: 3
   zoomExitThreshold: 30
+  currentFocusDistance: 6
   focusTransitionDuration: 0.7
   leaveTransitionDuration: 0.6
   volume: {fileID: 832575518}
@@ -995,6 +998,30 @@ Behaviour:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   m_Enabled: 1
+--- !u!114 &330585550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0107dec470737604fa778f5ec9c5a650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &330585551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2743bf77ea9f55f4fa61d04c42595507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &338542597 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7370958453937229507, guid: 2c0e6880dca9ffd4388ba78913ab47f2, type: 3}
@@ -9164,7 +9191,7 @@ Transform:
   m_GameObject: {fileID: 819701881}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000037252899, y: -0, z: -0.0000000074505797, w: 1}
-  m_LocalPosition: {x: -102.05293, y: 31.437092, z: -138.0678}
+  m_LocalPosition: {x: -103.240906, y: 25.902933, z: -134.45493}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

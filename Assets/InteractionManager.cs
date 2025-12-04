@@ -6,15 +6,32 @@ public class InteractionManager : MonoBehaviour
 
     private AnimalView selectedAnimal;
 
+    private CameraController cameraController;
+
     void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        cameraController = Camera.main.GetComponent<CameraController>();
     }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
             TrySelectAnimal();
+
+        if (Input.GetKeyDown(KeyCode.F) && selectedAnimal != null)
+        {
+            cameraController.ToggleFocusMode(selectedAnimal.transform);
+        }
+
+        if (cameraController.inFocusMode && Input.GetKeyDown(KeyCode.Escape))
+        {
+            cameraController.ExitFocusModeRequest();
+        }
     }
 
     private void TrySelectAnimal()

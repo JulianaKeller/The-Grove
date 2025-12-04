@@ -37,6 +37,34 @@ public class CameraController : MonoBehaviour
     public float minDistance = 10f;
     public float maxDistance = 80f;
 
+    [Header("Focus Mode")]
+    public bool inFocusMode = false;
+    public Transform focusTarget;
+    public float focusDistance = 6f;
+    public float orbitSensitivity = 3f;
+    public float zoomExitThreshold = 25f;
+
+    private float currentAngleY = 0f;
+    private float currentAngleX = 20f;
+
+    [Header("Focus Transition")]
+    public float focusTransitionDuration = 0.7f;
+    private bool focusing = false;
+    private float focusTransitionT = 0f;
+
+    private Vector3 focusStartPos;
+    private Quaternion focusStartRot;
+    private float focusStartDistance;
+
+    private bool leavingFocus = false;
+    private float leaveTransitionT = 0f;
+
+    public float leaveTransitionDuration = 0.6f;
+
+    private Vector3 leaveStartPos;
+    private Quaternion leaveStartRot;
+    private float leaveStartDistance;
+
     [Header("Depth Of Field")]
     public Volume volume;
     public float dofMinFocus = 3f;
@@ -65,6 +93,27 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if (focusing)
+        {
+            HandleFocusTransition();
+            UpdateDepthOfField();
+            return;
+        }
+
+        if (leavingFocus)
+        {
+            HandleLeaveFocusTransition();
+            UpdateDepthOfField();
+            return;
+        }
+
+        if (inFocusMode)
+        {
+            HandleFocusMode();
+            UpdateDepthOfField();
+            return;
+        }
+
         float distance = GetCameraDistanceToGround();
         float distanceFactor = Mathf.InverseLerp(minDistance, maxDistance, distance); // 0 = zoomed in, 1 = zoomed out
 
@@ -80,6 +129,168 @@ public class CameraController : MonoBehaviour
         ApplyCameraBounds();
         ApplySmoothing();
         UpdateDepthOfField();
+    }
+
+    public void ToggleFocusMode(Transform target)
+    {
+        if (focusing || leavingFocus)
+        {
+            CancelTransitions();
+            return;
+        }
+
+        if (inFocusMode)
+            BeginLeaveFocus();
+        else
+            EnterFocusMode(target);
+    }
+
+    public void ExitFocusModeRequest()
+    {
+        if (focusing || leavingFocus)
+        {
+            CancelTransitions();
+            return;
+        }
+
+        if (inFocusMode)
+            BeginLeaveFocus();
+    }
+
+    void HandleLeaveFocusTransition()
+    {
+        leaveTransitionT += Time.deltaTime / leaveTransitionDuration;
+        float t = Mathf.SmoothStep(0f, 1f, leaveTransitionT);
+
+        transform.position = Vector3.Lerp(leaveStartPos, targetPosition, t);
+        transform.rotation = Quaternion.Slerp(leaveStartRot, Quaternion.Euler(tiltAngle, transform.rotation.eulerAngles.y, 0f), t);
+
+        if (t >= 1f)
+        {
+            leavingFocus = false;
+            inFocusMode = false;
+        }
+    }
+
+    private void CancelTransitions()
+    {
+        focusing = false;
+        leavingFocus = false;
+        inFocusMode = false;
+    }
+
+    void HandleFocusMode()
+    {
+        if (focusTarget == null)
+        {
+            ExitFocusMode();
+            return;
+        }
+
+        // Orbit with middle mouse
+        if (Input.GetMouseButton(2))
+        {
+            Vector3 delta = Input.mousePosition - lastMousePos;
+            currentAngleY += delta.x * orbitSensitivity;
+            currentAngleX = Mathf.Clamp(currentAngleX - delta.y * orbitSensitivity, 5f, 80f);
+        }
+        lastMousePos = Input.mousePosition;
+
+        // Zoom in/out
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scroll) > 0.0005f)
+            focusDistance = Mathf.Clamp(focusDistance - scroll * zoomSpeed * 0.5f, minDistance, maxDistance);
+
+        // Exit when zoomed too far
+        if (focusDistance > zoomExitThreshold)
+        {
+            BeginLeaveFocus();
+            return;
+        }
+
+        Quaternion rot = Quaternion.Euler(currentAngleX, currentAngleY, 0f);
+        Vector3 offset = rot * (Vector3.back * focusDistance);
+
+        targetPosition = focusTarget.position + offset;
+
+        transform.rotation = rot;
+        ApplyCameraBounds();
+        ApplySmoothing();
+    }
+
+    void HandleFocusTransition()
+    {
+        if (focusTarget == null)
+        {
+            focusing = false;
+            return;
+        }
+
+        focusTransitionT += Time.deltaTime / focusTransitionDuration;
+        float t = Mathf.SmoothStep(0f, 1f, focusTransitionT);
+
+        float dist = Mathf.Lerp(focusStartDistance, focusDistance, t);
+
+        Quaternion targetRot = Quaternion.Euler(currentAngleX, currentAngleY, 0f);
+        Vector3 targetPos = focusTarget.position - targetRot * Vector3.forward * dist;
+
+        transform.position = Vector3.Lerp(focusStartPos, targetPos, t);
+        transform.rotation = Quaternion.Slerp(focusStartRot, targetRot, t);
+
+        if (t >= 1f)
+        {
+            focusing = false;
+            inFocusMode = true;
+        }
+    }
+
+    public void EnterFocusMode(Transform target)
+    {
+        if (target == null) return;
+
+        inFocusMode = false; // stays false until transition completes
+        focusing = true;
+        leavingFocus = false;
+        focusTarget = target;
+
+        // Capture starting state
+        focusStartPos = transform.position;
+        focusStartRot = transform.rotation;
+        focusStartDistance = Vector3.Distance(transform.position, target.position);
+
+        // Prepare target state
+        Vector3 dir = (transform.position - target.position).normalized;
+        currentAngleY = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        currentAngleX = tiltAngle;
+
+        float dist = Mathf.Clamp(focusStartDistance * 0.6f, minDistance, maxDistance);
+        focusDistance = dist;
+
+        focusTransitionT = 0f; // reset blend
+    }
+
+    private void BeginLeaveFocus()
+    {
+        leavingFocus = true;
+        focusing = false;
+
+        leaveStartPos = transform.position;
+        leaveStartRot = transform.rotation;
+
+        leaveStartDistance = Vector3.Distance(transform.position, focusTarget.position);
+
+        Vector3 dir = new Vector3(0, 1, -1).normalized;
+        float dist = Mathf.Clamp(leaveStartDistance * 2f, minDistance, maxDistance);
+
+        targetPosition = focusTarget.position + dir * dist;
+
+        leaveTransitionT = 0f;
+    }
+
+    public void ExitFocusMode()
+    {
+        inFocusMode = false;
+        focusTarget = null;
     }
 
     void HandleKeyboardMovement(float adaptiveSpeed)

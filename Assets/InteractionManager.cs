@@ -1,8 +1,16 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InteractionManager : MonoBehaviour
 {
     public static InteractionManager Instance { get; private set; }
+
+    [Header("Animal Spawning")]
+    public GameObject spawnIndicatorPrefab;
+    public AnimalSpeciesData chosenAnimal;
+
+    private GameObject activeSpawnIndicator;
+    private bool spawnModeActive = false;
 
     private AnimalView selectedAnimal;
 
@@ -28,9 +36,101 @@ public class InteractionManager : MonoBehaviour
             cameraController.ToggleFocusMode(selectedAnimal.transform);
         }
 
-        if (cameraController.inFocusMode && Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             cameraController.ExitFocusModeRequest();
+        }
+
+        if (spawnModeActive)
+        {
+            HandleSpawnInput();
+        }
+    }
+
+    private void HandleSpawnInput()
+    {
+        if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            ExitAnimalSpawnMode();
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            TrySpawnAnimal();
+        }
+    }
+
+    private void TrySpawnAnimal()
+    {
+        //Prevent spawning when mouse is over UI element
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        if (!activeSpawnIndicator.GetComponent<FollowMouseAndClamp>().IsOnTerrain)
+            return;
+
+        Vector3 spawnPos = activeSpawnIndicator.transform.position;
+
+        AnimalManager.Instance.SpawnAnimal(chosenAnimal, spawnPos);
+
+        ExitAnimalSpawnMode();
+    }
+
+    private void EnterAnimalSpawnMode()
+    {
+        if (spawnIndicatorPrefab == null)
+            return;
+        if (chosenAnimal == null)
+            return;
+
+        CancelAllModes();
+
+        spawnModeActive = true;
+
+        activeSpawnIndicator = Instantiate(spawnIndicatorPrefab);
+        activeSpawnIndicator.SetActive(true);
+    }
+
+    private void CancelAllModes()
+    {
+        // todo exit other spawning modes
+    }
+
+    public void ToggleAnimalSpawnMode()
+    {
+        //ToDo set spawn indicator
+        if (!spawnModeActive)
+        {
+            EnterAnimalSpawnMode();
+        }
+        else
+        {
+            ExitAnimalSpawnMode();
+        }
+    }
+
+    public void TogglePlantSpawnMode()
+    {
+        //ToDo set spawn indicator
+        if (!spawnModeActive)
+        {
+            EnterAnimalSpawnMode();
+        }
+        else
+        {
+            ExitAnimalSpawnMode();
+        }
+    }
+
+    private void ExitAnimalSpawnMode()
+    {
+        spawnModeActive = false;
+
+        if (activeSpawnIndicator != null)
+        {
+            Destroy(activeSpawnIndicator);
+            activeSpawnIndicator = null;
         }
     }
 
@@ -65,7 +165,7 @@ public class InteractionManager : MonoBehaviour
         selectedAnimal.SetSelected(true);
     }
 
-    public void ClearSelection()
+    private void ClearSelection()
     {
         if (selectedAnimal != null)
         {

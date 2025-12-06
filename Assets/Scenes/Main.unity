@@ -21,8 +21,8 @@ RenderSettings:
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.63919544, g: 0.9581202, b: 1.018868, a: 1.5}
-  m_AmbientEquatorColor: {r: 0.63583124, g: 0.8300802, b: 0.9169811, a: 1.3499999}
-  m_AmbientGroundColor: {r: 0.31791562, g: 0.4150401, b: 0.45849055, a: 1.3499999}
+  m_AmbientEquatorColor: {r: 0.7064792, g: 0.92231137, b: 1.018868, a: 1.5}
+  m_AmbientGroundColor: {r: 0.3532396, g: 0.46115568, b: 0.509434, a: 1.5}
   m_AmbientIntensity: 1
   m_AmbientMode: 1
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
@@ -7857,7 +7857,7 @@ MonoBehaviour:
   biomes: []
   weight: 1
   totalSystemWeight: 0
-  cumulus: 0.2
+  cumulus: 0
   cirrus: 0
   altocumulus: 0
   cirrostratus: 0
@@ -7882,15 +7882,15 @@ MonoBehaviour:
     weatherSphere: {fileID: 819701882}
     system: {fileID: 819701882}
     removeProfilesWithNoWeight: 1
-    currentWeather: {fileID: 11400000, guid: ae94c1a397a01e442a11e8b23ebb1cef, type: 2}
-    weatherChangeCheck: {fileID: 11400000, guid: ae94c1a397a01e442a11e8b23ebb1cef, type: 2}
+    currentWeather: {fileID: 11400000, guid: 48908a08bbd076e4182bc3ca961b9c34, type: 2}
+    weatherChangeCheck: {fileID: 11400000, guid: 48908a08bbd076e4182bc3ca961b9c34, type: 2}
     weightedWeatherProfiles:
     - weight: 1
-      profile: {fileID: 11400000, guid: ae94c1a397a01e442a11e8b23ebb1cef, type: 2}
+      profile: {fileID: 11400000, guid: 48908a08bbd076e4182bc3ca961b9c34, type: 2}
       transitioning: 1
   currentWeatherProfiles:
   - weight: 1
-    profile: {fileID: 11400000, guid: ae94c1a397a01e442a11e8b23ebb1cef, type: 2}
+    profile: {fileID: 11400000, guid: 48908a08bbd076e4182bc3ca961b9c34, type: 2}
     transitioning: 1
   defaultFilter: {fileID: 11400000, guid: b3b90f04f4696264c9aab62e9c3c68a5, type: 2}
   defaultClouds: {fileID: 11400000, guid: 40c748033998bf243ae542ca195124b7, type: 2}
@@ -9028,7 +9028,7 @@ MonoBehaviour:
   weight: 1
   targetWeight: 1
   priority: 0
-  cumulus: 0.2
+  cumulus: 0
   cirrus: 0
   altocumulus: 0
   cirrostratus: 0
@@ -9304,7 +9304,7 @@ Transform:
   m_GameObject: {fileID: 819701881}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000037252899, y: -0, z: -0.0000000074505797, w: 1}
-  m_LocalPosition: {x: 0, y: 235, z: -170}
+  m_LocalPosition: {x: -821.229, y: 675.46063, z: -1327.7925}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -16177,7 +16177,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Animal
+  m_text: 'Plant
 
 '
   m_isRightToLeft: 0
@@ -17928,7 +17928,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 2732.2224, y: 2732.2224, z: 2732.2224}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1474866577}

@@ -74,6 +74,14 @@ public class InteractionManager : MonoBehaviour
 
         AnimalManager.Instance.SpawnAnimal(chosenAnimal, spawnPos);
 
+        if (activeSpawnIndicator != null)
+        {
+            activeSpawnIndicator.GetComponent<FollowMouseAndClamp>().enabled = false;
+            var disappear = activeSpawnIndicator.GetComponent<IndicatorDisappear>();
+            disappear.Disappear();
+            activeSpawnIndicator = null;
+        }
+
         ExitAnimalSpawnMode();
     }
 

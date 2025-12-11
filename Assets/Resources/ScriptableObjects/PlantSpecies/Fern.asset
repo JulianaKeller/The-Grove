@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Fern
   prefabs:
-  - {fileID: 7899497194966569234, guid: f8ef3f98a12a40d4794fde24bc84cea6, type: 3}
+  - {fileID: 2329303625769461201, guid: 4f2c19e011060564ba5bf549dfbfeafe, type: 3}
   colorVariants: []
+  lifespan: 300
+  lifespanVariation: 0.226
+  nutritionBaseValue: 1
   maxHP: 100
   waterNeed: 0.1
   waterCapacity: 100
   groundFertilityUsage: 0.1
   minGroundFertility: 0
-  nutritionBaseValue: 1
-  lifespan: 300
-  lifespanVariation: 0.226
   growthRate: 0.1
   maxSizeVariation: {x: 1, y: 2}
   baseSpreadChance: 0.5

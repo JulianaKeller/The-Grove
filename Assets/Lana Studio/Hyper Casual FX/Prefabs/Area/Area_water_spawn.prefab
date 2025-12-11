@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4823518202205099634}
   - component: {fileID: 4823518202205099633}
   m_Layer: 0
-  m_Name: Area_circles_blue
+  m_Name: Area_water_spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

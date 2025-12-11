@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AnimalView : MonoBehaviour
+public class AnimalView : EntityView
 {
     public Animal data;
     private float interpolationFactor = 0f;
@@ -42,16 +42,5 @@ public class AnimalView : MonoBehaviour
             targetRotation,
             Time.deltaTime * 100f
         );
-    }
-
-    public void SetSelected(bool selected)
-    {
-        /*var outline = GetComponent<AnimalOutline>();
-        if (outline != null)
-        {
-            outline.SetVisible(selected);
-        }*/
-
-        GetComponent<AnimalOutline>().SetOutlineVisible(selected);
     }
 }

@@ -11,6 +11,11 @@ public class WorldManager : MonoBehaviour
     //This script manages time steps and updates all systems
     public static WorldManager Instance { get; private set; }
 
+    [UnityEngine.Range(0f, 100f)]
+    public float balance;
+    [UnityEngine.Range(0f, 100f)]
+    public float diversity;
+
     public GroundFertilityTexture groundFertilityTexture;
 
     public float timeStep = 0.1f;

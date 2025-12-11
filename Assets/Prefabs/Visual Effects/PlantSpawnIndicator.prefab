@@ -1,68 +1,68 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4388666743016241196
+--- !u!1001 &3802300066103572302
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 6519528801036920797}
+    m_TransformParent: {fileID: 8738149193948558700}
     m_Modifications:
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107345, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
+      propertyPath: m_Name
+      value: Area_plant_spawn
+      objectReference: {fileID: 0}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
+    - target: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7823327091382468809, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
-      propertyPath: m_Name
-      value: Area_animal_spawn
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
---- !u!4 &972996199234890253 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
+--- !u!4 &7140824614710703960 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 3559932527940391457, guid: af0d06ad2f476cc43be23ac0f464a510, type: 3}
-  m_PrefabInstance: {fileID: 4388666743016241196}
+  m_CorrespondingSourceObject: {fileID: 6331275906715107350, guid: 6e9af023d72efc44fbf7695034e95113, type: 3}
+  m_PrefabInstance: {fileID: 3802300066103572302}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8328286938919599588
+--- !u!1001 &5812498241241182037
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -70,10 +70,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1161428461380649321, guid: 7f22d263619bbef40acb171c8f85c90a, type: 3}
-      propertyPath: terrainLayer.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
     - target: {fileID: 3021352673101748793, guid: 7f22d263619bbef40acb171c8f85c90a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -116,18 +112,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4235423361400004487, guid: 7f22d263619bbef40acb171c8f85c90a, type: 3}
       propertyPath: m_Name
-      value: AnimalSpawnIndicator
+      value: PlantSpawnIndicator
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3021352673101748793, guid: 7f22d263619bbef40acb171c8f85c90a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 972996199234890253}
+      addedObject: {fileID: 7140824614710703960}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f22d263619bbef40acb171c8f85c90a, type: 3}
---- !u!4 &6519528801036920797 stripped
+--- !u!4 &8738149193948558700 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3021352673101748793, guid: 7f22d263619bbef40acb171c8f85c90a, type: 3}
-  m_PrefabInstance: {fileID: 8328286938919599588}
+  m_PrefabInstance: {fileID: 5812498241241182037}
   m_PrefabAsset: {fileID: 0}

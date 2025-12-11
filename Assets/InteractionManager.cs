@@ -1,18 +1,21 @@
 using Unity.VisualScripting;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
+
+[System.Serializable]
 
 public class InteractionManager : MonoBehaviour
 {
     public static InteractionManager Instance { get; private set; }
 
-    [Header("Animal Spawning")]
+    [Header("Spawning")]
     public GameObject spawnIndicatorPrefab;
-    public AnimalSpeciesData chosenAnimal;
+    public EntitySpeciesData speciesData;
 
     private GameObject activeSpawnIndicator;
     private bool spawnModeActive = false;
 
-    private AnimalView selectedAnimal;
+    private EntityView selectedAnimal;
 
     private CameraController cameraController;
 
@@ -51,17 +54,17 @@ public class InteractionManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
         {
-            ExitAnimalSpawnMode();
+            ExitSpawnMode();
             return;
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            TrySpawnAnimal();
+            TrySpawnEntity();
         }
     }
 
-    private void TrySpawnAnimal()
+    private void TrySpawnEntity()
     {
         //Prevent spawning when mouse is over UI element
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
@@ -72,7 +75,16 @@ public class InteractionManager : MonoBehaviour
 
         Vector3 spawnPos = activeSpawnIndicator.transform.position;
 
-        AnimalManager.Instance.SpawnAnimal(chosenAnimal, spawnPos);
+        EntitySpeciesData data = speciesData;
+
+        if (data is AnimalSpeciesData animalData)
+        {
+            AnimalManager.Instance.SpawnAnimal(animalData, spawnPos);
+        }
+        else if (data is PlantSpeciesData plantData)
+        {
+            PlantManager.Instance.SpawnPlant(plantData, spawnPos);
+        }
 
         if (activeSpawnIndicator != null)
         {
@@ -82,14 +94,14 @@ public class InteractionManager : MonoBehaviour
             activeSpawnIndicator = null;
         }
 
-        ExitAnimalSpawnMode();
+        ExitSpawnMode();
     }
 
-    private void EnterAnimalSpawnMode()
+    private void EnterSpawnMode()
     {
         if (spawnIndicatorPrefab == null)
             return;
-        if (chosenAnimal == null)
+        if (speciesData == null)
             return;
 
         CancelAllModes();
@@ -105,35 +117,29 @@ public class InteractionManager : MonoBehaviour
         // todo exit other spawning modes
     }
 
-    public void ToggleAnimalSpawnMode()
+    public void ToggleSpawnMode(EntitySpeciesData data)
     {
-        //ToDo set spawn indicator
+        speciesData = data;
+
         if (!spawnModeActive)
         {
-            EnterAnimalSpawnMode();
+            EnterSpawnMode();
         }
         else
         {
-            ExitAnimalSpawnMode();
+            ExitSpawnMode();
         }
     }
 
-    public void TogglePlantSpawnMode()
+    public void SetSpawnIndicator(GameObject spawnIndicator)
     {
-        //ToDo set spawn indicator
-        if (!spawnModeActive)
-        {
-            EnterAnimalSpawnMode();
-        }
-        else
-        {
-            ExitAnimalSpawnMode();
-        }
+        spawnIndicatorPrefab = spawnIndicator;
     }
 
-    private void ExitAnimalSpawnMode()
+    private void ExitSpawnMode()
     {
         spawnModeActive = false;
+        speciesData = null;
 
         if (activeSpawnIndicator != null)
         {
@@ -141,6 +147,8 @@ public class InteractionManager : MonoBehaviour
             activeSpawnIndicator = null;
         }
     }
+
+    //------------ Selection --------------------------------------
 
     private void TrySelectAnimal()
     {

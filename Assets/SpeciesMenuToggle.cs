@@ -1,23 +1,23 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SpeciesMenuToggle : MonoBehaviour
+public class SpeciesMenuToggle : MonoBehaviour, IMenu
 {
     public enum SpeciesType { Animal, Plant }
 
     public SpeciesType type;
     public GameObject buttonPrefab; //use this prefab for the species buttons
     public GameObject menuBox;
-    
-    public Vector2 menuBounds = new Vector2(300, 400); //if the species buttons don't fit inside the box, add a scroll bar and make it scrollable
+    public GameObject scrollBox;
+    public Vector2 menuBounds = new Vector2(300, 400);
 
     private bool menuOpen = false;
     
     private RectTransform menuRect;
     private ScrollRect scrollRect;
     private RectTransform contentRect;
-    private GameObject clickBlocker;
 
     private float animationDuration = 0.25f;
 
@@ -29,24 +29,37 @@ public class SpeciesMenuToggle : MonoBehaviour
         button.onClick.AddListener(OnClicked);
 
         menuRect = menuBox.GetComponent<RectTransform>();
-        scrollRect = menuBox.GetComponent<ScrollRect>();
+        scrollRect = scrollBox.GetComponent<ScrollRect>();
         contentRect = scrollRect.content;
 
         menuBox.SetActive(false);
         menuRect.sizeDelta = new Vector2(menuBounds.x, 0f);
-
-        clickBlocker = transform.parent.Find("MenuBlocker").gameObject;
-        clickBlocker.SetActive(false);
-        clickBlocker.GetComponent<Button>().onClick.AddListener(CloseMenu);
     }
 
-    public void OnClicked()
+    void OnClicked()
     {
         if (menuOpen)
-            StartCoroutine(CloseMenuCoroutine());
+            MenuManager.Instance.RequestClose(this);
         else
-            StartCoroutine(OpenMenuCoroutine());
+            MenuManager.Instance.RequestOpen(this);
     }
+
+    #region IMenu Methods
+
+    public void OpenInternal()
+    {
+        StartCoroutine(OpenMenuCoroutine());
+    }
+
+    public void CloseInternal()
+    {
+        StartCoroutine(CloseMenuCoroutine());
+    }
+
+    public RectTransform GetRect() => menuRect;
+
+    #endregion
+    #region Animation Logic
 
     public void CloseMenu()
     {
@@ -57,7 +70,6 @@ public class SpeciesMenuToggle : MonoBehaviour
     {
         menuOpen = true;
         menuBox.SetActive(true);
-        clickBlocker.SetActive(true);
 
         menuRect.sizeDelta = new Vector2(menuBounds.x, 0f);
         yield return StartCoroutine(AnimateHeight(0, menuBounds.y));
@@ -71,7 +83,6 @@ public class SpeciesMenuToggle : MonoBehaviour
         yield return StartCoroutine(AnimateHeight(menuBounds.y, 0));
 
         menuBox.SetActive(false);
-        clickBlocker.SetActive(false);
         menuOpen = false;
     }
 
@@ -89,6 +100,8 @@ public class SpeciesMenuToggle : MonoBehaviour
             yield return null;
         }
     }
+
+    #endregion
 
     void ClearMenu()
     {

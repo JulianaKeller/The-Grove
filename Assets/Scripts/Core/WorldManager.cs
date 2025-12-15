@@ -59,6 +59,9 @@ public class WorldManager : MonoBehaviour
             EnvironmentGrid.Instance.UpdateGrid(timeStep);
             groundFertilityTexture.UpdateFertilityTexture();
         }
+
+        if (tickCount % 10 == 0)
+            EcosystemMetrics.Instance.UpdateBalance();
     }
 
     public void SpawnStartingSpecies<T>(T[] startingSpecies, Action<T, Vector3> spawnAction, int amount)

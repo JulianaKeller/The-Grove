@@ -22,6 +22,8 @@ public abstract class Entity
         nutritionValue = 0f;
         health = 100;
         this.species = species;
+
+        EcosystemMetrics.Instance.RegisterSpawn(species);
     }
 
     public virtual void setLifespan()
@@ -72,6 +74,7 @@ public abstract class Entity
     public virtual void Die()
     {
         isAlive = false;
+        EcosystemMetrics.Instance.RegisterDeath(species);
     }
     public static bool operator ==(Entity a, Entity b)
     {

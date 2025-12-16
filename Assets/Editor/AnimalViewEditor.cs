@@ -16,6 +16,7 @@ public class AnimalViewEditor : Editor
         if (view.data != null && view.data.species != null)
         {
             Animal a = view.data;
+
             AnimalSpeciesData s = a.species;
 
             EditorGUILayout.Space();

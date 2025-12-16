@@ -13,9 +13,10 @@ public class PlantViewEditor : Editor
 
         PlantView view = (PlantView)target;
 
-        if (view.data != null && view.data.species != null)
+        if (view != null && view.data != null && view.data.species != null)
         {
             Plant p = view.data;
+
             PlantSpeciesData s = p.species;
 
             EditorGUILayout.Space();

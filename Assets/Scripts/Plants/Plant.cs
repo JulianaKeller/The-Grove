@@ -11,7 +11,7 @@ public class Plant : Entity
     public Vector3 size;
     public Vector3 prevSize;
     public Vector3 maxSize;
-    public Vector3 minSize = new Vector3(0.01f, 0.01f, 0.01f);
+    public Vector3 minSize = new Vector3(0.1f, 0.1f, 0.1f);
     public float waterMeter;
     public float spreadChance;
     public bool canGrow;
@@ -92,7 +92,7 @@ public class Plant : Entity
             }
         }
 
-        if (age > speciesLifespan || health <= 0 || nutritionValue <= 0)
+        if (age > speciesLifespan || health <= 0 /*|| GetNutritionValue() <= 0*/)
         {
             Die();
             Debug.Log(species.name + " died.");

@@ -1,10 +1,29 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class Animal : Entity
 {
+    public enum AnimalVisualState
+    {
+        Idle,
+        Wandering,
+        SearchingFoodCarnivore,
+        SearchingFoodHerbivore,
+        SearchingWater,
+        SearchingMate,
+        Eating,
+        Drinking,
+        Sleeping,
+        Fighting,
+        Fleeing,
+        Following,
+        Mating,
+        Dead
+    }
+
     public new AnimalSpeciesData species;
     public AnimalState currentState;
     public Vector3 prevPosition;
@@ -32,6 +51,8 @@ public class Animal : Entity
 
     public Animator animator;
 
+    public UnityEvent<AnimalVisualState> OnStateChanged = new UnityEvent<AnimalVisualState>();
+
     public Animal(AnimalSpeciesData species, Vector3 position, int Id, Animal mother) : base(species)
     {
         base.id = Id;
@@ -41,6 +62,7 @@ public class Animal : Entity
         this.species = species;
         this.mother = mother;
         currentState = new IdleState();
+        NotifyStateChange();
 
         base.setLifespan();
         followThresholdAge = speciesLifespan * 0.25f;
@@ -115,6 +137,32 @@ public class Animal : Entity
         currentState?.Exit(this);
         currentState = newState;
         currentState?.Enter(this);
+
+        NotifyStateChange();
+    }
+
+    private void NotifyStateChange()
+    {
+        AnimalVisualState visualState = ResolveVisualState();
+        OnStateChanged.Invoke(visualState);
+    }
+
+    private AnimalVisualState ResolveVisualState()
+    {
+        if (!isAlive) return AnimalVisualState.Dead;
+        if (currentState is FightState) return AnimalVisualState.Fighting;
+        if (currentState is FleeState) return AnimalVisualState.Fleeing;
+        if (currentState is FollowState) return AnimalVisualState.Following;
+        if (currentState is SeekFoodState && species.isCarnivore) return AnimalVisualState.SearchingFoodCarnivore;
+        if (currentState is SeekFoodState && species.isHerbivore) return AnimalVisualState.SearchingFoodHerbivore;
+        if (currentState is SeekWaterState) return AnimalVisualState.SearchingWater;
+        if (currentState is SeekMateState) return AnimalVisualState.SearchingMate;
+        if (currentState is EatState) return AnimalVisualState.Eating;
+        if (currentState is DrinkState) return AnimalVisualState.Drinking;
+        if (currentState is SleepState) return AnimalVisualState.Sleeping;
+        if (currentState is MateState) return AnimalVisualState.Mating;
+        if (currentState is WanderState) return AnimalVisualState.Wandering;
+        return AnimalVisualState.Idle;
     }
 
     private void BiologicalUpdates(float timeStep)

@@ -11,7 +11,8 @@ public class SpeciesMenuToggle : MonoBehaviour, IMenu
     public GameObject buttonPrefab; //use this prefab for the species buttons
     public GameObject menuBox;
     public GameObject scrollBox;
-    public Vector2 menuBounds = new Vector2(300, 400);
+    public GameObject buttonBg;
+    public Vector2 menuBounds;
 
     private bool menuOpen = false;
     
@@ -25,6 +26,8 @@ public class SpeciesMenuToggle : MonoBehaviour, IMenu
 
     void Start()
     {
+        menuBounds = menuBox.GetComponent<RectTransform>().sizeDelta;
+
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClicked);
 
@@ -121,6 +124,7 @@ public class SpeciesMenuToggle : MonoBehaviour, IMenu
         {
             Debug.Log("Loaded Species: " + data.ToString());
             GameObject button = Instantiate(buttonPrefab, contentRect);
+            button.GetComponent<Image>().color = buttonBg.GetComponent<Image>().color;
             var sb = button.GetComponent<SpeciesButton>();
             sb.AssignSpecies(data);
         }

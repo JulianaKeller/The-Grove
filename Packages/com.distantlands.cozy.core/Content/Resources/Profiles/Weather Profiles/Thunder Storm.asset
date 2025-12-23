@@ -78,6 +78,32 @@ MonoBehaviour:
         m_PostInfinity: 2
         m_RotationOrder: 4
       customChanceEffector: {fileID: 0}
+    - limitType: 6
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 3
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      customChanceEffector: {fileID: 11400000, guid: 6a5d0653cf2671c499fb891641e8a377, type: 2}
   forecastNext:
   - {fileID: 11400000, guid: 134d60bbf3db4074599790ce6df65c88, type: 2}
   - {fileID: 11400000, guid: 360273c9c779d1f42a10eee5f070a83a, type: 2}

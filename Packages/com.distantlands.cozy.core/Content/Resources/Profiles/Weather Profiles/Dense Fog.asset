@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc9e8ccf7e1f314da24a604c1a11094, type: 3}
   m_Name: Dense Fog
   m_EditorClassIdentifier: 
-  minWeatherTime: 0.125
-  maxWeatherTime: 0.33333334
-  likelihood: 1
+  minTime: 0.125
+  maxTime: 0.33333334
   chance:
     baseChance: 1
     chanceEffectors:
@@ -41,8 +40,8 @@ MonoBehaviour:
           inWeight: 0.33333334
           outWeight: 0.08690662
         - serializedVersion: 3
-          time: 1
-          value: 1
+          time: 1.0023193
+          value: 0.8512955
           inSlope: 0
           outSlope: 0
           tangentMode: 136
@@ -56,42 +55,6 @@ MonoBehaviour:
   forecastNext:
   - {fileID: 11400000, guid: 360273c9c779d1f42a10eee5f070a83a, type: 2}
   forecastModifierMethod: 0
-  chances:
-  - limitType: 1
-    curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.7921507
-        value: 0.0023527443
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.08690662
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
-    customChanceEffector: {fileID: 0}
   FX:
   - {fileID: 11400000, guid: 37958e75fc835c242a6ab218c3f7c868, type: 2}
   - {fileID: 11400000, guid: 3539307017f50244e9815d6d39bd997b, type: 2}

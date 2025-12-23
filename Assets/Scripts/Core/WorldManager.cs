@@ -6,6 +6,10 @@ using System.Linq;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
+[RequireComponent(typeof(ResourceManager))]
+[RequireComponent(typeof(PlantManager))]
+[RequireComponent(typeof(AnimalManager))]
+[RequireComponent(typeof(EnvironmentGrid))]
 public class WorldManager : MonoBehaviour
 {
     //This script manages time steps and updates all systems
@@ -49,12 +53,13 @@ public class WorldManager : MonoBehaviour
     private void Tick()
     {
         //Debug.Log("Tick");
+        ResourceManager.Instance.UpdateTokens(timeStep);
         EnvironmentGrid.Instance.UpdateGrid(timeStep);
         PlantManager.Instance.UpdatePlants(timeStep, tickCount);
         AnimalManager.Instance.UpdateAnimals(timeStep, tickCount);
         //EventManager.Instance.UpdateEvents(timeStep);
 
-        if (tickCount % 10 == 0 && groundFertilityTexture != null)
+        if (tickCount % 10 == 0 && groundFertilityTexture != null && groundFertilityTexture.enabled)
         {
             EnvironmentGrid.Instance.UpdateGrid(timeStep);
             groundFertilityTexture.UpdateFertilityTexture();

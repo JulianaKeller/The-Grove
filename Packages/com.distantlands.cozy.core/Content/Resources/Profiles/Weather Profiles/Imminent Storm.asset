@@ -12,9 +12,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc9e8ccf7e1f314da24a604c1a11094, type: 3}
   m_Name: Imminent Storm
   m_EditorClassIdentifier: 
-  minWeatherTime: 0.041666668
-  maxWeatherTime: 0.125
-  likelihood: 1
+  minTime: 0.041666668
+  maxTime: 0.125
+  chance:
+    baseChance: 1
+    chanceEffectors:
+    - limitType: 1
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: -0.22835922
+          value: 0.9998169
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1.0198975
+          value: 0.5234871
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      customChanceEffector: {fileID: 0}
+    - limitType: 6
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: -0.22835922
+          value: 0.9998169
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1.0198975
+          value: 0.5234871
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      customChanceEffector: {fileID: 11400000, guid: 6a5d0653cf2671c499fb891641e8a377, type: 2}
   forecastNext:
   - {fileID: 11400000, guid: 3daad8702a5ccbf418a5370bac12e4c0, type: 2}
   - {fileID: 11400000, guid: 455ce7df2555ead47afd8bdb324c85ab, type: 2}
@@ -22,7 +76,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: de62367a00d8753469a83e1f6f8079d3, type: 2}
   - {fileID: 11400000, guid: cc15965868141a44cb0997b3674e317a, type: 2}
   forecastModifierMethod: 0
-  chances: []
   FX:
   - {fileID: 11400000, guid: 6c47c4436d17880469b55c6e5ba5a6e9, type: 2}
   - {fileID: 11400000, guid: 7257577dfb019ed4685ab1e846b98e9e, type: 2}

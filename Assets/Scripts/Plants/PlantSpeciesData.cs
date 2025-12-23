@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Species/PlantSpecies")]
+[CreateAssetMenu(menuName = "TheGrove/Species/PlantSpecies")]
 public class PlantSpeciesData : EntitySpeciesData
 {
     public float maxHP;

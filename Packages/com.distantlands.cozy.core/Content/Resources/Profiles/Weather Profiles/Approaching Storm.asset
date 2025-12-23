@@ -12,13 +12,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc9e8ccf7e1f314da24a604c1a11094, type: 3}
   m_Name: Approaching Storm
   m_EditorClassIdentifier: 
-  minWeatherTime: 0.041666668
-  maxWeatherTime: 0.125
-  likelihood: 1.5
+  minTime: 0.041666668
+  maxTime: 0.125
+  chance:
+    baseChance: 1
+    chanceEffectors:
+    - limitType: 1
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 2
+          outSlope: 2
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      customChanceEffector: {fileID: 0}
+    - limitType: 6
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      customChanceEffector: {fileID: 11400000, guid: 6a5d0653cf2671c499fb891641e8a377, type: 2}
   forecastNext:
   - {fileID: 11400000, guid: 5f1173877e77b3b40af72776ce4ae64a, type: 2}
   forecastModifierMethod: 0
-  chances: []
   FX:
   - {fileID: 11400000, guid: f24b149cbeed0b24d831bde13c20f7f2, type: 2}
   - {fileID: 11400000, guid: 8aa234e65cf012b448367af9914cbe6f, type: 2}

@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc9e8ccf7e1f314da24a604c1a11094, type: 3}
   m_Name: Hail Storm
   m_EditorClassIdentifier: 
-  minWeatherTime: 0.125
-  maxWeatherTime: 0.33333334
-  likelihood: 0.255
+  minTime: 0.125
+  maxTime: 0.33333334
   chance:
     baseChance: 0.225
     chanceEffectors:
@@ -41,8 +40,8 @@ MonoBehaviour:
           inWeight: 0.33333334
           outWeight: 0.14414027
         - serializedVersion: 3
-          time: 1
-          value: 1
+          time: 0.9959717
+          value: 0.9296837
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -105,86 +104,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93d26988b3de2134b9a80fb22acd8dac, type: 2}
   - {fileID: 11400000, guid: 360273c9c779d1f42a10eee5f070a83a, type: 2}
   forecastModifierMethod: 0
-  chances:
-  - limitType: 1
-    curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0.044111505
-        outSlope: 0.044111505
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.07378249
-      - serializedVersion: 3
-        time: 0.7038452
-        value: 0.70022964
-        inSlope: 2.5624804
-        outSlope: 2.5624804
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.14414027
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
-    customChanceEffector: {fileID: 0}
-  - limitType: 0
-    curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.3
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.35
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    customChanceEffector: {fileID: 0}
   FX:
   - {fileID: 11400000, guid: 37958e75fc835c242a6ab218c3f7c868, type: 2}
   - {fileID: 11400000, guid: 5818af68d3b1bdd47ad057e03bb5f10e, type: 2}

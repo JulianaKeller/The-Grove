@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc9e8ccf7e1f314da24a604c1a11094, type: 3}
   m_Name: Overcast
   m_EditorClassIdentifier: 
-  minWeatherTime: 0.125
-  maxWeatherTime: 0.33333334
-  likelihood: 1.295
+  minTime: 0.125
+  maxTime: 0.33333334
   chance:
     baseChance: 1
     chanceEffectors:
@@ -41,8 +40,8 @@ MonoBehaviour:
           inWeight: 0.33333334
           outWeight: 0.08690662
         - serializedVersion: 3
-          time: 1
-          value: 1
+          time: 0.98742676
+          value: 0.6207504
           inSlope: 0
           outSlope: 0
           tangentMode: 136
@@ -64,42 +63,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ae94c1a397a01e442a11e8b23ebb1cef, type: 2}
   - {fileID: 11400000, guid: 971a290a51fcdf54f93efbe42a8e86a7, type: 2}
   forecastModifierMethod: 0
-  chances:
-  - limitType: 1
-    curve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      - serializedVersion: 3
-        time: 0.5579588
-        value: 0.28537276
-        inSlope: 1.2293255
-        outSlope: 1.2293255
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.08690662
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 136
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 0
-    customChanceEffector: {fileID: 0}
   FX:
   - {fileID: 11400000, guid: 37958e75fc835c242a6ab218c3f7c868, type: 2}
   - {fileID: 11400000, guid: 7257577dfb019ed4685ab1e846b98e9e, type: 2}

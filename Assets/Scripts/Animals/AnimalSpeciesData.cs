@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewAnimalSpecies", menuName = "Species/AnimalSpecies")]
+[CreateAssetMenu(fileName = "NewAnimalSpecies", menuName = "TheGrove/Species/AnimalSpecies")]
 public class AnimalSpeciesData : EntitySpeciesData
 {
     public int baseDominance; //indicates spot in the foodchain

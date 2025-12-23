@@ -12,10 +12,10 @@ namespace DistantLands.Cozy
     [CreateAssetMenu(menuName = "Distant Lands/Cozy/WRC/Simple Chance", order = 361)]
     public class SimpleChanceEffector : CustomCozyChanceEffector
     {
-        public float chance;
+        public float rainChance;
         public override float GetChance()
         {
-            return chance;
+            return rainChance;
         }
     }
 

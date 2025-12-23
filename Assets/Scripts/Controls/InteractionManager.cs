@@ -1,6 +1,10 @@
+using DistantLands.Cozy;
+using DistantLands.Cozy.Data;
+using Mono.Cecil;
 using Unity.VisualScripting;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 
@@ -12,8 +16,13 @@ public class InteractionManager : MonoBehaviour
     public GameObject spawnIndicatorPrefab;
     public EntitySpeciesData speciesData;
 
+    public CozyWeatherModule weatherModule;
+    [SerializeField] private SimpleChanceEffector rainChanceEffector;
+
     private GameObject activeSpawnIndicator;
     private bool spawnModeActive = false;
+
+    [Header("Selection & Focus")]
 
     private EntityView selectedAnimal;
 
@@ -50,6 +59,26 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
+    #region WeatherControl
+
+    public void SetWeather(WeatherProfile weatherProfile)
+    {
+        if(weatherProfile == null)
+        {
+            Debug.Log("No weather profiles set...");
+            return;
+        }
+
+        if (!ResourceManager.Instance.TryConsume(TokenType.ChangeWeather))
+            return;
+
+        weatherModule.ecosystem.SetWeather(weatherProfile, 15 * 10);
+    }
+
+    #endregion
+
+    #region Spawning
+
     private void HandleSpawnInput()
     {
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
@@ -66,6 +95,14 @@ public class InteractionManager : MonoBehaviour
 
     private void TrySpawnEntity()
     {
+        TokenType tokenType =
+        speciesData is AnimalSpeciesData
+            ? TokenType.SpawnAnimal
+            : TokenType.SpawnPlant;
+
+        if (!ResourceManager.Instance.TryConsume(tokenType))
+            return;
+
         //Prevent spawning when mouse is over UI element
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return;
@@ -148,7 +185,9 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
-    //------------ Selection --------------------------------------
+    #endregion
+
+    #region Selection
 
     private void TrySelectAnimal()
     {
@@ -189,4 +228,7 @@ public class InteractionManager : MonoBehaviour
             selectedAnimal = null;
         }
     }
+
+    #endregion
+
 }

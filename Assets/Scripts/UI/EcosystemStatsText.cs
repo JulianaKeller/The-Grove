@@ -6,18 +6,17 @@ public class EcosystemStatsText : MonoBehaviour
     public enum StatType { Balance, Diversity }
 
     public StatType statType;
-    private TMP_Text text;
-    private TextMeshProUGUI text01;
+    public TMP_Text text;
+    public TextMeshProUGUI text01;
 
     void Awake()
     {
-        text = GetComponent<TMP_Text>();
-        text01 = GetComponent<TextMeshProUGUI>();
+
     }
 
     void Start()
     {
-        if (EcosystemMetrics.Instance == null) return;
+        if (EcosystemMetrics.Instance == null || text == null || text01 == null) return;
 
         if (statType == StatType.Balance)
         {

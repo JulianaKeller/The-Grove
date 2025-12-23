@@ -12,12 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc9e8ccf7e1f314da24a604c1a11094, type: 3}
   m_Name: Mixed Clouds
   m_EditorClassIdentifier: 
-  minWeatherTime: 0.125
-  maxWeatherTime: 0.33333334
-  likelihood: 0.85
+  minTime: 0.125
+  maxTime: 0.33333334
   chance:
     baseChance: 0.85
-    chanceEffectors: []
+    chanceEffectors:
+    - limitType: 1
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: -0.22835922
+          value: 0.9998169
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1.0164795
+          value: 0.00017166138
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 0
+      customChanceEffector: {fileID: 0}
   forecastNext:
   - {fileID: 11400000, guid: 48908a08bbd076e4182bc3ca961b9c34, type: 2}
   - {fileID: 11400000, guid: df6d6974e6130cf4ba80f13cf41ae5f4, type: 2}
@@ -26,7 +51,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 56652bb77d1606b4396767fbb07e50ab, type: 2}
   - {fileID: 11400000, guid: ccbfe05b7967917448c280fffa3a86d1, type: 2}
   forecastModifierMethod: 0
-  chances: []
   FX:
   - {fileID: 11400000, guid: 485b0d34053264f44afdb830525cd648, type: 2}
   - {fileID: 11400000, guid: c84a3eeb17e7fda42a90258abefc54ce, type: 2}

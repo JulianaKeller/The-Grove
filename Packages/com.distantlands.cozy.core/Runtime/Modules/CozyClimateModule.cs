@@ -142,7 +142,7 @@ namespace DistantLands.Cozy
 
         public float GetHumidity(float time)
         {
-
+            
             return climateProfile.GetHumidity(weatherSphere, time) + localPrecipitationFilter;
         }
 

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1962331946642060453}
   - component: {fileID: 7807734206689708419}
   - component: {fileID: 1567383265908088263}
+  - component: {fileID: 5301061850571349207}
   m_Layer: 0
   m_Name: SpawnMenuButton
   m_TagString: Untagged
@@ -157,6 +158,25 @@ MonoBehaviour:
   scrollBox: {fileID: 4121898582195262058}
   buttonBg: {fileID: 8518680278101478848}
   menuBounds: {x: 0, y: 0}
+--- !u!114 &5301061850571349207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076696542031098296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 540e0f48ef8c90c42a06fd7363c66c09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tokenType: 0
+  tokenText: {fileID: 1282556468778550711}
+  buttonBG:
+  - {fileID: 5166443402052095097}
+  - {fileID: 4966438322737959018}
+  buttonColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.776, g: 0.776, b: 0.776, a: 1}
 --- !u!1 &2167128953178101277
 GameObject:
   m_ObjectHideFlags: 0

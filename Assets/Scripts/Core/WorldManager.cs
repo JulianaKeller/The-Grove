@@ -57,6 +57,7 @@ public class WorldManager : MonoBehaviour
         EnvironmentGrid.Instance.UpdateGrid(timeStep);
         PlantManager.Instance.UpdatePlants(timeStep, tickCount);
         AnimalManager.Instance.UpdateAnimals(timeStep, tickCount);
+        WaterSourceManager.Instance.UpdateWaterSources(timeStep, tickCount);
         //EventManager.Instance.UpdateEvents(timeStep);
 
         if (tickCount % 10 == 0 && groundFertilityTexture != null && groundFertilityTexture.enabled)

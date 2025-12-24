@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DrinkState : AnimalState
 {
-    private GameObject waterSource;
+    private WaterSource waterSource;
 
     public override void Enter(Animal a) { }
     public override void Execute(Animal a, float dt) { }

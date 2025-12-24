@@ -68,7 +68,26 @@ public class ResourceManager : MonoBehaviour
         return true;
     }
 
-    public int GetCurrent(TokenType type) => tokens[type].current;
+    public int GetCurrent(TokenType type) {
+        if(tokens == null || tokens.Count == 0)
+        {
+            return 0;
+        }
+        if(tokens.TryGetValue(type,out var token))
+        {
+            return token.current;
+        }
+        else
+        {
+            return 0;
+        }
+    } 
+
+    public bool Has(TokenType type)
+    {
+        return GetCurrent(type) > 0;
+    }
+
     public int GetMax(TokenType type) => tokens[type].definition.maxAmount;
 
     private void Notify(Token token)

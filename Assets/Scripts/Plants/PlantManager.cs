@@ -75,7 +75,6 @@ public class PlantManager : MonoBehaviour
                 }
             }
 
-            //-----Add to Grid-----
             EnvironmentGrid.Instance.RegisterPlant(data);
 
             Debug.Log("Spwaned a " + data.species.name);

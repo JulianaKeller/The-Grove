@@ -42,7 +42,7 @@ public class EcosystemStatsText : MonoBehaviour
 
     private void UpdateText(float value)
     {
-        string newText = $"{statType}: {Mathf.RoundToInt(value)}";
+        string newText = $"{Mathf.RoundToInt(value)}";
         text.text = newText;
         text01.text = newText;
 

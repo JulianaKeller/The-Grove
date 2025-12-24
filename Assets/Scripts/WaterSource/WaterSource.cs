@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class WaterSource
 {
+    public int id { get; private set; }
+
+    public float baseCapacity = 100f;
+
     public Vector3 position;
 
     public WaterSourceView view;
@@ -11,16 +15,13 @@ public class WaterSource
     public float capacity;
     public float currentWater;
 
-    public float evaporationRate = 0.01f;
-    public float influenceRadius = 5f;
-    public float fertilityBonus = 0.05f;
-    public float moistureBonus = 0.05f;
-
-    public WaterSource(Vector3 pos, float capacity)
+    public WaterSource(Vector3 pos, int Id, float radius)
     {
+        id = Id;
         position = pos;
-        radius = 1f;
-        this.capacity = capacity;
+        this.radius = radius;
+        float area = Mathf.PI * radius * radius;
+        capacity = baseCapacity * area;
         currentWater = capacity;
     }
 
@@ -37,14 +38,21 @@ public class WaterSource
         currentWater = Mathf.Min(capacity, currentWater + amount);
     }
 
-    public void UpdateWaterSource(float timeStep)
+    public void UpdateWaterSource(float timeStep, float evaporationRate)
     {
         currentWater -= evaporationRate * timeStep;
         currentWater = Mathf.Clamp(currentWater, 0f, capacity);
     }
 
-    public void RegisterInGrid()
+    public static bool operator ==(WaterSource a, WaterSource b)
     {
-        EnvironmentGrid.Instance.RegisterWaterSource(this);
+        if (a is null || b is null) return false;
+
+        return a.id == b.id;
+    }
+
+    public static bool operator !=(WaterSource a, WaterSource b)
+    {
+        return !(a == b);
     }
 }

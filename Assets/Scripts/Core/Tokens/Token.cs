@@ -12,7 +12,7 @@ public class Token
     public Token(TokenDefinition def)
     {
         definition = def;
-        current = def.maxAmount;
+        current = def.startingAmount;
     }
 
     public bool CanConsume()

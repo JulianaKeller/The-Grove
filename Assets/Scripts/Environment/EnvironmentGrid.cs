@@ -186,7 +186,6 @@ public class EnvironmentGrid
 
                 foreach(WaterSource s in cell.waterSources)
                 {
-                    s.UpdateWaterSource(timeStep); // ToDo move this to WaterSourceManager
                     ApplyWaterInfluence(s, x, z, timeStep);
                 }
 
@@ -205,7 +204,7 @@ public class EnvironmentGrid
                     minFertility, maxFertility
                 );
 
-                // moisture decreases due to plants - done in Plant
+                // moisture decreases due to plants - done in Plant as moisture draw differs by plant needs
 
                 // natural moisture loss
                 cell.moisture = Mathf.Clamp(cell.moisture - moistureLossRate, minMoisture, maxMoisture);
@@ -220,17 +219,12 @@ public class EnvironmentGrid
 
     private void ApplyWaterInfluence(WaterSource ws, int cellX, int cellZ, float timeStep) //x and z are the indices of the cell in which the water source is contained
     {
-        Vector3 size = ws.view.currentScale;
-        float influenceX = size.x * 0.5f + ws.influenceRadius;
-        float influenceZ = size.z * 0.5f + ws.influenceRadius;
+        int cells = Mathf.CeilToInt(ws.radius + WaterSourceManager.Instance.influenceRadius / cellSize);
 
-        int cellsX = Mathf.CeilToInt(influenceX / cellSize);
-        int cellsZ = Mathf.CeilToInt(influenceZ / cellSize);
-
-        int startX = Mathf.Max(cellX - cellsX, 0);
-        int endX = Mathf.Min(cellX + cellsX, gridSize - 1);
-        int startZ = Mathf.Max(cellZ - cellsZ, 0);
-        int endZ = Mathf.Min(cellZ + cellsZ, gridSize - 1);
+        int startX = Mathf.Max(cellX - cells, 0);
+        int endX = Mathf.Min(cellX + cells, gridSize - 1);
+        int startZ = Mathf.Max(cellZ - cells, 0);
+        int endZ = Mathf.Min(cellZ + cells, gridSize - 1);
 
         for (int x = startX; x <= endX; x++)
         {
@@ -238,8 +232,8 @@ public class EnvironmentGrid
             {
                 GridCell cell = grid[x, z];
 
-                float moistureBonus = ws.moistureBonus * timeStep * (ws.currentWater / ws.capacity);
-                float fertilityBonus = ws.fertilityBonus * timeStep * (ws.currentWater / ws.capacity);
+                float moistureBonus = WaterSourceManager.Instance.moistureBonus * timeStep * (ws.currentWater / ws.capacity);
+                float fertilityBonus = WaterSourceManager.Instance.fertilityBonus * timeStep * (ws.currentWater / ws.capacity);
 
                 cell.moisture = Mathf.Clamp(cell.moisture + moistureBonus, minMoisture, maxMoisture);
                 cell.fertility = Mathf.Clamp(cell.fertility + fertilityBonus, minFertility, maxFertility);

@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class FollowMouseAndClamp : MonoBehaviour
 {
+    [Header("Mode")]
+    public bool clampToTerrain = true;
+    public bool alignWithSurfaceNormal = false;
+
     [Header("Raycast Settings")]
     public LayerMask terrainLayer;
     public float maxRayDistance = 1000f;
@@ -9,9 +13,6 @@ public class FollowMouseAndClamp : MonoBehaviour
 
     [Header("Offset")]
     public float surfaceOffset = 0.1f;
-
-    [Header("Rotation (optional)")]
-    public bool alignWithSurfaceNormal = false;
 
     Camera cam;
     Renderer[] renderers;
@@ -30,6 +31,15 @@ public class FollowMouseAndClamp : MonoBehaviour
     void UpdatePosition()
     {
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+
+        if (!clampToTerrain)
+        {
+            IsOnTerrain = true;
+            SetVisible(true);
+
+            transform.position = ray.origin + ray.direction * 10f;
+            return;
+        }
 
         if (Physics.Raycast(ray, out RaycastHit hit, maxRayDistance, terrainLayer))
         {

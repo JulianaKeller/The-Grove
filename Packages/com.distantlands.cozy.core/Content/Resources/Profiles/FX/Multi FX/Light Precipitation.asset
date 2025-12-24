@@ -83,6 +83,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}
   - FX: {fileID: 11400000, guid: 68819bc966d79894e94dbfbdfaf541fa, type: 2}
     intensityCurve:
       limitType: 0
@@ -128,6 +129,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}
   - FX: {fileID: 11400000, guid: 82f08f29e9d166f42a369ee7f50562ba, type: 2}
     intensityCurve:
       limitType: 0
@@ -173,6 +175,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}
   - FX: {fileID: 11400000, guid: 81d5405a7a2400b468f4feeace096c59, type: 2}
     intensityCurve:
       limitType: 0
@@ -218,6 +221,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}
   - FX: {fileID: 11400000, guid: f9107794a63ac564fa46fe885ce94e55, type: 2}
     intensityCurve:
       limitType: 0
@@ -263,6 +267,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}
   - FX: {fileID: 11400000, guid: b745ff07562ab7b4582ae6cdd9e545cd, type: 2}
     intensityCurve:
       limitType: 0
@@ -308,6 +313,7 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}
   - FX: {fileID: 11400000, guid: 13e4ffdca985652489d4908ca0d98fc9, type: 2}
     intensityCurve:
       limitType: 0
@@ -353,6 +359,53 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}
+  - FX: {fileID: 11400000, guid: 82b6e1656a14d614bb3451fc5524aa1a, type: 2}
+    intensityCurve:
+      limitType: 0
+      curve:
+        serializedVersion: 2
+        m_Curve:
+        - serializedVersion: 3
+          time: 0
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.3
+          value: 0
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 0.34
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
+          time: 1
+          value: 1
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}
   test:
     FX: {fileID: 0}
     intensityCurve:
@@ -363,3 +416,4 @@ MonoBehaviour:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
+      customChanceEffector: {fileID: 0}

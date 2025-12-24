@@ -20,9 +20,8 @@ public class Plant : Entity
 
     public PlantView view;
 
-    public Plant(PlantSpeciesData species, Vector3 position, int Id) : base(species)
+    public Plant(PlantSpeciesData species, Vector3 position, int Id) : base(species, Id)
     {
-        base.id = Id;
         base.isAnimal = false;
         base.position = position;
         this.species = species;
@@ -127,4 +126,36 @@ public class Plant : Entity
         base.Die();
         PlantManager.Instance.RemovePlant(this);
     }
+
+    #region Overrides
+
+    public static bool operator ==(Plant a, Plant b)
+    {
+        if (a is null || b is null) return false;
+
+        return a.id == b.id;
+    }
+
+    public static bool operator !=(Plant a, Plant b)
+    {
+        return !(a == b);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj))
+            return true;
+
+        if (obj is not Plant other)
+            return false;
+
+        return id == other.id;
+    }
+
+    public override int GetHashCode()
+    {
+        return id.GetHashCode();
+    }
+
+    #endregion
 }

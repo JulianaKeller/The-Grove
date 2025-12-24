@@ -2,7 +2,7 @@ using UnityEngine;
 
 public abstract class Entity
 {
-    public int id;
+    public int id { get; private set; }
     public Vector3 position; //current position
     public EntitySpeciesData species;
     public bool isAlive = true;
@@ -16,8 +16,9 @@ public abstract class Entity
 
     public virtual void UpdateEntity(float dt) { }
 
-    public Entity(EntitySpeciesData species)
+    public Entity(EntitySpeciesData species, int Id)
     {
+        id = Id;
         age = 0;
         nutritionValue = 0f;
         health = 100;

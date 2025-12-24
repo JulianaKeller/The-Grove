@@ -25,7 +25,13 @@ public class TokenDisplay : MonoBehaviour
 
     void OnEnable()
     {
-        if(tokenText == null){
+        
+    }
+
+    private void Start()
+    {
+        if (tokenText == null)
+        {
             return;
         }
 

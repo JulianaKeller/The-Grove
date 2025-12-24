@@ -53,9 +53,8 @@ public class Animal : Entity
 
     public UnityEvent<AnimalVisualState> OnStateChanged = new UnityEvent<AnimalVisualState>();
 
-    public Animal(AnimalSpeciesData species, Vector3 position, int Id, Animal mother) : base(species)
+    public Animal(AnimalSpeciesData species, Vector3 position, int Id, Animal mother) : base(species, Id)
     {
-        base.id = Id;
         base.isAnimal = true;
         base.position = position;
         prevPosition = position;
@@ -583,5 +582,17 @@ public class Animal : Entity
         animator.SetBool("isMating", false);
         animator.SetBool("isFighting", false);
         animator.SetBool("isFleeing", false);
+    }
+
+    public static bool operator ==(Animal a, Animal b)
+    {
+        if (a is null || b is null) return false;
+
+        return a.id == b.id;
+    }
+
+    public static bool operator !=(Animal a, Animal b)
+    {
+        return !(a == b);
     }
 }

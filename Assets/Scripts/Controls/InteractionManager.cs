@@ -1,6 +1,7 @@
 using DistantLands.Cozy;
 using DistantLands.Cozy.Data;
 using Mono.Cecil;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
@@ -12,11 +13,19 @@ public class InteractionManager : MonoBehaviour
 {
     public static InteractionManager Instance { get; private set; }
 
+    [Header("Water Source Creation")]
+
+    public float baseRadius;
+    private bool waterSourcePlacementActive;
+
+    [Header("Weather Control")]
+    public WeatherProfile weatherProfile;
+    private bool weatherModeActive;
+
     [Header("Spawning")]
     public GameObject spawnIndicatorPrefab;
     public EntitySpeciesData speciesData;
 
-    public CozyWeatherModule weatherModule;
     [SerializeField] private SimpleChanceEffector rainChanceEffector;
 
     private GameObject activeSpawnIndicator;
@@ -36,16 +45,19 @@ public class InteractionManager : MonoBehaviour
     private void Start()
     {
         cameraController = Camera.main.GetComponent<CameraController>();
+        baseRadius = WaterSourceManager.Instance.waterSourceRadius;
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-            TrySelectAnimal();
-
         if (Input.GetKeyDown(KeyCode.F) && selectedAnimal != null)
         {
             cameraController.ToggleFocusMode(selectedAnimal.transform);
+        }
+
+        if (spawnModeActive || weatherModeActive)
+        {
+            HandleSpawnInput();
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -53,15 +65,115 @@ public class InteractionManager : MonoBehaviour
             cameraController.ExitFocusModeRequest();
         }
 
-        if (spawnModeActive)
+        if (Input.GetMouseButtonDown(0))
+            TrySelectAnimal();
+    }
+
+    private void CreateSpawnIndicator(bool clampToTerrain)
+    {
+        activeSpawnIndicator = Instantiate(spawnIndicatorPrefab);
+        activeSpawnIndicator.SetActive(true);
+
+        var follow = activeSpawnIndicator.GetComponent<FollowMouseAndClamp>();
+        if (follow != null)
+            follow.clampToTerrain = clampToTerrain;
+    }
+
+    private void RemoveSpawnIndicator()
+    {
+        if (activeSpawnIndicator != null)
         {
-            HandleSpawnInput();
+            activeSpawnIndicator.GetComponent<FollowMouseAndClamp>().enabled = false;
+            var disappear = activeSpawnIndicator.GetComponent<IndicatorDisappear>();
+            disappear.Disappear();
+            activeSpawnIndicator = null;
         }
     }
 
+    #region Water Source Creation
+
+    public void ToggleWaterSourcePlacementMode()
+    {
+        ExitAllModes();
+
+        if (waterSourcePlacementActive)
+        {
+            return;
+        }
+
+        waterSourcePlacementActive = true;
+
+        CreateSpawnIndicator(true);
+        //ToDo scale water source spawn indicator to match baseRadius
+    }
+
+    private void TryCreateWaterSource()
+    {
+        if (InvalidSpawnLocation())
+        {
+            return;
+        }
+
+        Vector3 pos = activeSpawnIndicator.transform.position;
+
+        if (!EnvironmentGrid.Instance.IsAreaInsideGrid(pos, baseRadius + WaterSourceManager.Instance.radiusVariation))
+            return;
+
+        float radius = WaterSourceManager.Instance.SpawnWaterSource(pos);
+
+        LowerTerrain(pos, radius, WaterSourceManager.Instance.depth, irregularity: 0.15f);
+
+        ExitWaterSourceCreationMode();
+    }
+
+    public void LowerTerrain(Vector3 center, float radius, float depth, float irregularity)
+    {
+        foreach (var point in GetTerrainPointsInRadius(center, radius))
+        {
+            float dist01 = Vector3.Distance(point.worldPos, center) / radius;
+            float noise = Mathf.PerlinNoise(point.x * 0.3f, point.z * 0.3f);
+            float falloff = Mathf.SmoothStep(1f, 0f, dist01);
+
+            float deformation = depth * falloff * Mathf.Lerp(1f, noise, irregularity);
+
+            point.height -= deformation;
+        }
+
+        ApplyTerrain();
+    }
+
+
+    private void ExitWaterSourceCreationMode()
+    {
+        ExitAllModes();
+    }
+
+    #endregion
+
     #region WeatherControl
 
-    public void SetWeather(WeatherProfile weatherProfile)
+    public void ToggleSummonWeatherMode(WeatherProfile weather)
+    {
+        weatherProfile = weather;
+        if (weatherModeActive)
+            ExitWeatherMode();
+        else
+            EnterRainMode();
+    }
+
+    private void EnterRainMode()
+    {
+        if (!ResourceManager.Instance.Has(TokenType.ChangeWeather))
+            return;
+
+        ExitAllModes();
+
+        weatherModeActive = true;
+
+        CreateSpawnIndicator(false);
+    }
+
+    private void TrySetWeather()
     {
         if(weatherProfile == null)
         {
@@ -69,10 +181,17 @@ public class InteractionManager : MonoBehaviour
             return;
         }
 
-        if (!ResourceManager.Instance.TryConsume(TokenType.ChangeWeather))
-            return;
+        if (ResourceManager.Instance.TryConsume(TokenType.ChangeWeather))
+        {
+            CozyWeather.instance.weatherModule.ecosystem.SetWeather(weatherProfile, 15 * 10);
+        }
 
-        weatherModule.ecosystem.SetWeather(weatherProfile, 15 * 10);
+        ExitWeatherMode();
+    }
+
+    private void ExitWeatherMode()
+    {
+        ExitAllModes();
     }
 
     #endregion
@@ -83,31 +202,41 @@ public class InteractionManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape))
         {
-            ExitSpawnMode();
+            ExitAllModes();
             return;
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            TrySpawnEntity();
+            if (spawnModeActive)
+            {
+                TrySpawnEntity();
+            }
+            if (weatherModeActive)
+            {
+                TrySetWeather();
+            }
+            if (waterSourcePlacementActive)
+            {
+                TryCreateWaterSource();
+            }
+            
         }
     }
 
     private void TrySpawnEntity()
     {
+        if (InvalidSpawnLocation())
+        {
+            return;
+        }
+
         TokenType tokenType =
         speciesData is AnimalSpeciesData
             ? TokenType.SpawnAnimal
             : TokenType.SpawnPlant;
 
         if (!ResourceManager.Instance.TryConsume(tokenType))
-            return;
-
-        //Prevent spawning when mouse is over UI element
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-            return;
-
-        if (!activeSpawnIndicator.GetComponent<FollowMouseAndClamp>().IsOnTerrain)
             return;
 
         Vector3 spawnPos = activeSpawnIndicator.transform.position;
@@ -123,14 +252,6 @@ public class InteractionManager : MonoBehaviour
             PlantManager.Instance.SpawnPlant(plantData, spawnPos);
         }
 
-        if (activeSpawnIndicator != null)
-        {
-            activeSpawnIndicator.GetComponent<FollowMouseAndClamp>().enabled = false;
-            var disappear = activeSpawnIndicator.GetComponent<IndicatorDisappear>();
-            disappear.Disappear();
-            activeSpawnIndicator = null;
-        }
-
         ExitSpawnMode();
     }
 
@@ -141,17 +262,11 @@ public class InteractionManager : MonoBehaviour
         if (speciesData == null)
             return;
 
-        CancelAllModes();
+        ExitAllModes();
 
         spawnModeActive = true;
 
-        activeSpawnIndicator = Instantiate(spawnIndicatorPrefab);
-        activeSpawnIndicator.SetActive(true);
-    }
-
-    private void CancelAllModes()
-    {
-        // todo exit other spawning modes
+        CreateSpawnIndicator(true);
     }
 
     public void ToggleSpawnMode(EntitySpeciesData data)
@@ -175,14 +290,7 @@ public class InteractionManager : MonoBehaviour
 
     private void ExitSpawnMode()
     {
-        spawnModeActive = false;
-        speciesData = null;
-
-        if (activeSpawnIndicator != null)
-        {
-            Destroy(activeSpawnIndicator);
-            activeSpawnIndicator = null;
-        }
+        ExitAllModes();
     }
 
     #endregion
@@ -227,6 +335,31 @@ public class InteractionManager : MonoBehaviour
             selectedAnimal.SetSelected(false);
             selectedAnimal = null;
         }
+    }
+
+    #endregion
+
+    #region Utility functions
+
+    private void ExitAllModes()
+    {
+        spawnModeActive = false;
+        weatherModeActive = false;
+        waterSourcePlacementActive = false;
+
+        RemoveSpawnIndicator();
+    }
+
+    private bool InvalidSpawnLocation()
+    {
+        //Prevent spawning when mouse is over UI element
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            return true;
+
+        if (!activeSpawnIndicator.GetComponent<FollowMouseAndClamp>().IsOnTerrain)
+            return true;
+
+        return false;
     }
 
     #endregion

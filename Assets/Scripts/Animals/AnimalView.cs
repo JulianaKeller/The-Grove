@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AnimalView : EntityView
 {
+    public bool isWorking = true;
     public Animal data;
     private float interpolationFactor = 0f;
 

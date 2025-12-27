@@ -75,6 +75,23 @@ public class EnvironmentGrid
         return new Vector2Int(x, z);
     }
 
+    public bool IsAreaInsideGrid(Vector3 worldPos, float radius)
+    {
+        float halfSize = gridSize * cellSize * 0.5f;
+
+        float minX = gridCenter.x - halfSize;
+        float maxX = gridCenter.x + halfSize;
+        float minZ = gridCenter.z - halfSize;
+        float maxZ = gridCenter.z + halfSize;
+
+        if (worldPos.x - radius < minX) return false;
+        if (worldPos.x + radius > maxX) return false;
+        if (worldPos.z - radius < minZ) return false;
+        if (worldPos.z + radius > maxZ) return false;
+
+        return true;
+    }
+
     public void RegisterAnimal(Animal a)
     {
         var coords = GetCellCoords(a.position);

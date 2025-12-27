@@ -30,21 +30,12 @@ public class AnimalStateIcon : MonoBehaviour
             iconMap[entry.state] = entry.icon;
             //Debug.Log("New sprite dictionary entry: State " + entry.state + " has icon " + (iconMap[entry.state]? iconMap[entry.state].name:iconMap[entry.state]));
         }
-
-        if(animal == null)
-        {
-            animal = transform.root.GetComponentInChildren<AnimalView>()?.data;
-        }
     }
 
-    void OnEnable()
+    public void Initialize(Animal animal)
     {
-        if (animal != null)
-            animal.OnStateChanged.AddListener(UpdateIcon);
-        else
-        {
-            Debug.Log("Animal is null!");
-        }
+        this.animal = animal;
+        animal.OnStateChanged.AddListener(UpdateIcon);
     }
 
     void OnDisable()

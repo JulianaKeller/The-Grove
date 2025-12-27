@@ -23,7 +23,6 @@ public class WaterSourceManager : MonoBehaviour
 
     public float depth = 0.1f;
     public float baseEvaporationRate = 0.01f;
-    private float evaporationRate = 0.01f;
     public float influenceRadius = 5f;
     public float fertilityBonus = 0.05f;
     public float moistureBonus = 0.05f;

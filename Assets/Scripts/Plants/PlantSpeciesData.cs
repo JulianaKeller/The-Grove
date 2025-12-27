@@ -26,4 +26,20 @@ public class PlantSpeciesData : EntitySpeciesData
     {
         return !(a == b);
     }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj))
+            return true;
+
+        if (obj is not PlantSpeciesData other)
+            return false;
+
+        return speciesName == other.speciesName;
+    }
+
+    public override int GetHashCode()
+    {
+        return speciesName != null ? speciesName.GetHashCode() : 0;
+    }
 }

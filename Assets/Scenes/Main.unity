@@ -847,6 +847,38 @@ PrefabInstance:
       propertyPath: m_text
       value: "Create \nWater Source"
       objectReference: {fileID: 0}
+    - target: {fileID: 1962331946642060453, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962331946642060453, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962331946642060453, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 415286990}
+    - target: {fileID: 1962331946642060453, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962331946642060453, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleWaterSourcePlacementMode
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962331946642060453, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: InteractionManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1962331946642060453, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 7102411812618636223, guid: 67425f16b3529f746874910aea6f3875, type: 3}
+    - target: {fileID: 1962331946642060453, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2076696542031098296, guid: 848bda6a342395b4ca326b0182359e35, type: 3}
       propertyPath: m_Name
       value: CreateWaterSource
@@ -6892,6 +6924,7 @@ GameObject:
   - component: {fileID: 415286990}
   - component: {fileID: 415286991}
   - component: {fileID: 415286992}
+  - component: {fileID: 415286994}
   m_Layer: 0
   m_Name: WorldRoot
   m_TagString: Untagged
@@ -6929,7 +6962,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f42584f51286a194bb3c05b2697cdb47, type: 2}
   - {fileID: 11400000, guid: 718409bc3204450489fc220eab553774, type: 2}
   - {fileID: 11400000, guid: c8e5f68ab91b36344a50be59a4df2766, type: 2}
-  initialSpawnAmount: 3
+  initialSpawnAmount: 1
 --- !u!114 &415286986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6995,6 +7028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce39a0ce46ef994eb030f38d67070b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseRadius: 0
   weatherProfile: {fileID: 0}
   spawnIndicatorPrefab: {fileID: 7823327091382468809, guid: 4f566698012961447b0ed1120d9a000a, type: 3}
   speciesData: {fileID: 0}
@@ -7049,17 +7083,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateSubsetCount: 1
-  waterSourceRadius: 1
-  radiusVariation: 0.5
+  waterSourceRadius: 100
+  radiusVariation: 10
   waterSourcePrefab: {fileID: 4102032854339766673, guid: ec78b44af13a8954496f3ee659e9fdf9, type: 3}
   waterSourcesParent: {fileID: 272089414}
   depth: 0.1
+  baseEvaporationRate: 0.01
   influenceRadius: 5
   fertilityBonus: 0.05
   moistureBonus: 0.05
   refillLight: 0.5
   refillHeavy: 1
   refillThunderstorm: 1
+--- !u!114 &415286994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415286984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e864e9b7801050b4aa152d27a540a314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  terrain: {fileID: 568663588}
 --- !u!1001 &484144714
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10182,7 +10233,7 @@ Transform:
   m_GameObject: {fileID: 819701881}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000037252899, y: -0, z: -0.0000000074505797, w: 1}
-  m_LocalPosition: {x: -98.60157, y: 42.670643, z: 136.3632}
+  m_LocalPosition: {x: 13.146194, y: 40.58937, z: 71.31556}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18589,7 +18640,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 171.6621, y: 171.6621, z: 171.6621}
+  m_LocalScale: {x: 70.49011, y: 70.49011, z: 70.49011}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1474866577}

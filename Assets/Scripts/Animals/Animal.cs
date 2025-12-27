@@ -586,7 +586,8 @@ public class Animal : Entity
 
     public static bool operator ==(Animal a, Animal b)
     {
-        if (a is null || b is null) return false;
+        if (ReferenceEquals(a, b)) return true;
+        if (ReferenceEquals(a, null) || ReferenceEquals(b, null)) return false;
 
         return a.id == b.id;
     }
@@ -594,5 +595,21 @@ public class Animal : Entity
     public static bool operator !=(Animal a, Animal b)
     {
         return !(a == b);
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj is null) return false;
+
+        if (obj is Animal other)
+            return id == other.id;
+
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return id.GetHashCode();
     }
 }

@@ -89,4 +89,20 @@ public abstract class Entity
     {
         return !(a == b);
     }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj is null) return false;
+
+        if (obj is Entity other)
+            return id == other.id;
+
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return id.GetHashCode();
+    }
 }

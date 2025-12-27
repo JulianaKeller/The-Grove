@@ -56,6 +56,12 @@ public class AnimalManager : MonoBehaviour
 
             GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length - 1)], pos, Quaternion.identity, spawnedAnimalsParent ? spawnedAnimalsParent.transform : null);
 
+            if(obj == null)
+            {
+                Debug.LogWarning("ANIMAL COULD NOT BE INSTANTIATED!");
+                return;
+            }
+
             AnimalView view = obj.GetComponent<AnimalView>();
 
             view.data = data;
@@ -63,6 +69,18 @@ public class AnimalManager : MonoBehaviour
 
             views.Add(view);
             animals.Add(data);
+
+            //Initialize thought bubbles:
+            var icon = obj.GetComponentInChildren<AnimalStateIcon>();
+            if (icon != null)
+            {
+                icon.Initialize(data);
+                Debug.Log("AnimalStateIcon initialized.");
+            }
+            else
+            {
+                Debug.LogWarning("AnimalStateIcon component not found in children of spawned animal!");
+            }
 
             data.animator = view.GetComponentInChildren<Animator>();
 

@@ -55,4 +55,20 @@ public class WaterSource
     {
         return !(a == b);
     }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj is null) return false;
+
+        if (obj is WaterSource other)
+            return id == other.id;
+
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return id.GetHashCode();
+    }
 }

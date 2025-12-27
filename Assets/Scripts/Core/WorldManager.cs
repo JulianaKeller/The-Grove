@@ -9,7 +9,7 @@ using static UnityEditor.PlayerSettings;
 [RequireComponent(typeof(ResourceManager))]
 [RequireComponent(typeof(PlantManager))]
 [RequireComponent(typeof(AnimalManager))]
-[RequireComponent(typeof(EnvironmentGrid))]
+[RequireComponent(typeof(WaterSourceManager))]
 public class WorldManager : MonoBehaviour
 {
     //This script manages time steps and updates all systems
@@ -27,7 +27,6 @@ public class WorldManager : MonoBehaviour
     private float accumulator = 0f;
     private int tickCount = 0;
 
-    // ensures only one instance exists
     void Awake()
     {
         if (Instance != null && Instance != this)

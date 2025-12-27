@@ -25,4 +25,20 @@ public abstract class EntitySpeciesData : ScriptableObject
     {
         return !(a == b);
     }
+
+    public override bool Equals(object obj)
+    {
+        if (ReferenceEquals(this, obj))
+            return true;
+
+        if (obj is not EntitySpeciesData other)
+            return false;
+
+        return speciesName == other.speciesName;
+    }
+
+    public override int GetHashCode()
+    {
+        return speciesName != null ? speciesName.GetHashCode() : 0;
+    }
 }

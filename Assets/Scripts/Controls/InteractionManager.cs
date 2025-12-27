@@ -39,7 +39,13 @@ public class InteractionManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
@@ -55,7 +61,7 @@ public class InteractionManager : MonoBehaviour
             cameraController.ToggleFocusMode(selectedAnimal.transform);
         }
 
-        if (spawnModeActive || weatherModeActive)
+        if (spawnModeActive || weatherModeActive || waterSourcePlacementActive)
         {
             HandleSpawnInput();
         }
@@ -92,8 +98,10 @@ public class InteractionManager : MonoBehaviour
 
     #region Water Source Creation
 
-    public void ToggleWaterSourcePlacementMode()
+    public void ToggleWaterSourcePlacementMode(GameObject indicator)
     {
+        SetSpawnIndicator(indicator);
+
         ExitAllModes();
 
         if (waterSourcePlacementActive)
@@ -121,25 +129,9 @@ public class InteractionManager : MonoBehaviour
 
         float radius = WaterSourceManager.Instance.SpawnWaterSource(pos);
 
-        LowerTerrain(pos, radius, WaterSourceManager.Instance.depth, irregularity: 0.15f);
+        TerrainDeformer.Instance.LowerTerrain(pos, radius, WaterSourceManager.Instance.depth, irregularity: 0.15f);
 
         ExitWaterSourceCreationMode();
-    }
-
-    public void LowerTerrain(Vector3 center, float radius, float depth, float irregularity)
-    {
-        foreach (var point in GetTerrainPointsInRadius(center, radius))
-        {
-            float dist01 = Vector3.Distance(point.worldPos, center) / radius;
-            float noise = Mathf.PerlinNoise(point.x * 0.3f, point.z * 0.3f);
-            float falloff = Mathf.SmoothStep(1f, 0f, dist01);
-
-            float deformation = depth * falloff * Mathf.Lerp(1f, noise, irregularity);
-
-            point.height -= deformation;
-        }
-
-        ApplyTerrain();
     }
 
 

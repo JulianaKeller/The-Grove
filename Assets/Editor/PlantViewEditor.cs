@@ -6,7 +6,7 @@ public class PlantViewEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        //base.OnInspectorGUI();
 
         // Draw default inspector fields (like prefab, transforms, etc.)
         DrawDefaultInspector();

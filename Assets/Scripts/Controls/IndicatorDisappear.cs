@@ -12,7 +12,6 @@ public class IndicatorDisappear : MonoBehaviour
     private Color[] originalStartColors;
 
     private bool isDisappearing = false;
-    private bool isAppearing = false;
 
     void Awake()
     {

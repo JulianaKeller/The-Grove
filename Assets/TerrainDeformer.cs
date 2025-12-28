@@ -9,6 +9,8 @@ public class TerrainDeformer : MonoBehaviour
 
     public Terrain terrain;
 
+    public float baseDepth = 0.1f;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -96,8 +98,10 @@ public class TerrainDeformer : MonoBehaviour
         terrain.terrainData.SyncHeightmap();
     }
 
-    public void LowerTerrain(Vector3 center, float radius, float depth, float irregularity)
+    public void LowerTerrain(Vector3 center, float radius, float depth, float irregularity, out float spawnHeight)
     {
+        spawnHeight = 0;
+
         if(terrain == null)
         {
             terrain = Terrain.activeTerrain;
@@ -111,15 +115,30 @@ public class TerrainDeformer : MonoBehaviour
 
         float[,] heights = data.GetHeights(0, 0, data.heightmapResolution, data.heightmapResolution);
 
+        float localMaxHeight = float.MinValue;
+        float localMinHeight = float.MaxValue;
+
+        foreach (var point in GetTerrainPointsInRadius(center, radius*2))
+        {
+            localMinHeight = Mathf.Min(localMinHeight, point.height);
+            localMaxHeight = Mathf.Max(localMaxHeight, point.height);
+        }
+
+        spawnHeight = terrain.transform.position.y + localMinHeight * terrain.terrainData.size.y;
+
+        float heightDiff = Mathf.Abs(localMaxHeight - localMinHeight);
+        float targetHeight = localMinHeight - (heightDiff > baseDepth ? heightDiff : baseDepth); // Lower below local min
+
         foreach (var point in GetTerrainPointsInRadius(center, radius))
         {
             float dist01 = Vector3.Distance(point.worldPos, center) / radius;
-            float noise = Mathf.PerlinNoise(point.x * 0.3f, point.z * 0.3f);
             float falloff = Mathf.SmoothStep(1f, 0f, dist01);
+            float noise = Mathf.PerlinNoise(point.x * 0.3f, point.z * 0.3f);
 
-            float deformation = depth * falloff * Mathf.Lerp(1f, noise, irregularity);
+            // Interpolate deformation from current height to target height
+            float newHeight = Mathf.Lerp(point.height, targetHeight, falloff /** Mathf.Lerp(1f, noise, irregularity)*/);
 
-            heights[point.z, point.x] = Mathf.Max(0f, heights[point.z, point.x] - deformation / data.size.y);
+            heights[point.z, point.x] = Mathf.Clamp01(newHeight);
         }
 
         data.SetHeights(0, 0, heights);

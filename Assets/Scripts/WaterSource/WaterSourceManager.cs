@@ -11,8 +11,11 @@ public class WaterSourceManager : MonoBehaviour
 
     [Header("Radius")]
 
-    public float waterSourceRadius = 1;
-    public float radiusVariation = 0.5f;
+    [SerializeField]
+    private float waterSourceRadius = 1;
+    [SerializeField]
+    private float radiusVariation = 0.5f;
+    private float nextRadius;
 
     [Header("Prefabs")]
 
@@ -53,14 +56,22 @@ public class WaterSourceManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public float SpawnWaterSource(Vector3 pos)
+    public float GetWaterSourceRadius()
     {
-        float spawnedRadius = waterSourceRadius + Random.Range(-radiusVariation, radiusVariation);
-        WaterSource data = new WaterSource(pos, nextId++, spawnedRadius);
+        nextRadius = waterSourceRadius + Random.Range(-radiusVariation, radiusVariation);
+        return nextRadius;
+    }
+
+    public void SpawnWaterSource(Vector3 pos)
+    {
+        WaterSource data = new WaterSource(pos, nextId++, nextRadius);
 
         if(waterSourcePrefab != null)
         {
             GameObject obj = Instantiate(waterSourcePrefab, pos, Quaternion.identity, waterSourcesParent ? waterSourcesParent.transform : null);
+
+            obj.transform.localScale = ComputeScaleForRadius(obj);
+
             WaterSourceView view = obj.GetComponent<WaterSourceView>();
 
             view.data = data;
@@ -73,7 +84,25 @@ public class WaterSourceManager : MonoBehaviour
         EnvironmentGrid.Instance.RegisterWaterSource(data);
 
         Debug.Log("Spwaned a water source at " + pos);
-        return spawnedRadius;
+    }
+
+    private Vector3 ComputeScaleForRadius(GameObject obj)
+    {
+        float margin = 1.05f;
+
+        Renderer r = obj.GetComponentInChildren<Renderer>();
+        if (r == null)
+            return Vector3.one;
+
+        Bounds b = r.bounds;
+
+        float meshRadius = Mathf.Max(b.extents.x, b.extents.z);
+
+        if (meshRadius <= 0f)
+            return Vector3.one;
+
+        float scaleFactor = (nextRadius * margin) / meshRadius;
+        return Vector3.one * scaleFactor;
     }
 
     public void UpdateWaterSources(float timeStep, int tick)

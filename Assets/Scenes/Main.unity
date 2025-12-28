@@ -7083,8 +7083,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateSubsetCount: 1
-  waterSourceRadius: 100
-  radiusVariation: 10
+  waterSourceRadius: 20
+  radiusVariation: 5
   waterSourcePrefab: {fileID: 4102032854339766673, guid: ec78b44af13a8954496f3ee659e9fdf9, type: 3}
   waterSourcesParent: {fileID: 272089414}
   depth: 0.1
@@ -10233,7 +10233,7 @@ Transform:
   m_GameObject: {fileID: 819701881}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000037252899, y: -0, z: -0.0000000074505797, w: 1}
-  m_LocalPosition: {x: 13.146194, y: 40.58937, z: 71.31556}
+  m_LocalPosition: {x: 8.444172, y: 28.164856, z: 191.94221}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18640,7 +18640,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 70.49011, y: 70.49011, z: 70.49011}
+  m_LocalScale: {x: 66.672325, y: 66.672325, z: 66.672325}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1474866577}

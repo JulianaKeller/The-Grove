@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Animal
   - FX Block Zone
+  - Outline
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Animals
   - PlayableTerrain
   - ParticleUIVisualization
-  - 
+  - Outline
   - 
   - 
   - 

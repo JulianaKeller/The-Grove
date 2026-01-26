@@ -106,13 +106,6 @@ public class AnimalManager : MonoBehaviour
 
     public void UpdateAnimals(float timeStep, int tick)
     {
-        //Reset interpolation factors for all animal views
-        /*foreach (var view in AnimalManager.Instance.views)
-        {
-            Debug.Log("Resetting Interpolation...");
-            view.ResetInterpolation();
-        }*/
-
         for (int i = animals.Count - 1; i >= 0; i--)
         {
             var animal = animals[i];
@@ -120,8 +113,9 @@ public class AnimalManager : MonoBehaviour
             // update 1/3 of animals per tick
             if ((tick + animal.id) % updateSubsetCount == 0)
             {
-                animal.view.ResetInterpolation();
+                animal.view?.ResetInterpolation();
                 animal.UpdateAI(timeStep * updateSubsetCount);
+                animal.view?.RecalculateGroundedPositions();
             }
         }
     }

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c050c93323f68704d946af945870ef1b, type: 3}
-  m_Name: CoffeePlant
+  m_Name: FlowerBushBlue
   m_EditorClassIdentifier: 
-  speciesName: CoffeePlant
+  speciesName: Flower Bush Blue
   prefabs:
-  - {fileID: 97176055403355019, guid: 21e35349765c11e4d84fbc31e82310fa, type: 3}
+  - {fileID: 2596994299005274871, guid: ef3e7a48092a2b242abe217027126b01, type: 3}
   colorVariants:
   - {r: 1, g: 1, b: 1, a: 0}
   lifespan: 1000

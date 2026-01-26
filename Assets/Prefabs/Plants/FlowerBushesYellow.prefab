@@ -1,68 +1,74 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &7896334439372988886
+--- !u!1001 &2192814204218755199
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 737655404332545193}
+    m_TransformParent: {fileID: 5192855026728963343}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000081460335
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
+    - target: {fileID: -2855592680667676148, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
       propertyPath: m_Name
-      value: Fern_1
+      value: FlowerBushes
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -6186008943507506224, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
+    - {fileID: 3177756897737947755, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
---- !u!4 &7647062875952891453 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
+--- !u!4 &1865837817127415700 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8282cb44f7b3fee4b9e938cf4f003fb7, type: 3}
-  m_PrefabInstance: {fileID: 7896334439372988886}
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9abf8e9d034cb0a46b5c8a52709a35c7, type: 3}
+  m_PrefabInstance: {fileID: 2192814204218755199}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8135295944612617905
+--- !u!1001 &3659868505364555543
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -70,13 +76,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1267138934109626496, guid: 389d4dc2ae810454b9bb8bede28a6def, type: 3}
-      propertyPath: outlinePrefab
-      value: 
-      objectReference: {fileID: 3609646956064784873, guid: e4f64af9c82a33641b94e06a429f2809, type: 3}
     - target: {fileID: 5815617996743981920, guid: 389d4dc2ae810454b9bb8bede28a6def, type: 3}
       propertyPath: m_Name
-      value: Fern
+      value: FlowerBushesYellow
       objectReference: {fileID: 0}
     - target: {fileID: 8852613561527888408, guid: 389d4dc2ae810454b9bb8bede28a6def, type: 3}
       propertyPath: m_LocalPosition.x
@@ -123,11 +125,11 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8852613561527888408, guid: 389d4dc2ae810454b9bb8bede28a6def, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7647062875952891453}
+      addedObject: {fileID: 1865837817127415700}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 389d4dc2ae810454b9bb8bede28a6def, type: 3}
---- !u!4 &737655404332545193 stripped
+--- !u!4 &5192855026728963343 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8852613561527888408, guid: 389d4dc2ae810454b9bb8bede28a6def, type: 3}
-  m_PrefabInstance: {fileID: 8135295944612617905}
+  m_PrefabInstance: {fileID: 3659868505364555543}
   m_PrefabAsset: {fileID: 0}

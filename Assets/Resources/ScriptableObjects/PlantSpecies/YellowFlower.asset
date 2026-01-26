@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Yellow Flower
   prefabs:
-  - {fileID: 6947741436486312648, guid: cbbaf45db7f88f646b40c726e9067942, type: 3}
+  - {fileID: 2329303625769461201, guid: 4905eb643ddab114988c004309fc1538, type: 3}
   colorVariants: []
   lifespan: 1000
   lifespanVariation: 1

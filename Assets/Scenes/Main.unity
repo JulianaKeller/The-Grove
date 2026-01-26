@@ -6975,7 +6975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f78268faec606e14f811d1fbfef9f59a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnStartingSpecies: 0
+  spawnStartingSpecies: 1
   updateSubsetCount: 5
   spawnedPlantsParent: {fileID: 590613845}
   startingSpecies:
@@ -6984,7 +6984,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 14fb4dd31c38a554fbc50221ea4511ed, type: 2}
   - {fileID: 11400000, guid: 38ba5a92ea7d2384abc61dae81d6b406, type: 2}
   - {fileID: 11400000, guid: 6aaff5cd5083fdb42bb2484874c0b54d, type: 2}
-  initialSpawnAmount: 5
+  - {fileID: 11400000, guid: 72e64f7d080b8034fa851d4421336596, type: 2}
+  - {fileID: 11400000, guid: 14fb4dd31c38a554fbc50221ea4511ed, type: 2}
+  initialSpawnAmount: 1
 --- !u!114 &415286988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7028,11 +7030,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce39a0ce46ef994eb030f38d67070b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseRadius: 0
   weatherProfile: {fileID: 0}
   spawnIndicatorPrefab: {fileID: 7823327091382468809, guid: 4f566698012961447b0ed1120d9a000a, type: 3}
   speciesData: {fileID: 0}
   rainChanceEffector: {fileID: 11400000, guid: 6a5d0653cf2671c499fb891641e8a377, type: 2}
+  selectedAnimal: {fileID: 0}
 --- !u!114 &415286991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7111,6 +7113,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   terrain: {fileID: 568663588}
+  baseDepth: 0.1
 --- !u!1001 &484144714
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10233,7 +10236,7 @@ Transform:
   m_GameObject: {fileID: 819701881}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000037252899, y: -0, z: -0.0000000074505797, w: 1}
-  m_LocalPosition: {x: 8.444172, y: 28.164856, z: 191.94221}
+  m_LocalPosition: {x: -412.07495, y: 4.0338783, z: -42.614082}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18640,7 +18643,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 66.672325, y: 66.672325, z: 66.672325}
+  m_LocalScale: {x: 4.940501, y: 4.940501, z: 4.940501}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1474866577}

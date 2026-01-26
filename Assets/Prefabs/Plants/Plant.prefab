@@ -46,6 +46,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdbd1661172230a40809b8c9ed5eb413, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  raycastHeight: 10
+  groundOffset: 0
 --- !u!114 &1267138934109626496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,6 +63,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d213a8a8db80ea49b7716160a2d99e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlinePrefab: {fileID: 3609646956064784873, guid: e4f64af9c82a33641b94e06a429f2809, type: 3}
 --- !u!65 &443754033208409549
 BoxCollider:
   m_ObjectHideFlags: 0

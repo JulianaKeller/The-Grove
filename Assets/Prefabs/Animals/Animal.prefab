@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d213a8a8db80ea49b7716160a2d99e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  outlinePrefab: {fileID: 3609646956064784873, guid: a5d02a5fbd25713488a3d339cac12d69, type: 3}
 --- !u!114 &8031552152122800552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +216,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125f234a7e3f4924eaa0fb5c7e3e39b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  useRaycast: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  raycastHeight: 10
+  groundOffset: 0
 --- !u!1 &7274116250471123790
 GameObject:
   m_ObjectHideFlags: 0

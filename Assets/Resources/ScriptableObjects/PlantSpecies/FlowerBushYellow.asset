@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c050c93323f68704d946af945870ef1b, type: 3}
-  m_Name: Houseplant
+  m_Name: FlowerBushYellow
   m_EditorClassIdentifier: 
-  speciesName: Houseplant
+  speciesName: Flower Bush Yellow
   prefabs:
-  - {fileID: 1002873037712949629, guid: 4c146913886323547976e7c921057230, type: 3}
-  colorVariants: []
+  - {fileID: 7097478135703133303, guid: f6583a05bf9a2f04789961b9121fa153, type: 3}
+  colorVariants:
+  - {r: 0.39346024, g: 0.7484276, b: 0, a: 0}
+  - {r: 0, g: 0.36477977, b: 0.112647206, a: 0}
+  - {r: 0.5409389, g: 0.55345905, b: 0, a: 0}
   lifespan: 1000
   lifespanVariation: 1
   nutritionBaseValue: 1
@@ -28,4 +31,4 @@ MonoBehaviour:
   maxSizeVariation: {x: 1, y: 2}
   baseSpreadChance: 0.5
   spreadingRadius: 20
-  isEdible: 1
+  isEdible: 0

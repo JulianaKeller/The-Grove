@@ -32,7 +32,7 @@ public class InteractionManager : MonoBehaviour
 
     [Header("Selection & Focus")]
 
-    private EntityView selectedAnimal;
+    public EntityView selectedAnimal;
 
     private CameraController cameraController;
 

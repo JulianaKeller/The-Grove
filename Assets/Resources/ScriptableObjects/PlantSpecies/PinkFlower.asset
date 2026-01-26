@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speciesName: Pink Flower
   prefabs:
-  - {fileID: 3588122063657522195, guid: ed609660a40c41c4b9dbe060660ab4dd, type: 3}
+  - {fileID: 8408986054553235545, guid: 0366e98f1e937a243be18762d1310dcd, type: 3}
   colorVariants: []
   lifespan: 1000
   lifespanVariation: 1

@@ -20,6 +20,6 @@ public class EntityView : MonoBehaviour
             outline.SetVisible(selected);
         }*/
 
-        GetComponent<AnimalOutline>().SetOutlineVisible(selected);
+        GetComponent<EntityOutline>().SetOutlineVisible(selected);
     }
 }

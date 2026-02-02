@@ -25,7 +25,7 @@ public class WaterSourceManager : MonoBehaviour
     [Header("Influence Controls")]
 
     public float depth = 0.1f;
-    public float baseEvaporationRate = 0.01f;
+    public float baseEvaporationRate = 1f;
     public float influenceRadius = 5f;
     public float fertilityBonus = 0.05f;
     public float moistureBonus = 0.05f;
@@ -56,15 +56,15 @@ public class WaterSourceManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public float GetWaterSourceRadius()
+    public float GetNewWaterSourceRadius()
     {
         nextRadius = waterSourceRadius + Random.Range(-radiusVariation, radiusVariation);
         return nextRadius;
     }
 
-    public void SpawnWaterSource(Vector3 pos)
+    public void SpawnWaterSource(Vector3 pos, float radius)
     {
-        WaterSource data = new WaterSource(pos, nextId++, nextRadius);
+        WaterSource data = new WaterSource(pos, nextId++, radius);
 
         if(waterSourcePrefab != null)
         {
@@ -83,7 +83,7 @@ public class WaterSourceManager : MonoBehaviour
 
         EnvironmentGrid.Instance.RegisterWaterSource(data);
 
-        Debug.Log("Spwaned a water source at " + pos);
+        Debug.Log("Spwaned a water source at " + pos + " with radius " + radius);
     }
 
     private Vector3 ComputeScaleForRadius(GameObject obj)
@@ -114,15 +114,15 @@ public class WaterSourceManager : MonoBehaviour
             {
                 if (lightRain)
                 {
-                    ws.Refill(refillLight);
+                    ws.Refill(refillLight * timeStep);
                 }
                 else if (heavyRain)
                 {
-                    ws.Refill(refillHeavy);
+                    ws.Refill(refillHeavy * timeStep);
                 }
                 else if (thunderstorm)
                 {
-                    ws.Refill(refillThunderstorm);
+                    ws.Refill(refillThunderstorm * timeStep);
                 }
 
                 float evaporationRate = CalculateEvaporationRate();

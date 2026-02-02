@@ -4,12 +4,8 @@ using UnityEngine.UIElements;
 public class WanderState : AnimalState
 {
     public float wanderRange = 20f;
-    public float wanderTimeMin = 5f;
-    public float wanderTimeMax = 15f;
 
     private Vector3 targetPos;
-    private float currentWanderTimer;
-    private float wanderTimer;
 
     public override void Enter(Animal a) {
 
@@ -18,25 +14,22 @@ public class WanderState : AnimalState
                 Random.Range(-wanderRange, wanderRange), 0,
                 Random.Range(-wanderRange, wanderRange));
 
-        wanderTimer = Random.Range(wanderTimeMin, wanderTimeMax);
-        currentWanderTimer = wanderTimer;
-
-        //ToDO facilitate migrating behavior to find food by taking a direction close to the previous one
-
-        //Debug.Log(a.species.name + " is now wandering.");
+        a.SetMoveTarget(targetPos);
     }
 
-    public override void Execute(Animal a, float timeStep) {
-        // A mother should stay close to the child if it's sleeping unless the other needs are over the threshold
-        currentWanderTimer -= timeStep;
-
-        a.MoveTo(targetPos, timeStep);
-        //Debug.Log($"{a.species.name} wandering. Timer: {currentWanderTimer:F2}, Distance: {Vector3.Distance(a.position, targetPos):F2}");
-
-        if (currentWanderTimer <= 0f || Vector3.Distance(a.position, targetPos) < 0.1f)
+    public override void Execute(Animal a, float timeStep) 
+    {
+        if (!a.hasPath)
         {
-            a.ChangeState(new IdleState());
-            return;
+            if (!a.EvaluateLongTermNeeds())
+            {
+                a.ChangeState(new IdleState());
+                return;
+            }
+            else
+            {
+                return;
+            }
         }
     }
 

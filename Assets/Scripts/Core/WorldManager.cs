@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static EnvironmentGrid;
 using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(ResourceManager))]
@@ -87,9 +88,27 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    private List<Entity> GetNearbyEntities(Vector3 pos, int range, bool getAnimals, bool getPlants, bool getPredatorsOnly)
+    private List<Entity> GetNearbyEntities(Vector3 pos, int range, bool getAnimals, bool getPlants)
     {
         List<Entity> nearby = new List<Entity>();
+
+        foreach (GridCell cell in GetNearbyCells(pos, range))
+        {
+            if (getAnimals)
+            {
+                nearby.AddRange(cell.animals);
+            }
+            if (getPlants)
+            {
+                nearby.AddRange(cell.plants);
+            }
+        }
+        return nearby;
+    }
+
+    private List<GridCell> GetNearbyCells(Vector3 pos, int range)
+    {
+        List<GridCell> cells = new List<GridCell>();
 
         Vector2Int center = EnvironmentGrid.Instance.GetCellCoords(pos);
 
@@ -104,47 +123,36 @@ public class WorldManager : MonoBehaviour
                     continue;
 
                 var cell = EnvironmentGrid.Instance.grid[gx, gz];
-                if (getPredatorsOnly)
-                {
-                    foreach(Animal a in cell.animals)
-                    {
-                        if (a.species.isCarnivore) //add a flag to animal that lets other animals know if they should perceive them as a predator/threat?
-                        {
-                            nearby.Add(a);
-                        }
-                    }
-                }
-                if (getAnimals)
-                {
-                    nearby.AddRange(cell.animals);
-                }
-                if (getPlants)
-                {
-                    nearby.AddRange(cell.plants);
-                }
+                
+                cells.Add(cell);
             }
         }
-        return nearby;
+        return cells;
     }
 
     public List<Entity> GetNearbyEntities(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, true, true, false);
+        return GetNearbyEntities(pos, range, true, true);
+    }
+
+    public List<WaterSource> GetNearbyWaterSources(Vector3 pos, int range)
+    {
+        List<WaterSource> nearby = new List<WaterSource>();
+
+        foreach (GridCell cell in GetNearbyCells(pos, range))
+        {
+            nearby.AddRange(cell.waterSources);
+        }
+        return nearby;
     }
 
     public List<Animal> GetNearbyAnimals(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, true, false, false).Cast<Animal>().ToList();
+        return GetNearbyEntities(pos, range, true, false).Cast<Animal>().ToList();
     }
 
     public List<Plant> GetNearbyPlants(Vector3 pos, int range)
     {
-        return GetNearbyEntities(pos, range, false, true, false).Cast<Plant>().ToList();
-    }
-
-    public List<Animal> GetNearbyPredators(Vector3 pos, int range)
-    {
-        //ToDo use fearedAnimals list
-        return GetNearbyEntities(pos, range, true, false, false).Cast<Animal>().ToList();
+        return GetNearbyEntities(pos, range, false, true).Cast<Plant>().ToList();
     }
 }

@@ -23,7 +23,7 @@ MonoBehaviour:
   baseDominance: 1
   dominanceVariation: 1
   walkingSpeed: 1
-  runningSpeed: 2
+  runningSpeed: 3
   stamina: 10
   power: 1
   defense: 1
@@ -39,5 +39,4 @@ MonoBehaviour:
   waterNeed: 1
   isCarnivore: 0
   isHerbivore: 1
-  ediblePlants: []
-  edibleAnimals: []
+  edibleEntities: []

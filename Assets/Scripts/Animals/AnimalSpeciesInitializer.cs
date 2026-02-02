@@ -14,17 +14,20 @@ public class AnimalSpeciesInitializer
         //fill feared animals list with animals who have this species as prey
         foreach (var predator in allSpecies)
         {
-            if (predator.edibleAnimals == null)
+            if (predator.edibleEntities == null)
                 continue;
 
-            foreach (var prey in predator.edibleAnimals)
+            foreach (var entity in predator.edibleEntities)
             {
-                if (prey == null)
+                if (entity == null)
                     continue;
 
-                // prey fears predator
-                if (!prey.fearedAnimals.Contains(predator))
-                    prey.fearedAnimals.Add(predator);
+                if(entity is AnimalSpeciesData prey)
+                {
+                    // prey fears predator
+                    if (!prey.fearedAnimals.Contains(predator))
+                        prey.fearedAnimals.Add(predator);
+                }
             }
         }
 

@@ -21,11 +21,11 @@ public class WaterSource
         position = pos;
         this.radius = radius;
         float area = Mathf.PI * radius * radius;
-        capacity = baseCapacity * area;
+        capacity = baseCapacity;
         currentWater = capacity;
     }
 
-    public float Drink(float amount)
+    public float DrinkFrom(float amount)
     {
         float previousWater = currentWater;
         currentWater = Mathf.Max(0f, currentWater - amount);
@@ -46,7 +46,11 @@ public class WaterSource
 
     public static bool operator ==(WaterSource a, WaterSource b)
     {
-        if (a is null || b is null) return false;
+        if (ReferenceEquals(a, b))
+            return true;
+
+        if (a is null || b is null)
+            return false;
 
         return a.id == b.id;
     }

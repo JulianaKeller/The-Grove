@@ -18,16 +18,13 @@ public class FightState : AnimalState
         a.isFighting = true;
     }
     public override void Execute(Animal a, float timeStep) {
-        //Fighting either in defense or to get food
-        //Fight or flight should be evaulated in either case
-        //Fighting should otherwise be done until the target is dead
-
+        
         Vector3 offset = (enemy.position - a.position);
         float dist = offset.magnitude;
 
         if (dist > fightRange + approachStopBuffer)
         {
-            a.MoveTo(enemy.position, timeStep);
+            a.SetMoveTarget(enemy.position);
 
             return; //ToDo attack when close enough?
         }
@@ -44,14 +41,12 @@ public class FightState : AnimalState
             return;
         }
 
-        a.FaceTowards(enemy.position);
+        a.FaceTowardsImmediate(enemy.position);
 
         float randomFactor = UnityEngine.Random.Range(0.85f, 1.15f);
         float damage = a.species.power - enemy.species.defense * randomFactor;
 
         enemy.health -= damage;
-        //Play one-time take hit animation on enemy
-        //Play one-time hit animation
 
         Debug.Log($"{a.species.name} hit {enemy.species.name} for {damage:F1} damage. Enemy HP: {enemy.health:F1}");
 

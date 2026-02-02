@@ -25,8 +25,8 @@ MonoBehaviour:
   waterCapacity: 100
   groundFertilityUsage: 0.01
   minGroundFertility: 0
-  growthRate: 0.1
+  growthRate: 0.01
   maxSizeVariation: {x: 1, y: 2}
-  baseSpreadChance: 0.5
+  baseSpreadChance: 0.4
   spreadingRadius: 20
   isEdible: 1

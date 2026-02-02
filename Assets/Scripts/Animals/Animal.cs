@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
+using Random = UnityEngine.Random;
 
 public class Animal : Entity
 {
@@ -24,18 +27,35 @@ public class Animal : Entity
         Dead
     }
 
-    public new AnimalSpeciesData species;
+    [Header("State")]
     public AnimalState currentState;
-    public Vector3 prevPosition;
+
+    [Header("Movement")]
+    public Vector3 prevPosition = Vector3.zero;
+    public Vector3 targetPosition = Vector3.zero;
+
+    [Header("Bezier Curve Movement")]
+    private Vector3 pathStart;
+    private Vector3 pathControl;
+    private Vector3 pathEnd;
+    private float pathT;
+    public bool hasPath;
+    public Vector3 facingDirection = Vector3.forward;
+
+    [Header("Dynamic Stats")]
     public float hunger, thirst, energy, matingDrive; //max 100, min 0
     public float stamina; //current values of the maximums in AnimalSpeciesData
     public int dominance;
     public Entity target;
+    //public Herd herd; //ToDo implement Herd
+
+    [Header("Static Stats")]
+    public new AnimalSpeciesData species;
+    public bool isFemale = true;
     public AnimalView view;
     public Animal mother;
-    //public Herd herd; //ToDo implement Herd
-    public bool isFemale = true;
 
+    [Header("Bools")]
     public bool isRunning = false;
     public bool isWalking = false;
     public bool isFleeing = false;
@@ -45,9 +65,20 @@ public class Animal : Entity
     public bool isEating = false;
     public bool isDrinking = false;
 
-    private float decisionCooldown = 2f;
-    private float timeSinceLastDecision = 0f;
-    private float followThresholdAge;
+    [Header("Last Found")]
+    public Vector3 lastFoundFoodPos = Vector3.zero;
+    public Vector3 lastFoundWaterPos = Vector3.zero;
+    public Vector3 lastFoundMatePos = Vector3.zero;
+
+    [Header("Migration")]
+    public int migrationThreshold = 5;
+    public int failedFoodSearches = 0;
+    public int failedWaterSearches = 0;
+    public int failedMateSearches = 0;
+
+    [Header("Follow Behavior")]
+    private float maturityThreshold;
+    public float followDistance = 6f; // preferred max distance from mother
 
     public Animator animator;
 
@@ -64,7 +95,7 @@ public class Animal : Entity
         NotifyStateChange();
 
         base.setLifespan();
-        followThresholdAge = speciesLifespan * 0.25f;
+        maturityThreshold = speciesLifespan * 0.25f;
 
         dominance = species.baseDominance + Random.Range(-species.dominanceVariation, species.dominanceVariation);
 
@@ -87,11 +118,11 @@ public class Animal : Entity
 
             if (isAlive) //Check again if still alive
             {
-                EvaluateNeeds(timeStep);
-
-                PerceptionCheck();
+                EvaluateShortTermNeeds(timeStep);
 
                 currentState?.Execute(this, timeStep);
+
+                MoveToTarget(timeStep);
 
                 updateAnimations();
 
@@ -115,54 +146,7 @@ public class Animal : Entity
         }
     }
 
-    public void ChangeState(AnimalState newState)
-    {
-        if (newState == currentState)
-        {
-            return;
-        }
-
-        isRunning = false;
-        isWalking = false;
-
-        // Sync the animal position with the visual position before changing states
-        if (view != null)
-        {
-            Vector3 interpolated = view.GetInterpolatedPosition();
-            prevPosition = interpolated;
-            position = interpolated;
-        }
-
-        currentState?.Exit(this);
-        currentState = newState;
-        currentState?.Enter(this);
-
-        NotifyStateChange();
-    }
-
-    private void NotifyStateChange()
-    {
-        AnimalVisualState visualState = ResolveVisualState();
-        OnStateChanged.Invoke(visualState);
-    }
-
-    private AnimalVisualState ResolveVisualState()
-    {
-        if (!isAlive) return AnimalVisualState.Dead;
-        if (currentState is FightState) return AnimalVisualState.Fighting;
-        if (currentState is FleeState) return AnimalVisualState.Fleeing;
-        if (currentState is FollowState) return AnimalVisualState.Following;
-        if (currentState is SeekFoodState && species.isCarnivore) return AnimalVisualState.SearchingFoodCarnivore;
-        if (currentState is SeekFoodState && species.isHerbivore) return AnimalVisualState.SearchingFoodHerbivore;
-        if (currentState is SeekWaterState) return AnimalVisualState.SearchingWater;
-        if (currentState is SeekMateState) return AnimalVisualState.SearchingMate;
-        if (currentState is EatState) return AnimalVisualState.Eating;
-        if (currentState is DrinkState) return AnimalVisualState.Drinking;
-        if (currentState is SleepState) return AnimalVisualState.Sleeping;
-        if (currentState is MateState) return AnimalVisualState.Mating;
-        if (currentState is WanderState) return AnimalVisualState.Wandering;
-        return AnimalVisualState.Idle;
-    }
+    #region Updates
 
     private void BiologicalUpdates(float timeStep)
     {
@@ -207,11 +191,27 @@ public class Animal : Entity
         }
     }
 
+    public override void Die()
+    {
+        base.Die();
+
+        currentState = null;
+        StopBehaviors();
+
+        GetNutritionValue();
+
+        //AnimalManager.Instance.RemoveAnimal(this); //removes animal and view from lists and destroys gameobject
+    }
+
+    #endregion
+
+    #region Perception and Reflexes
+
     public void PerceptionCheck()
     {
         //ToDo Is this efficient enough?
 
-        Animal nearestThreat = ClosestEntity(GetNearbyThreats()) as Animal;
+        Animal nearestThreat = GetNearbyThreat();
 
         if (nearestThreat == null)
         {
@@ -226,7 +226,7 @@ public class Animal : Entity
         if (Random.value > perceptionChance)
             return;
 
-        if (nearestThreat != null )
+        if (nearestThreat != null)
         {
             FightOrFlight(nearestThreat);
         }
@@ -241,9 +241,9 @@ public class Animal : Entity
         if (species.isCarnivore)
         {
             // check if enemy is edible (same logic as your FindNearestFood)
-            if (species.edibleAnimals != null && species.edibleAnimals.Length > 0)
+            if (species.edibleEntities != null && species.edibleEntities.Length > 0)
             {
-                foreach (var allowed in species.edibleAnimals)
+                foreach (var allowed in species.edibleEntities)
                 {
                     if (enemy.species == allowed)
                     {
@@ -278,64 +278,94 @@ public class Animal : Entity
             ChangeState(new FleeState(enemy));
     }
 
-    public void MoveTo(Vector3 targetPos, float timeStep)
+    public void EvaluateShortTermNeeds(float timeStep)
     {
-        if (!IsValidVector(targetPos))
-        {
-            targetPos = position; //fallback to current position
-        }
-
-        float maxX = EnvironmentGrid.Instance.gridCenter.x + EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
-        float maxZ = EnvironmentGrid.Instance.gridCenter.z + EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
-        float minX = EnvironmentGrid.Instance.gridCenter.x - EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
-        float minZ = EnvironmentGrid.Instance.gridCenter.z - EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
-
-        targetPos.x = Mathf.Clamp(targetPos.x, minX, maxX);
-        targetPos.z = Mathf.Clamp(targetPos.z, minZ, maxZ);
-
-        float speed = 0;
-
-        if (ShouldRun(timeStep))
-        {
-            speed = species.runningSpeed;
-            isRunning = true;
-        }
-        else
-        {
-            speed = species.walkingSpeed;
-            isWalking = true;
-        }
-
-            Vector3 newPos = Vector3.MoveTowards(position, targetPos, speed * timeStep);
-        prevPosition = position;
-        position = newPos;
-
-        FaceTowards(newPos);
-    }
-
-    public void FaceTowards(Vector3 newPos)
-    {
-        if (view != null)
-            view.FaceTowards(newPos);
-    }
-
-    private bool IsValidVector(Vector3 v)
-    {
-        return !(float.IsNaN(v.x) || float.IsInfinity(v.x) ||
-                 float.IsNaN(v.y) || float.IsInfinity(v.y) ||
-                 float.IsNaN(v.z) || float.IsInfinity(v.z));
-    }
-
-    public void EvaluateNeeds(float timeStep)
-    {
-        if(isFleeing || isFighting || isMating) //finish these states before switching according to needs
+        if (isFleeing || isFighting) //finish these states before switching according to needs
         {
             return;
         }
 
-        if (age > followThresholdAge && mother != null && mother.isAlive)
+        //Threat perception check:
+        PerceptionCheck();
+
+        EvaluateFollowBehavior(timeStep);
+    }
+
+    #endregion
+
+    #region State Change
+
+    public bool EvaluateLongTermNeeds()
+    {
+        bool changedState = false;
+        if (failedFoodSearches > migrationThreshold)
         {
-            float followDistance = 6f; // preferred max distance from mother
+            ChangeState(new MigrateState(MigrateState.MigrationReason.Food));
+            changedState = true;
+            return changedState;
+        }
+        if (failedWaterSearches > migrationThreshold)
+        {
+            ChangeState(new MigrateState(MigrateState.MigrationReason.Water));
+            changedState = true;
+            return changedState;
+        }
+        if (failedMateSearches > migrationThreshold)
+        {
+            ChangeState(new MigrateState(MigrateState.MigrationReason.Mate));
+            changedState = true;
+            return changedState;
+        }
+
+        // Hunger/food seeking
+        float hungerThreshold = 50f + Random.Range(-10f, 10f);
+
+        if (hunger > hungerThreshold)
+        {
+            ChangeState(new SeekFoodState());
+            changedState = true;
+            return changedState;
+        }
+
+        // Thirst/water seeking
+        float thirstThreshold = 50f + Random.Range(-10f, 10f);
+
+        if (thirst > thirstThreshold)
+        {
+            ChangeState(new SeekWaterState());
+            changedState = true;
+            return changedState;
+        }
+
+        // Rest seeking
+        float energyThreshold = 50f + Random.Range(-10f, 10f);
+
+        if (energy < energyThreshold)
+        {
+            ChangeState(new SleepState());
+            changedState = true;
+            return changedState;
+        }
+
+        if (age > maturityThreshold)
+        {
+            // Mate seeking
+            float matingThreshold = 50f + Random.Range(-10f, 10f);
+
+            if (matingDrive > matingThreshold)
+            {
+                ChangeState(new SeekMateState());
+                changedState = true;
+                return changedState;
+            }
+        }
+        return changedState;
+    }
+
+    private void EvaluateFollowBehavior(float timeStep)
+    {
+        if (age > maturityThreshold && mother != null && mother.isAlive)
+        {
 
             float dist = Vector3.Distance(position, mother.position);
             if (dist > followDistance)
@@ -343,7 +373,7 @@ public class Animal : Entity
                 float followProbability = (dist - followDistance) * 0.1f;
                 followProbability = Mathf.Clamp01(followProbability);
 
-                if (Random.value < followProbability)
+                if (UnityEngine.Random.value < followProbability)
                 {
                     ChangeState(new FollowState(mother));
                     return;
@@ -351,53 +381,59 @@ public class Animal : Entity
             }
         }
 
-        timeSinceLastDecision += timeStep;
-        if (timeSinceLastDecision < decisionCooldown) return;
+        //Follow herd logic can be added here later
+    }
 
-        timeSinceLastDecision = 0f;
-
-        // Hunger/food seeking
-        float hungerThreshold = 50f + Random.Range(-10f, 10f); // adds per-animal variation
-        //float hungerProbability = Mathf.InverseLerp(hungerThreshold, 100f, hunger);
-
-        if (hunger > hungerThreshold)
+    public void ChangeState(AnimalState newState)
+    {
+        if (newState == currentState)
         {
-            ChangeState(new SeekFoodState());
             return;
         }
 
-        // Thirst/water seeking
-        float thirstThreshold = 50f + Random.Range(-10f, 10f);
-        //float thirstProbability = Mathf.InverseLerp(thirstThreshold, 100f, thirst);
+        isRunning = false;
+        isWalking = false;
 
-        if (thirst > thirstThreshold)
+        // Sync the animal position with the visual position before changing states
+        if (view != null)
         {
-            ChangeState(new SeekWaterState());
-            return;
+            Vector3 interpolated = view.GetInterpolatedPosition();
+            prevPosition = interpolated;
+            position = interpolated;
         }
 
-        // Rest seeking
-        float energyThreshold = 50f + Random.Range(-10f, 10f);
-        //float restProbability = Mathf.InverseLerp(energyThreshold, 0f, energy);
+        hasPath = false;
+        pathT = 0f;
 
-        if (energy < energyThreshold)
-        {
-            ChangeState(new SleepState());
-            return;
-        }
+        currentState?.Exit(this);
+        currentState = newState;
+        currentState?.Enter(this);
 
-        if(age > followThresholdAge)
-        {
-            // Mate seeking
-            float matingThreshold = 50f + Random.Range(-10f, 10f);
-            //float matingProbability = Mathf.InverseLerp(matingThreshold, 100f, matingDrive);
+        NotifyStateChange();
+    }
 
-            if (matingDrive > matingThreshold)
-            {
-                ChangeState(new SeekMateState());
-                return;
-            }
-        }
+    private void NotifyStateChange()
+    {
+        AnimalVisualState visualState = ResolveVisualState();
+        OnStateChanged.Invoke(visualState);
+    }
+
+    private AnimalVisualState ResolveVisualState()
+    {
+        if (!isAlive) return AnimalVisualState.Dead;
+        if (currentState is FightState) return AnimalVisualState.Fighting;
+        if (currentState is FleeState) return AnimalVisualState.Fleeing;
+        if (currentState is FollowState) return AnimalVisualState.Following;
+        if (currentState is SeekFoodState && species.isCarnivore) return AnimalVisualState.SearchingFoodCarnivore;
+        if (currentState is SeekFoodState && species.isHerbivore) return AnimalVisualState.SearchingFoodHerbivore;
+        if (currentState is SeekWaterState) return AnimalVisualState.SearchingWater;
+        if (currentState is SeekMateState) return AnimalVisualState.SearchingMate;
+        if (currentState is EatState) return AnimalVisualState.Eating;
+        if (currentState is DrinkState) return AnimalVisualState.Drinking;
+        if (currentState is SleepState) return AnimalVisualState.Sleeping;
+        if (currentState is MateState) return AnimalVisualState.Mating;
+        if (currentState is WanderState) return AnimalVisualState.Wandering;
+        return AnimalVisualState.Idle;
     }
 
     public void updateAnimations()
@@ -414,87 +450,267 @@ public class Animal : Entity
         animator.SetBool("isSleeping", isSleeping);
         animator.SetBool("isFighting", isFighting);
 
-        if(health <= 0)
+        if (health <= 0)
         {
             animator.SetBool("isDead", true);
         }
     }
 
+    #endregion
+
+    #region Movement
+
+    public void SetMoveTarget(Vector3 targetPos)
+    {
+        ValidateTargetPosition(targetPos);
+
+        pathStart = position;
+        pathEnd = targetPosition;
+
+        Vector3 forward =
+        (position - prevPosition).sqrMagnitude > 0.001f
+        ? (position - prevPosition).normalized
+        : facingDirection;
+
+        float distance = Vector3.Distance(pathStart, pathEnd);
+        pathControl = pathStart + forward * distance * 0.5f;
+
+        pathT = 0f;
+        hasPath = true;
+    }
+
+    private void ValidateTargetPosition(Vector3 targetPos)
+    {
+        if (!IsValidVector(targetPos))
+        {
+            targetPos = position; //fallback to current position
+        }
+
+        float maxX = EnvironmentGrid.Instance.gridCenter.x + EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+        float maxZ = EnvironmentGrid.Instance.gridCenter.z + EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+        float minX = EnvironmentGrid.Instance.gridCenter.x - EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+        float minZ = EnvironmentGrid.Instance.gridCenter.z - EnvironmentGrid.Instance.gridSize * EnvironmentGrid.Instance.cellSize * 0.5f;
+
+        targetPos.x = Mathf.Clamp(targetPos.x, minX, maxX);
+        targetPos.z = Mathf.Clamp(targetPos.z, minZ, maxZ);
+
+        this.targetPosition = targetPos;
+    }
+
+    public void MoveToTarget(float timeStep)
+    {
+        if (!hasPath)
+            return;
+
+        float speed;
+        if (ShouldRun(timeStep))
+        {
+            speed = species.runningSpeed;
+            isRunning = true;
+            isWalking = false;
+        }
+        else
+        {
+            speed = species.walkingSpeed;
+            isWalking = true;
+            isRunning = false;
+        }
+
+        float distanceToMove = speed * timeStep;
+
+        pathT = AdvanceTByDistance(pathT, distanceToMove);
+
+        prevPosition = position;
+        position = GetBezierPosition(pathStart, pathControl, pathEnd, pathT);
+
+        Vector3 tangent = GetBezierTangent(pathStart, pathControl, pathEnd, pathT);
+        if (tangent.sqrMagnitude > 0.0001f)
+            facingDirection = tangent.normalized;
+
+        FaceTowards(position);
+
+        if (pathT >= 1f)
+        {
+            hasPath = false;
+            position = pathEnd;
+        }
+    }
+
+    //This function converts "move X meters" -> "how far should t advance on the curve"
+    private float AdvanceTByDistance(float t, float distance)
+    {
+        const int maxIterations = 20;
+
+        float remaining = distance;
+        Vector3 prev = GetBezierPosition(pathStart, pathControl, pathEnd, t);
+
+        for (int i = 0; i < maxIterations && remaining > 0f && t < 1f; i++)
+        {
+            float dt = Mathf.Min(0.05f, 1f - t);
+            float nextT = t + dt;
+
+            Vector3 next = GetBezierPosition(pathStart, pathControl, pathEnd, nextT);
+            float segmentLength = Vector3.Distance(prev, next);
+
+            if (segmentLength > remaining)
+            {
+                dt *= remaining / segmentLength;
+                nextT = t + dt;
+                next = GetBezierPosition(pathStart, pathControl, pathEnd, nextT);
+                segmentLength = remaining;
+            }
+
+            remaining -= segmentLength;
+            t = nextT;
+            prev = next;
+        }
+
+        return t;
+    }
+
+
+    public Vector3 GetBezierPosition(Vector3 start, Vector3 control, Vector3 end, float t)
+    {
+        float u = 1 - t;
+        return u * u * start + 2 * u * t * control + t * t * end;
+    }
+
+    private static Vector3 GetBezierTangent(Vector3 a, Vector3 b, Vector3 c, float t)
+    {
+        return
+            2f * (1f - t) * (b - a) +
+            2f * t * (c - b);
+    }
+
+    public void FaceTowards(Vector3 newPos)
+    {
+        if (view != null)
+            view.FaceTowards(newPos);
+    }
+
+    public void FaceTowardsImmediate(Vector3 newPos)
+    {
+        if (view != null)
+            view.FaceTowardsImmediate(newPos);
+    }
+
+    public bool ShouldRun(float timeStep)
+    {
+        //ToDo dont run if low on hunger, energy, health
+        return (stamina >= timeStep) &&
+                ((isFleeing) ||
+                ((hunger < timeStep * species.hungerRate) &&
+                (energy > species.energyDepletionRate * timeStep)));
+    }
+
+    #endregion
+
+    #region Finding Nemo <3
+
     public Entity FindNearestFood()
     {
-        Vector3 pos = this.position;
-
-        Entity nearest = null;
-
-        if (species.isCarnivore)
+        Entity food = null;
+        if (species.isCarnivore && species.isHerbivore)
         {
-            Animal edible = null;
-
-            foreach (var entity in WorldManager.Instance.GetNearbyAnimals(pos, species.awarenessRange))
-            {
-                if (entity is Animal prey)
-                {
-                    if (prey == this) continue;
-
-                    if (species.edibleAnimals != null && species.edibleAnimals.Length > 0)
-                    {
-                        foreach (var allowed in species.edibleAnimals)
-                        {
-                            if (prey.species == allowed)
-                            {
-                                //ToDo take into account if larger nutrition value and lower dominance & health than current edible
-                                
-                                edible = (Animal) ClosestEntity(edible, prey); //ToDo prefer also already dead animals over alive ones
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (prey.dominance < dominance && prey.species != species)
-                            edible = (Animal) ClosestEntity(edible, prey);
-                    }
-                }
-            }
-            nearest = edible;
+            food = Closest(WorldManager.Instance.GetNearbyEntities(this.position, species.awarenessRange), FilterEdible);
+        }
+        else if (species.isCarnivore)
+        {
+            food = Closest(WorldManager.Instance.GetNearbyAnimals(this.position, species.awarenessRange), FilterEdible);
         }
         else if (species.isHerbivore)
         {
-            Plant edible = null;
-
-            foreach (var entity in WorldManager.Instance.GetNearbyPlants(pos, species.awarenessRange))
-            {
-                if (entity is Plant plant)
-                {
-                    if (species.edibleAnimals != null && species.edibleAnimals.Length > 0)
-                    {
-                        foreach (var allowed in species.edibleAnimals)
-                        {
-                            if (plant.species == allowed)
-                            {
-                                edible = (Plant)ClosestEntity(edible, plant);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (plant.species.isEdible)
-                            edible = (Plant)ClosestEntity(edible, plant);
-                    }
-                }
-            }
-            nearest = edible;
+            food = Closest(WorldManager.Instance.GetNearbyPlants(this.position, species.awarenessRange), FilterEdible);
         }
 
-        return nearest;
+        if (food == null)
+        {
+            failedFoodSearches++;
+        }
+        else
+        {
+            lastFoundFoodPos = food.position;
+            failedFoodSearches = 0;
+        }
+        return food;
     }
 
-    private Entity ClosestEntity(Entity entityA, Entity entityB)
+    public WaterSource FindNearestWaterSource()
     {
-        if(entityA == null)
+        WaterSource ws = Closest(WorldManager.Instance.GetNearbyWaterSources(this.position, species.awarenessRange));
+
+        if (ws == null)
+        {
+            failedWaterSearches++;
+        }
+        else
+        {
+            lastFoundWaterPos = ws.position; //NullReferenceException!
+            failedWaterSearches = 0;
+        }
+        return ws;
+    }
+
+    private Animal GetNearbyThreat()
+    {
+        Entity threat = Closest(WorldManager.Instance.GetNearbyAnimals(this.position, species.awarenessRange), IsThreat);
+        return threat as Animal;
+    }
+
+    public Animal GetNearbyMate()
+    {
+        Entity mate = Closest(WorldManager.Instance.GetNearbyAnimals(this.position, species.awarenessRange), IsMate);
+
+        if (mate == null)
+        {
+            failedMateSearches++;
+        }
+        else
+        {
+            lastFoundMatePos = mate.position;
+            failedMateSearches = 0;
+        }
+        return mate as Animal;
+    }
+
+    private Entity Closest(IEnumerable<Entity> entities)
+    {
+        return Closest(entities, _ => true);
+    }
+
+    private Entity Closest(IEnumerable<Entity> entities, Func<Entity, bool> filter)
+    {
+        Entity closest = null;
+
+        foreach (var entity in entities)
+        {
+            if (filter(entity))
+            {
+                closest = Closest(closest, entity); ;
+            }
+        }
+
+        return closest;
+    }
+
+    private WaterSource Closest(List<WaterSource> waterSources)
+    {
+        WaterSource closest = null;
+
+        foreach (var ws in waterSources)
+        {
+            closest = Closest(closest, ws);
+        }
+        return closest;
+    }
+
+    private Entity Closest(Entity entityA, Entity entityB)
+    {
+        if (entityA == null)
         {
             return entityB;
         }
-        if(entityB == null)
+        if (entityB == null)
         {
             return entityA;
         }
@@ -508,60 +724,83 @@ public class Animal : Entity
         }
     }
 
-    private Entity ClosestEntity<T>(List<T> entities) where T : Entity
+    private WaterSource Closest(WaterSource wsA, WaterSource wsB)
     {
-        Entity closest = null;
-
-        foreach (var entity in entities)
+        if (wsA == null)
         {
-            if(entity == this)
+            return wsB;
+        }
+        if (wsB == null)
+        {
+            return wsA;
+        }
+        if (Vector3.Distance(position, wsA.position) < Vector3.Distance(position, wsB.position))
+        {
+            return wsA;
+        }
+        else
+        {
+            return wsB;
+        }
+    }
+
+    #endregion
+
+    #region Entity Filters
+
+    private bool FilterEdible(Entity entity)
+    {
+        bool isEdible = false;
+
+        if (species.edibleEntities != null && species.edibleEntities.Contains(entity.species))
+        {
+            isEdible = true;
+        }
+        else
+        {
+            if (species.isCarnivore)
             {
-                continue;
+                if (entity is Animal prey)
+                {
+                    if (prey.dominance < dominance && prey.species != species && prey != this)
+                    {
+                        isEdible = true;
+                    }
+                }
             }
-            closest = ClosestEntity(closest, entity);
+            if (species.isHerbivore)
+            {
+                if (entity is Plant plant)
+                {
+                    isEdible = plant.species.isEdible;
+                }
+            }
         }
 
-        return closest;
+        return isEdible;
     }
 
-    private List<Animal> GetNearbyThreats()
+    public bool IsMate(Entity other)
     {
-        List<Animal> threats = new List<Animal>();
-        foreach(Animal a in WorldManager.Instance.GetNearbyPredators(position, species.awarenessRange))
+        if (other is Animal a)
         {
-            if (IsThreat(a))
-            {
-                threats.Add(a);
-            }
+            return (a.species == this.species) && (a.isFemale != this.isFemale) && (a.age >= a.maturityThreshold) && (this.age >= maturityThreshold);
         }
-        return threats;
+        return false;
     }
 
-    public bool IsThreat(Animal other)
+    public bool IsThreat(Entity other)
     {
-        return species.fearedAnimals != null && species.fearedAnimals.Contains(other.species);
+        if (other is Animal a)
+        {
+            return a.species.isCarnivore && species.fearedAnimals != null && species.fearedAnimals.Contains(other.species);
+        }
+        return false;
     }
 
-    public override void Die()
-    {
-        base.Die();
+    #endregion
 
-        currentState = null;
-        StopBehaviors();
-
-        GetNutritionValue();
-
-        //AnimalManager.Instance.RemoveAnimal(this); //removes animal and view from lists and destroys gameobject
-    }
-
-    public bool ShouldRun(float timeStep)
-    {
-        //ToDo dont run if low on hunger, energy, health
-        return (stamina >= timeStep) && 
-                ((isFleeing) ||
-                ((hunger < timeStep * species.hungerRate) &&
-                (energy > species.energyDepletionRate * timeStep)));
-    }
+    #region Utilities
 
     private void StopBehaviors()
     {
@@ -583,6 +822,17 @@ public class Animal : Entity
         animator.SetBool("isFighting", false);
         animator.SetBool("isFleeing", false);
     }
+
+    private bool IsValidVector(Vector3 v)
+    {
+        return !(float.IsNaN(v.x) || float.IsInfinity(v.x) ||
+                 float.IsNaN(v.y) || float.IsInfinity(v.y) ||
+                 float.IsNaN(v.z) || float.IsInfinity(v.z));
+    }
+
+    #endregion
+
+    #region Overrides
 
     public static bool operator ==(Animal a, Animal b)
     {
@@ -612,4 +862,6 @@ public class Animal : Entity
     {
         return id.GetHashCode();
     }
+
+    #endregion
 }

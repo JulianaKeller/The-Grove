@@ -11,10 +11,10 @@ public class FollowState : AnimalState
         this.target = target;
     }
 
-    public override void Enter(Animal a) { }
+    public override void Enter(Animal a) {
+
+    }
     public override void Execute(Animal a, float timeStep) {
-        //a.MoveTo(target)
-        //Keep minimum distance from target
 
         if (target == null)
         {
@@ -22,9 +22,17 @@ public class FollowState : AnimalState
             return;
         }
 
-        Vector3 moveDir = (target.position - a.position).normalized;
+        Vector3 toTarget = target.position - a.position;
+        float sqrDistance = toTarget.sqrMagnitude;
 
-        a.MoveTo(target.position - moveDir * minDistance, timeStep);
+        if (sqrDistance <= a.followDistance * a.followDistance)
+        {
+            a.ChangeState(new IdleState());
+            return;
+        }
+
+        a.SetMoveTarget(target.position);
     }
+
     public override void Exit(Animal a) { }
 }

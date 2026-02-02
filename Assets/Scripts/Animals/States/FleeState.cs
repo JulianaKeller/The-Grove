@@ -43,7 +43,7 @@ public class FleeState : AnimalState
 
         Vector3 fleeDir = (baseDir + randomOffset).normalized;
 
-        a.MoveTo(fleeDir * safeDistance, timeStep);
+        a.SetMoveTarget(fleeDir * safeDistance);
     }
     public override void Exit(Animal a) {
         a.isFleeing = false;

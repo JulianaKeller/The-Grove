@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class TerrainHeightmapSave
+{
+    public int resolution;
+    public float[] heights;
+}
+
 public class TerrainDeformer : MonoBehaviour
 {
     public static TerrainDeformer Instance { get; private set; }
@@ -10,6 +17,19 @@ public class TerrainDeformer : MonoBehaviour
     public Terrain terrain;
 
     public float baseDepth = 0.1f;
+
+    [Header("Runtime Terrain Handling")]
+
+    private TerrainData originalTerrainData;
+    private TerrainData runtimeTerrainData;
+
+    [Header("Terrain Serialization")]
+
+    private string SavePathRuntimeTerrain =>
+    System.IO.Path.Combine(Application.persistentDataPath, "terrain_heightmap_runtime.json");
+    private string SavePathOriginalTerrain =>
+    System.IO.Path.Combine(Application.persistentDataPath, "terrain_heightmap_original.json");
+
 
     void Awake()
     {
@@ -22,12 +42,34 @@ public class TerrainDeformer : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    void Start()
+    {
+        InitializeRuntimeTerrain();
+    }
+
     public struct TerrainPoint
     {
         public Vector3 worldPos;
         public int x;
         public int z;
         public float height;
+    }
+
+    private void InitializeRuntimeTerrain()
+    {
+        if (terrain == null)
+            terrain = Terrain.activeTerrain;
+
+        if (terrain == null)
+            return;
+
+        originalTerrainData = terrain.terrainData;
+
+        // Clone for runtime-only modification
+        runtimeTerrainData = Instantiate(originalTerrainData);
+        runtimeTerrainData.name = originalTerrainData.name + "_Runtime";
+
+        terrain.terrainData = runtimeTerrainData;
     }
 
     public IEnumerable<TerrainPoint> GetTerrainPointsInRadius(Vector3 center, float radius)
@@ -144,4 +186,112 @@ public class TerrainDeformer : MonoBehaviour
         data.SetHeights(0, 0, heights);
     }
 
+    #region Serialize, Save, Load Original Terrain
+
+    private void SaveOriginalTerrain()
+    {
+        SaveTerrainToJSON(originalTerrainData, SavePathOriginalTerrain);
+    }
+
+    private void SaveTerrainToJSON(TerrainData terrainToSave, string savePath)
+    {
+        if (terrain == null || terrain.terrainData == null)
+            return;
+
+        int res = terrainToSave.heightmapResolution;
+
+        float[,] heights2D = terrainToSave.GetHeights(0, 0, res, res);
+        float[] heights1D = new float[res * res];
+
+        int i = 0;
+        for (int z = 0; z < res; z++)
+            for (int x = 0; x < res; x++)
+                heights1D[i++] = heights2D[z, x];
+
+        TerrainHeightmapSave snapshot = new TerrainHeightmapSave
+        {
+            resolution = res,
+            heights = heights1D
+        };
+
+        string json = JsonUtility.ToJson(snapshot);
+        System.IO.File.WriteAllText(savePath, json);
+    }
+
+    #endregion
+
+    #region Serialize, Save, Load Runtime Terrain
+
+    public void SaveRuntimeTerrain()
+    {
+        SaveTerrainToJSON(terrain.terrainData, SavePathRuntimeTerrain);
+    }
+
+    public bool LoadRuntimeTerrainIfExists()
+    {
+        if (!System.IO.File.Exists(SavePathRuntimeTerrain))
+            return false;
+
+        if (terrain == null || terrain.terrainData == null)
+            return false;
+
+        string json = System.IO.File.ReadAllText(SavePathRuntimeTerrain);
+        TerrainHeightmapSave save = JsonUtility.FromJson<TerrainHeightmapSave>(json);
+
+        TerrainData data = terrain.terrainData;
+
+        if (data.heightmapResolution != save.resolution)
+            return false;
+
+        float[,] heights2D = new float[save.resolution, save.resolution];
+
+        int i = 0;
+        for (int z = 0; z < save.resolution; z++)
+            for (int x = 0; x < save.resolution; x++)
+                heights2D[z, x] = save.heights[i++];
+
+        data.SetHeights(0, 0, heights2D);
+        data.SyncHeightmap();
+
+        return true;
+    }
+
+    #endregion
+
+    #region Restoring Original Terrain
+
+    private void RestoreOriginalTerrain()
+    {
+        if (terrain != null && originalTerrainData != null)
+        {
+            terrain.terrainData = originalTerrainData;
+        }
+
+        if (runtimeTerrainData != null)
+        {
+            DestroyImmediate(runtimeTerrainData);
+            runtimeTerrainData = null;
+        }
+    }
+
+    //Call when starting a new save game in build!
+    public void ResetTerrainForNewGame()
+    {
+        RestoreOriginalTerrain();
+        InitializeRuntimeTerrain();
+    }
+
+    void OnDestroy()
+    {
+        RestoreOriginalTerrain();
+    }
+
+    #if UNITY_EDITOR
+        void OnDisable()
+        {
+            RestoreOriginalTerrain();
+        }
+    #endif
+
+    #endregion
 }

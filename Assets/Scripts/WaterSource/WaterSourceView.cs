@@ -10,12 +10,19 @@ public class WaterSourceView : MonoBehaviour
     private float prevHeight;
     private float newHeight;
 
+    private float initialHeight;
+
+    private void Start()
+    {
+        initialHeight = waterSurfacePlane.transform.localPosition.y;
+    }
+
     void LateUpdate()
     {
         float fill01 = Mathf.Clamp01(data.currentWater / data.capacity);
 
         prevHeight = newHeight;
-        newHeight = Mathf.Lerp(-WaterSourceManager.Instance.depth, 0f, fill01);
+        newHeight = Mathf.Lerp(initialHeight, initialHeight - WaterSourceManager.Instance.depth, fill01);
 
         float y = Mathf.Lerp(prevHeight, newHeight, interpolationFactor);
         waterSurfacePlane.transform.localPosition = new Vector3(0f, y, 0f);

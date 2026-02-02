@@ -25,8 +25,7 @@ public class AnimalSpeciesData : EntitySpeciesData
     public bool isHerbivore;
 
     // List of entity types this species can consume
-    public PlantSpeciesData[] ediblePlants;
-    public AnimalSpeciesData[] edibleAnimals;
+    public EntitySpeciesData[] edibleEntities;
     [HideInInspector] public HashSet<AnimalSpeciesData> fearedAnimals; // auto-filled at startup
 
     public static bool operator ==(AnimalSpeciesData a, AnimalSpeciesData b)

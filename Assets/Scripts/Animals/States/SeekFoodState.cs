@@ -6,13 +6,14 @@ public class SeekFoodState : AnimalState
 
     public override void Enter(Animal a) {
         targetFood = a.FindNearestFood();
+
+        a.SetMoveTarget(targetFood != null ? targetFood.position : a.position);
     }
 
     public override void Execute(Animal a, float timeStep) {
 
         if (targetFood == null)
         {
-            // If no food found, wander
             a.ChangeState(new WanderState());
             return;
         }
@@ -21,9 +22,7 @@ public class SeekFoodState : AnimalState
             Debug.Log("Food found. " + a.species.name + " is now targeting food.");
         }
 
-        float distance = Vector3.Distance(a.position, targetFood.position);
-
-        if (distance < 0.5f)
+        if (!a.hasPath)
         {
             if (targetFood.isAnimal && targetFood.isAlive)
             {
@@ -35,9 +34,6 @@ public class SeekFoodState : AnimalState
             }
             return;
         }
-
-        a.MoveTo(targetFood.position, timeStep);
-
     }
 
     public override void Exit(Animal a) {

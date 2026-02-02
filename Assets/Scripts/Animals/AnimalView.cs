@@ -5,28 +5,35 @@ public class AnimalView : EntityView
     public Animal data;
     private float interpolationFactor = 0f;
 
+    [Header("Rotation")]
+    float duration;
+    private Quaternion prevRotation;
+    private Quaternion targetRotation;
+
     [Header("Ground Following")]
     public bool useRaycast = true;
     public LayerMask groundLayer;
     public float raycastHeight = 10f;
     public float groundOffset = 0f;
-    private Vector3 prevGroundedPosition;
-    private Vector3 currGroundedPosition;
+
+    private Vector3 prevGroundedPosition = Vector3.zero;
+    private Vector3 currGroundedPosition = Vector3.zero;
+
+    private void Start()
+    {
+        duration = WorldManager.Instance.timeStep * AnimalManager.Instance.updateSubsetCount;
+    }
 
     void LateUpdate()
     {
-        // Interpolate between previous and current positions
-        Vector3 interpolated = Vector3.Lerp(
-            prevGroundedPosition,
-            currGroundedPosition,
-            interpolationFactor
-        );
-
-        transform.position = interpolated; //ToDo local or word space?
-
-        // Update interpolation factor relative to simulation time step
-        interpolationFactor += Time.deltaTime / WorldManager.Instance.timeStep / AnimalManager.Instance.updateSubsetCount;
+        
+        interpolationFactor += Time.deltaTime / duration;
         interpolationFactor = Mathf.Clamp01(interpolationFactor);
+
+        transform.position = Vector3.Lerp(prevGroundedPosition, currGroundedPosition, interpolationFactor);
+
+        transform.rotation = Quaternion.Slerp(prevRotation, targetRotation, interpolationFactor);
+
     }
 
     public Vector3 GetInterpolatedPosition()
@@ -43,12 +50,15 @@ public class AnimalView : EntityView
     {
         prevGroundedPosition = ApplyGroundFollowing(data.prevPosition);
         currGroundedPosition = ApplyGroundFollowing(data.position);
+        
+        prevRotation = transform.rotation;
+        targetRotation = Quaternion.LookRotation(data.facingDirection, Vector3.up);
     }
 
-    public void FaceTowards(Vector3 targetPos)
+    public void FaceTowardsImmediate(Vector3 targetPos)
     {
         Vector3 direction = targetPos - transform.position;
-        direction.y = 0f; // ignore vertical difference
+        direction.y = 0f;
 
         Quaternion targetRotation = Quaternion.LookRotation(direction.normalized);
         transform.rotation = Quaternion.Slerp(
@@ -56,6 +66,15 @@ public class AnimalView : EntityView
             targetRotation,
             Time.deltaTime * 100f
         );
+    }
+
+    public void FaceTowards(Vector3 lookTarget)
+    {
+        Vector3 dir = lookTarget - transform.position;
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude > 0.0001f)
+            targetRotation = Quaternion.LookRotation(dir.normalized);
     }
 
     private Vector3 ApplyGroundFollowing(Vector3 pos)

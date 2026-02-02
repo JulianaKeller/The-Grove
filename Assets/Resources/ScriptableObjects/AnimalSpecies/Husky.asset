@@ -22,7 +22,7 @@ MonoBehaviour:
   baseDominance: 3
   dominanceVariation: 1
   walkingSpeed: 1
-  runningSpeed: 2
+  runningSpeed: 3
   stamina: 10
   power: 1
   defense: 1
@@ -38,11 +38,4 @@ MonoBehaviour:
   waterNeed: 1
   isCarnivore: 1
   isHerbivore: 0
-  ediblePlants: []
-  edibleAnimals:
-  - {fileID: 11400000, guid: 22cb8dbd0ceb43044b9b26791376721b, type: 2}
-  - {fileID: 11400000, guid: 27cffdd6eb26fec43968e7baf994663e, type: 2}
-  - {fileID: 11400000, guid: 4c30e71aea876ea439413d8bc2580a93, type: 2}
-  - {fileID: 11400000, guid: 80471db1ceeaa9b4fada8700fae1770e, type: 2}
-  - {fileID: 11400000, guid: f42584f51286a194bb3c05b2697cdb47, type: 2}
-  - {fileID: 11400000, guid: 13e2401461513444d97736bf11cc4f54, type: 2}
+  edibleEntities: []

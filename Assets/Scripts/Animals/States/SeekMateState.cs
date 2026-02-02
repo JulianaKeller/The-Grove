@@ -7,15 +7,20 @@ public class SeekMateState : AnimalState
     private const float mateRange = 1.2f;
 
     public override void Enter(Animal a) {
-        Debug.Log(a.species.name + " is now seeking a mate.");
+        mate = a.GetNearbyMate();
+        a.SetMoveTarget(mate != null ? mate.position : a.position);
+        //ToDo offset to target
     }
-    public override void Execute(Animal a, float timeStep) {
-        Vector3 offset = mate.position - a.position;
-        float dist = offset.magnitude;
 
-        if (dist > mateRange)
+    public override void Execute(Animal a, float timeStep) {
+        if(mate == null)
         {
-            a.MoveTo(mate.position, timeStep);
+            a.ChangeState(new WanderState());
+            return;
+        }
+
+        if (a.hasPath)
+        {
             return;
         }
         else if (!mate.isMating && mate.matingDrive >= 0.5f)

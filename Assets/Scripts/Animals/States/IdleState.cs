@@ -6,7 +6,7 @@ public class IdleState : AnimalState
 
     public override void Enter(Animal a)
     {
-        idleTimer = Random.Range(1f, 5f);
+        idleTimer = Random.Range(1f, 10f);
         //Debug.Log(a.species.name + " is now idle.");
     }
 
@@ -16,9 +16,19 @@ public class IdleState : AnimalState
 
         if (idleTimer <= 0f)
         {
-            a.ChangeState(new WanderState());
+            if (!a.EvaluateLongTermNeeds())
+            {
+                a.ChangeState(new WanderState());
+                return;
+            }
+            else
+            {
+                return;
+            }
         }
     }
 
-    public override void Exit(Animal a) { }
+    public override void Exit(Animal a) {
+        
+    }
 }

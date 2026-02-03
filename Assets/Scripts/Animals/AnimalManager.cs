@@ -54,7 +54,8 @@ public class AnimalManager : MonoBehaviour
         {
             Animal data = new Animal(species, pos, nextId++, mother);
 
-            GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length - 1)], pos, Quaternion.identity, spawnedAnimalsParent ? spawnedAnimalsParent.transform : null);
+            Quaternion randomRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+            GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length - 1)], pos, randomRotation, spawnedAnimalsParent ? spawnedAnimalsParent.transform : null);
 
             if(obj == null)
             {

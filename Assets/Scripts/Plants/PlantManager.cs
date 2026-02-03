@@ -47,7 +47,8 @@ public class PlantManager : MonoBehaviour
             Plant data = new Plant(species, pos, nextId++);
             GameObject original = species.prefabs[Random.Range(0, species.prefabs.Length)];
 
-            GameObject obj = Instantiate(original, pos, Quaternion.identity, spawnedPlantsParent ? spawnedPlantsParent.transform : null);
+            Quaternion randomRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+            GameObject obj = Instantiate(original, pos, randomRotation, spawnedPlantsParent ? spawnedPlantsParent.transform : null);
 
             PlantView view = obj.GetComponent<PlantView>();
 

@@ -3,10 +3,9 @@ using UnityEngine;
 public class WaterSource
 {
     public int id { get; private set; }
+    public Vector3 center { get; private set; }
 
     public float baseCapacity = 100f;
-
-    public Vector3 position;
 
     public WaterSourceView view;
 
@@ -15,14 +14,13 @@ public class WaterSource
     public float capacity;
     public float currentWater;
 
-    public WaterSource(Vector3 pos, int Id, float radius)
+    public WaterSource(int Id, float radius, Vector3 center)
     {
         id = Id;
-        position = pos;
         this.radius = radius;
-        float area = Mathf.PI * radius * radius;
         capacity = baseCapacity;
         currentWater = capacity;
+        this.center = center;
     }
 
     public float DrinkFrom(float amount)

@@ -35,12 +35,14 @@ public class EnvironmentGrid
     public GridCell[,] grid;
 
     [Header("Regeneration/usage constants")]
-    public float fertilityRegenRate = 0.005f;  // fertility gained per update
-    public float moistureLossRate = 0.0001f;   // moisture gained per update
+    public float fertilityRegenRate = 0.0005f;  // fertility gained per update
+    public float moistureLossRate = 0.00005f;   // moisture gained per update
     public float minFertility = 0f;
     public float maxFertility = 1f;
     public float minMoisture = 0f;
     public float maxMoisture = 1f;
+    public float lightRainMoistureBonus = 0.0001f; // moisture gained per update during light rain
+    public float heavyRainMoistureBonus = 0.0005f; // moisture gained per update during heavy rain
 
     private EnvironmentGrid()
     {
@@ -118,14 +120,65 @@ public class EnvironmentGrid
 
     public void RegisterWaterSource(WaterSource s)
     {
-        var coords = GetCellCoords(s.position);
-        grid[coords.x, coords.y].waterSources.Add(s);
+        Vector2Int centerCoords = GetCellCoords(s.center);
+
+        int minX = Mathf.Max(centerCoords.x - Mathf.FloorToInt(s.radius), 0);
+        int maxX = Mathf.Min(centerCoords.x + Mathf.FloorToInt(s.radius), gridSize - 1);
+        int minZ = Mathf.Max(centerCoords.y - Mathf.FloorToInt(s.radius), 0);
+        int maxZ = Mathf.Min(centerCoords.y + Mathf.FloorToInt(s.radius), gridSize - 1);
+
+        for (int x = minX; x <= maxX; x++)
+        {
+            for (int z = minZ; z <= maxZ; z++)
+            {
+                GridCell cell = grid[x, z];
+
+                if (!cell.waterSources.Contains(s))
+                    cell.waterSources.Add(s);
+
+                // --- Remove animals in this cell ---
+                if (cell.animals != null)
+                {
+                    List<Animal> animalsCopy = new List<Animal>(cell.animals);
+                    foreach (Animal a in animalsCopy)
+                    {
+                        if (a != null)
+                            AnimalManager.Instance.RemoveAnimal(a);
+                    }
+                }
+
+                // --- Remove plants in this cell ---
+                if (cell.plants != null)
+                {
+                    List<Plant> plantsCopy = new List<Plant>(cell.plants);
+                    foreach (Plant p in plantsCopy)
+                    {
+                        if (p != null)
+                            PlantManager.Instance.RemovePlant(p);
+                    }
+                }
+
+                grid[x, z] = cell;
+            }
+        }
     }
 
     public void DeregisterWaterSource(WaterSource s)
     {
-        var coords = GetCellCoords(s.position);
-        grid[coords.x, coords.y].waterSources.Remove(s);
+        Vector2Int centerCoords = GetCellCoords(s.center);
+
+        int minX = Mathf.Max(centerCoords.x - Mathf.FloorToInt(s.radius), 0);
+        int maxX = Mathf.Min(centerCoords.x + Mathf.FloorToInt(s.radius), gridSize - 1);
+        int minZ = Mathf.Max(centerCoords.y - Mathf.FloorToInt(s.radius), 0);
+        int maxZ = Mathf.Min(centerCoords.y + Mathf.FloorToInt(s.radius), gridSize - 1);
+
+        for (int x = minX; x <= maxX; x++)
+        {
+            for (int z = minZ; z <= maxZ; z++)
+            {
+                grid[x, z].waterSources.Remove(s);
+            }
+        }
     }
 
     private string GetPath(string fileName)
@@ -206,6 +259,15 @@ public class EnvironmentGrid
                     ApplyWaterInfluence(s, x, z, timeStep);
                 }
 
+                if (WaterSourceManager.Instance.lightRain)
+                {
+                    cell.moisture = Mathf.Clamp(cell.moisture + lightRainMoistureBonus, minMoisture, maxMoisture);
+                }
+                else if (WaterSourceManager.Instance.heavyRain || WaterSourceManager.Instance.thunderstorm)
+                {
+                    cell.moisture = Mathf.Clamp(cell.moisture + heavyRainMoistureBonus, minMoisture, maxMoisture);
+                }
+
                 float fertilityLoss = 0f;
 
                 foreach (Plant p in cell.plants)
@@ -236,7 +298,7 @@ public class EnvironmentGrid
 
     private void ApplyWaterInfluence(WaterSource ws, int cellX, int cellZ, float timeStep) //x and z are the indices of the cell in which the water source is contained
     {
-        int cells = Mathf.CeilToInt(ws.radius + WaterSourceManager.Instance.influenceRadius / cellSize);
+        int cells = Mathf.CeilToInt(WaterSourceManager.Instance.influenceRadius / cellSize);
 
         int startX = Mathf.Max(cellX - cells, 0);
         int endX = Mathf.Min(cellX + cells, gridSize - 1);

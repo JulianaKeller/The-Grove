@@ -19,26 +19,26 @@ MonoBehaviour:
   - {r: 0.3584906, g: 0.13959038, b: 0, a: 0}
   - {r: 0.9622642, g: 0.9128509, b: 0.8079387, a: 0}
   - {r: 0.66666657, g: 0.66666657, b: 0.66666657, a: 0}
-  lifespan: 300
+  lifespan: 420
   lifespanVariation: 0.446
-  nutritionBaseValue: 1
+  nutritionBaseValue: 25
   baseDominance: 1
   dominanceVariation: 1
-  walkingSpeed: 1
-  runningSpeed: 3
-  stamina: 10
-  power: 1
-  defense: 1
-  maxHP: 100
-  aggression: 1
-  awarenessRange: 5
-  stealth: 1
-  energyDepletionRate: 1
-  hpRecoveryRate: 1
-  hungerRate: 1
-  foodNeed: 1
-  thirstRate: 1
-  waterNeed: 1
+  walkingSpeed: 2
+  runningSpeed: 4.2
+  stamina: 7
+  power: 3
+  defense: 0.08
+  maxHP: 25
+  aggression: 0.15
+  awarenessRange: 4
+  stealth: 0.6
+  energyDepletionRate: 0.002
+  hpRecoveryRate: 0.018
+  hungerRate: 0.0025
+  foodNeed: 20
+  thirstRate: 0.002
+  waterNeed: 15
   isCarnivore: 0
   isHerbivore: 1
   edibleEntities: []

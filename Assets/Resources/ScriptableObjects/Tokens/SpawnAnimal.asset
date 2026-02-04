@@ -15,4 +15,4 @@ MonoBehaviour:
   type: 0
   maxAmount: 10
   startingAmount: 1
-  rechargeTime: 60
+  rechargeTime: 120

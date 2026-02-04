@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class GroundFertilityTexture : MonoBehaviour
 {
-    public float updateInterval = 10f;  // Update every x timesteps
+    public float updateInterval = 20f;  // Update every x timesteps
     public int texSizeMultiplier = 4;
     public int kernelRadius = 2; // 1 = 3x3 box blur
 
     private Texture2D fertilityTexture;
     private Renderer groundRenderer;
     private int texSize = 0;
+    public Terrain terrain;
 
     public Color lowFertilityDry = new Color(0.7f, 0.6f, 0.2f);   // light brown
     public Color lowFertilityWet = new Color(0.5f, 0.4f, 0.2f);   // medium brown
@@ -17,18 +18,25 @@ public class GroundFertilityTexture : MonoBehaviour
 
     void Start()
     {
-        groundRenderer = GetComponent<Renderer>();
+        if(terrain == null)
+            terrain = GetComponent<Terrain>();
+
+        //groundRenderer = GetComponent<Renderer>();
 
         texSize = EnvironmentGrid.Instance.gridSize * texSizeMultiplier;
         fertilityTexture = new Texture2D(texSize, texSize, TextureFormat.RGBA32, false);
         fertilityTexture.wrapMode = TextureWrapMode.Clamp;
 
         UpdateTexture();
-        //groundRenderer.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+        ApplyTextureToTerrain();
+        
+        //ALT
+        /*
         groundRenderer.material = new Material(Shader.Find("Toon"));
         groundRenderer.material.mainTexture = fertilityTexture;
         groundRenderer.material.mainTextureScale = new Vector2(1,1);
         groundRenderer.material.color = Color.white;
+        */
     }
 
     public void UpdateFertilityTexture()
@@ -65,7 +73,6 @@ public class GroundFertilityTexture : MonoBehaviour
 
                         // flip Z for Unity texture coordinates
                         fertilityTexture.SetPixel(texSize -1 - px, texSize - 1 - pz, finalColor);
-                        // ALT fertilityTexture.SetPixel(gridSize - 1 - x, gridSize - 1 - z, finalColor);
                     }
                 }
             }
@@ -75,7 +82,11 @@ public class GroundFertilityTexture : MonoBehaviour
         SmoothTexture(fertilityTexture);
         fertilityTexture.Apply();
 
-        groundRenderer.material.mainTexture = fertilityTexture;
+        //ALT
+        //fertilityTexture.Apply();
+        //groundRenderer.material.mainTexture = fertilityTexture;
+
+        ApplyTextureToTerrain();
     }
 
     private void SmoothTexture(Texture2D tex)
@@ -106,5 +117,71 @@ public class GroundFertilityTexture : MonoBehaviour
         }
 
         tex.SetPixels(blurred);
+    }
+
+    private void ApplyTextureToTerrain()
+    {
+        TerrainData terrainData = terrain.terrainData;
+
+        int terrainWidth = terrainData.alphamapWidth;
+        int terrainHeight = terrainData.alphamapHeight;
+        int numLayers = terrainData.alphamapLayers;
+
+        if (numLayers < 4)
+        {
+            Debug.LogError("Terrain must have at least 4 layers for lowDry, lowWet, highDry, highWet.");
+            return;
+        }
+
+        float[,,] alphamaps = new float[terrainHeight, terrainWidth, numLayers];
+
+        // Get pixels from fertilityTexture (resize to match terrain alpha map)
+        Texture2D resizedTex = ResizeTexture(fertilityTexture, terrainWidth, terrainHeight);
+        Color[] pixels = resizedTex.GetPixels();
+
+        for (int y = 0; y < terrainHeight; y++)
+        {
+            for (int x = 0; x < terrainWidth; x++)
+            {
+                Color c = pixels[y * terrainWidth + x];
+
+                // Compute contribution for each layer
+                float lowDry = (1 - c.g) * (1 - c.b); // roughly map dryness and fertility
+                float lowWet = (1 - c.g) * c.b;
+                float highDry = c.g * (1 - c.b);
+                float highWet = c.g * c.b;
+
+                // Normalize
+                float sum = lowDry + lowWet + highDry + highWet;
+                if (sum > 0)
+                {
+                    lowDry /= sum;
+                    lowWet /= sum;
+                    highDry /= sum;
+                    highWet /= sum;
+                }
+
+                alphamaps[y, x, 0] = lowDry;
+                alphamaps[y, x, 1] = lowWet;
+                alphamaps[y, x, 2] = highDry;
+                alphamaps[y, x, 3] = highWet;
+            }
+        }
+
+        terrainData.SetAlphamaps(0, 0, alphamaps);
+    }
+
+    private Texture2D ResizeTexture(Texture2D source, int newWidth, int newHeight)
+    {
+        RenderTexture rt = RenderTexture.GetTemporary(newWidth, newHeight);
+        Graphics.Blit(source, rt);
+        RenderTexture previous = RenderTexture.active;
+        RenderTexture.active = rt;
+        Texture2D newTex = new Texture2D(newWidth, newHeight);
+        newTex.ReadPixels(new Rect(0, 0, newWidth, newHeight), 0, 0);
+        newTex.Apply();
+        RenderTexture.active = previous;
+        RenderTexture.ReleaseTemporary(rt);
+        return newTex;
     }
 }

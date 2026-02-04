@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   maxAmount: 10
-  rechargeTime: 60
+  startingAmount: 1
+  rechargeTime: 180

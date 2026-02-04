@@ -494,6 +494,33 @@ public class Animal : Entity
         targetPos.x = Mathf.Clamp(targetPos.x, minX, maxX);
         targetPos.z = Mathf.Clamp(targetPos.z, minZ, maxZ);
 
+        // Check if the target position is over water
+        Vector3 fallbackPos = targetPos;
+        float stepSize = EnvironmentGrid.Instance.cellSize;
+
+        Vector3 movementDir = (position - fallbackPos).normalized;
+
+        while (true)
+        {
+            // Check if cell contains any water sources
+            if (WorldManager.Instance.GetNearbyWaterSources(fallbackPos, 0).Count == 0)
+            {
+                // Safe cell found
+                break;
+            }
+
+            // Step one cell back toward current position
+            fallbackPos += movementDir * stepSize;
+
+            // Stop if we reached current position
+            float distanceToCurrent = Vector2.Distance(new Vector2(fallbackPos.x, fallbackPos.z), new Vector2(position.x, position.z));
+            if (distanceToCurrent <= stepSize)
+            {
+                fallbackPos = position;
+                break;
+            }
+        }
+
         this.targetPosition = targetPos;
     }
 
@@ -645,7 +672,7 @@ public class Animal : Entity
         }
         else
         {
-            lastFoundWaterPos = ws.position; //NullReferenceException!
+            lastFoundWaterPos = ws.center;
             failedWaterSearches = 0;
         }
         return ws;
@@ -734,7 +761,7 @@ public class Animal : Entity
         {
             return wsA;
         }
-        if (Vector3.Distance(position, wsA.position) < Vector3.Distance(position, wsB.position))
+        if (Vector3.Distance(position, wsA.center) < Vector3.Distance(position, wsB.center))
         {
             return wsA;
         }

@@ -112,6 +112,8 @@ public class WorldManager : MonoBehaviour
 
         Vector2Int center = EnvironmentGrid.Instance.GetCellCoords(pos);
 
+        cells.Add(EnvironmentGrid.Instance.grid[center.x, center.y]);
+
         for (int x = -range; x <= range; x++)
         {
             for (int y = -range; y <= range; y++)
@@ -143,7 +145,7 @@ public class WorldManager : MonoBehaviour
         {
             nearby.AddRange(cell.waterSources);
         }
-        return nearby;
+        return nearby.Distinct().ToList();
     }
 
     public List<Animal> GetNearbyAnimals(Vector3 pos, int range)

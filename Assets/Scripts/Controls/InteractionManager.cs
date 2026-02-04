@@ -2,6 +2,7 @@ using DistantLands.Cozy;
 using DistantLands.Cozy.Data;
 using Mono.Cecil;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
@@ -115,7 +116,7 @@ public class InteractionManager : MonoBehaviour
 
     private void TryCreateWaterSource()
     {
-        if (InvalidSpawnLocation())
+        if (InvalidSpawnLocation(WaterSourceManager.Instance.waterSourceRadius + WaterSourceManager.Instance.radiusVariation))
         {
             return;
         }
@@ -221,7 +222,7 @@ public class InteractionManager : MonoBehaviour
 
     private void TrySpawnEntity()
     {
-        if (InvalidSpawnLocation())
+        if (InvalidSpawnLocation(0))
         {
             return;
         }
@@ -345,13 +346,20 @@ public class InteractionManager : MonoBehaviour
         RemoveSpawnIndicator();
     }
 
-    private bool InvalidSpawnLocation()
+    private bool InvalidSpawnLocation(int checkRadius)
     {
         //Prevent spawning when mouse is over UI element
         if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             return true;
 
         if (!activeSpawnIndicator.GetComponent<FollowMouseAndClamp>().IsOnTerrain)
+            return true;
+
+        // Check if spawn position is over a water source
+        Vector3 spawnPos = activeSpawnIndicator.transform.position;
+        List<WaterSource> nearbyWater = WorldManager.Instance.GetNearbyWaterSources(spawnPos, checkRadius);
+
+        if (nearbyWater.Count > 0)
             return true;
 
         return false;

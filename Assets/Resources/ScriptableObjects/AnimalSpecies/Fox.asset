@@ -16,26 +16,26 @@ MonoBehaviour:
   prefabs:
   - {fileID: 3085198015196084799, guid: a1458e26745365f4aa4cff501eaf8f2d, type: 3}
   colorVariants: []
-  lifespan: 300
+  lifespan: 600
   lifespanVariation: 0.446
-  nutritionBaseValue: 1
+  nutritionBaseValue: 40
   baseDominance: 3
   dominanceVariation: 1
-  walkingSpeed: 1
-  runningSpeed: 3
+  walkingSpeed: 2.2
+  runningSpeed: 4.5
   stamina: 10
-  power: 1
-  defense: 1
-  maxHP: 100
+  power: 12
+  defense: 0.2
+  maxHP: 45
   aggression: 0.5
-  awarenessRange: 5
-  stealth: 1
-  energyDepletionRate: 1
-  hpRecoveryRate: 1
-  hungerRate: 1
-  foodNeed: 1
-  thirstRate: 1
-  waterNeed: 1
+  awarenessRange: 6
+  stealth: 0.6
+  energyDepletionRate: 0.0018
+  hpRecoveryRate: 0.015
+  hungerRate: 0.002
+  foodNeed: 30
+  thirstRate: 0.0018
+  waterNeed: 25
   isCarnivore: 1
   isHerbivore: 0
   edibleEntities: []

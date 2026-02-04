@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ChangeWeather
   m_EditorClassIdentifier: 
   type: 2
-  maxAmount: 5
-  startingAmount: 1
-  rechargeTime: 60
+  maxAmount: 3
+  startingAmount: 0
+  rechargeTime: 600

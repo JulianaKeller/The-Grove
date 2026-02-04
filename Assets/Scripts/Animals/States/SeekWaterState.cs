@@ -1,3 +1,5 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SeekWaterState : AnimalState
@@ -6,7 +8,7 @@ public class SeekWaterState : AnimalState
 
     public override void Enter(Animal a) {
         targetWaterSource = a.FindNearestWaterSource();
-        a.SetMoveTarget(targetWaterSource != null ? targetWaterSource.position : a.position);
+        a.SetMoveTarget(targetWaterSource != null ? targetWaterSource.center : a.position);
         //ToDo offset of water source radius
     }
 
@@ -17,11 +19,14 @@ public class SeekWaterState : AnimalState
             return;
         }
 
-        if (!a.hasPath)
+        List<WaterSource> nearbyWaterSources = WorldManager.Instance.GetNearbyWaterSources(a.position, 1);
+        //Check if adjacent to water source
+        if (nearbyWaterSources.Count > 0)
         {
-            a.ChangeState(new DrinkState(targetWaterSource));
+            a.ChangeState(new DrinkState(nearbyWaterSources[0]));
             return;
         }
     }
+
     public override void Exit(Animal a) { }
 }

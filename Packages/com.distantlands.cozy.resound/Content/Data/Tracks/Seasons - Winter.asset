@@ -67,6 +67,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+    customChanceEffector: {fileID: 0}
   clip: {fileID: 8300000, guid: b239b818bc165f647be761fc2c559f2a, type: 3}
   playlist: []
-  volume: 1
+  volume: 0.5

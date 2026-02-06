@@ -18,14 +18,19 @@ public class InteractionManager : MonoBehaviour
 
     private bool waterSourcePlacementActive;
     public float spawnHeightOffset = 1f;
+    public AudioClip waterSourceSpawnSound;
 
     [Header("Weather Control")]
     public WeatherProfile weatherProfile;
     private bool weatherModeActive;
+    public AudioClip weatherChangeSound;
 
     [Header("Spawning")]
     public GameObject spawnIndicatorPrefab;
     public EntitySpeciesData speciesData;
+    public AudioClip spawnSound;
+    public AudioClip spawnIndicatorSound;
+    public AudioClip invalidActionSound;
 
     [SerializeField] private SimpleChanceEffector rainChanceEffector;
 
@@ -83,6 +88,8 @@ public class InteractionManager : MonoBehaviour
         var follow = activeSpawnIndicator.GetComponent<FollowMouseAndClamp>();
         if (follow != null)
             follow.clampToTerrain = clampToTerrain;
+
+        PlaySpawnIndicatorSound(spawnIndicatorSound);
     }
 
     private void RemoveSpawnIndicator()
@@ -119,6 +126,7 @@ public class InteractionManager : MonoBehaviour
     {
         if (InvalidSpawnLocation(WaterSourceManager.Instance.waterSourceRadius + WaterSourceManager.Instance.radiusVariation))
         {
+            PlaySoundEffect(invalidActionSound);
             return;
         }
 
@@ -129,14 +137,22 @@ public class InteractionManager : MonoBehaviour
         Debug.Log("Received a cellRadius of " + cellradius);
 
         if (!EnvironmentGrid.Instance.IsAreaInsideGrid(pos, cellradius))
+        {
+            PlaySoundEffect(invalidActionSound);
             return;
+        }
 
         if (!ResourceManager.Instance.TryConsume(TokenType.CreateWaterSource))
+        {
+            PlaySoundEffect(invalidActionSound);
             return;
+        }
 
         TerrainDeformer.Instance.LowerTerrain(pos, cellradius, irregularity: 0.15f, out var spawnHeight);
 
         WaterSourceManager.Instance.SpawnWaterSource(new Vector3(pos.x, spawnHeight - spawnHeightOffset, pos.z), cellradius);
+
+        PlaySoundEffect(waterSourceSpawnSound);
 
         ExitWaterSourceCreationMode();
     }
@@ -182,7 +198,12 @@ public class InteractionManager : MonoBehaviour
 
         if (ResourceManager.Instance.TryConsume(TokenType.ChangeWeather))
         {
+            PlaySoundEffect(weatherChangeSound);
             CozyWeather.instance.weatherModule.ecosystem.SetWeather(weatherProfile, 15 * 10);
+        }
+        else
+        {
+            PlaySoundEffect(invalidActionSound);
         }
 
         ExitWeatherMode();
@@ -227,6 +248,7 @@ public class InteractionManager : MonoBehaviour
     {
         if (InvalidSpawnLocation(0))
         {
+            PlaySoundEffect(invalidActionSound);
             return;
         }
 
@@ -236,7 +258,10 @@ public class InteractionManager : MonoBehaviour
             : TokenType.SpawnPlant;
 
         if (!ResourceManager.Instance.TryConsume(tokenType))
+        {
+            PlaySoundEffect(invalidActionSound);
             return;
+        }
 
         Vector3 spawnPos = activeSpawnIndicator.transform.position;
 
@@ -250,6 +275,8 @@ public class InteractionManager : MonoBehaviour
         {
             PlantManager.Instance.SpawnPlant(plantData, spawnPos);
         }
+
+        PlaySoundEffect(spawnSound);
 
         ExitSpawnMode();
     }
@@ -339,6 +366,26 @@ public class InteractionManager : MonoBehaviour
     #endregion
 
     #region Utility functions
+
+    public void PlaySoundEffect(AudioClip soundEffect)
+    {
+        if(soundEffect == null)
+            return;
+
+        transform.GetComponent<AudioSource>().loop = false;
+        transform.GetComponent<AudioSource>().PlayOneShot(soundEffect);
+    }
+
+    public void PlaySpawnIndicatorSound(AudioClip audio)
+    {
+        activeSpawnIndicator.transform.GetComponent<AudioSource>()?.PlayOneShot(audio);
+        activeSpawnIndicator.transform.GetComponent<AudioSource>().loop = true;
+    }
+
+    public void StopBackgroundSound()
+    {
+        transform.GetComponent<AudioSource>().Stop();
+    }
 
     private void ExitAllModes()
     {

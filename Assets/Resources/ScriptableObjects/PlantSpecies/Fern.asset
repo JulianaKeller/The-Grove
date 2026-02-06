@@ -18,14 +18,14 @@ MonoBehaviour:
   colorVariants: []
   lifespan: 900
   lifespanVariation: 1
+  growthRate: 0.006
+  maxSizeVariation: {x: 0.7, y: 2}
   nutritionBaseValue: 2
   maxHP: 120
   waterNeed: 0.008
   waterCapacity: 40
   groundFertilityUsage: 0.002
   minGroundFertility: 0.35
-  growthRate: 0.006
-  maxSizeVariation: {x: 1, y: 2}
   baseSpreadChance: 0.0015
   spreadingRadius: 20
   isEdible: 1

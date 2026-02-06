@@ -21,12 +21,7 @@ public class Plant : Entity
     {
         base.isAnimal = false;
         base.position = position;
-        this.species = species;
-
-        base.setLifespan();
-        minSize = new Vector3(0.1f, 0.1f, 0.1f);
-        size = minSize;
-        prevSize = minSize;
+        
         waterMeter = species.waterCapacity;
         spreadChance = 0f;
     }
@@ -58,7 +53,7 @@ public class Plant : Entity
 
         if (currentFertility < species.minGroundFertility || waterMeter <= 0f)
         {
-            health -= species.maxHP * 0.1f; // lose health if soil too poor
+            health -= maxHealth * 0.1f; // lose health if soil too poor
             canGrow = false;
         }
 
@@ -67,8 +62,8 @@ public class Plant : Entity
         //---Growth ---
         if (canGrow)
         {
-            health += species.maxHP * 0.1f;
-            health = Mathf.Min(health, species.maxHP);
+            health += maxHealth * 0.1f;
+            health = Mathf.Min(health, maxHealth);
 
             float ageFactor = Mathf.Clamp01(age / speciesLifespan);
 

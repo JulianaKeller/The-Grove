@@ -11,6 +11,7 @@ public abstract class Entity
 
     public float nutritionValue;
     public float health;
+    public float maxHealth;
     public float speciesLifespan;
     public float age;
 
@@ -20,17 +21,18 @@ public abstract class Entity
     public Vector3 minSize;
 
     public virtual void UpdateEntity(float dt, bool canGrow) {
+        age += dt;
         if (canGrow && isAlive)
         {
             prevSize = size;
 
-            age += dt;
             UpdateGrowth();
         }
         if (canGrow)
         {
             UpdateNutritionValue();
         }
+        UpdateMaxHealth();
     }
 
     protected virtual void UpdateGrowth()
@@ -49,7 +51,32 @@ public abstract class Entity
         health = 100;
         this.species = species;
 
+        setLifespan();
+
+        UpdateMaxHealth();
+        health = maxHealth;
+
         EcosystemMetrics.Instance.RegisterSpawn(species);
+    }
+
+    public void InitializeSizeValues(GameObject original)
+    {
+        maxSize = original.transform.localScale;
+        float variation = Random.Range(species.maxSizeVariation.x, species.maxSizeVariation.y);
+        maxSize = maxSize * variation;
+
+        minSize = maxSize;
+        if(this is Animal)
+        {
+            minSize = maxSize * 0.5f;
+        }
+        if(this is Plant)
+        {
+            minSize = maxSize * 0.1f;
+        }
+
+        size = minSize;
+        prevSize = minSize;
     }
 
     public virtual void setLifespan()
@@ -78,23 +105,40 @@ public abstract class Entity
         }
     }
 
-    public float UpdateNutritionValue()
+    public void UpdateNutritionValue()
     {
-        /*Nutrition follows a bell curve (max in middle age)
-        float peakAge = 0.5f;
-        //width = how sharp or round the peak is
-        float width = Mathf.Lerp(0.1f, 0.4f, Mathf.Clamp01(speciesLifespan / 100f)); // short-lived plants -> narrower curve, long-lived -> wider
-        float gaussian = Mathf.Exp(-Mathf.Pow((ageFactor - peakAge) / width, 2)); //gaussian is simplified normal distribution
-        nutritionValue = species.nutritionBaseValue * (0.5f + gaussian);*/
+        /*Nutrition follows a bell curve (max at 25% of lifespan age)*/
 
-        float ageFactor = Mathf.Clamp01(age / speciesLifespan);
-        float peakAge = 0.25f;
-        float gaussianNew = Mathf.Exp(-Mathf.Pow((ageFactor - peakAge) / 0.25f, 2f));
-        float gaussianPrev = Mathf.Exp(-Mathf.Pow(((Mathf.Max(ageFactor - WorldManager.Instance.timeStep)) - peakAge) / 0.25f, 2f));
+        float gaussianNew = GetGaussianAgeFactor();
+        float gaussianPrev = GetGaussianAgeFactor(Mathf.Max(age - WorldManager.Instance.timeStep, 0));
+
         float newNutritionValue = species.nutritionBaseValue * (0.4f + gaussianNew);
         float previousNutritionValue = species.nutritionBaseValue * (0.4f + gaussianPrev);
         nutritionValue += (newNutritionValue - previousNutritionValue);
-        return nutritionValue;
+
+    }
+
+    public void UpdateMaxHealth()
+    {
+        float gaussianNew = GetGaussianAgeFactor();
+
+        maxHealth = species.maxHP * (0.4f + gaussianNew);
+    }
+
+    public float GetGaussianAgeFactor()
+    {
+        float ageFactor = Mathf.Clamp01(age / speciesLifespan);
+        float peakAge = 0.25f;
+
+        return Mathf.Exp(-Mathf.Pow((ageFactor - peakAge) / 0.25f, 2f));
+    }
+
+    public float GetGaussianAgeFactor(float age)
+    {
+        float ageFactor = Mathf.Clamp01(age / speciesLifespan);
+        float peakAge = 0.25f;
+
+        return Mathf.Exp(-Mathf.Pow((ageFactor - peakAge) / 0.25f, 2f));
     }
 
     public virtual void Die()

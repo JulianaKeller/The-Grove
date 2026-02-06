@@ -58,12 +58,6 @@ public class AnimalManager : MonoBehaviour
             GameObject original = species.prefabs[Random.Range(0, species.prefabs.Length - 1)];
             GameObject obj = Instantiate(original, pos, randomRotation, spawnedAnimalsParent ? spawnedAnimalsParent.transform : null);
 
-            if(obj == null)
-            {
-                Debug.LogWarning("ANIMAL COULD NOT BE INSTANTIATED!");
-                return;
-            }
-
             AnimalView view = obj.GetComponent<AnimalView>();
 
             view.data = data;

@@ -177,6 +177,7 @@ MonoBehaviour:
   - {fileID: 4966438322737959018}
   buttonColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0.776, g: 0.776, b: 0.776, a: 1}
+  leafParts: []
 --- !u!1 &2167128953178101277
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,8 +312,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 80, y: 40}
-  m_Spacing: {x: 40, y: 20}
+  m_CellSize: {x: 200, y: 50}
+  m_Spacing: {x: 50, y: 25}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &5368196335480754346
@@ -398,8 +399,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: a09230082f07e1045b237fa894024408, type: 2}
-  m_sharedMaterial: {fileID: -8420810443265212011, guid: a09230082f07e1045b237fa894024408, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ce3e91477fd9acb41855de8994d114d3, type: 2}
+  m_sharedMaterial: {fileID: -8420810443265212011, guid: ce3e91477fd9acb41855de8994d114d3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

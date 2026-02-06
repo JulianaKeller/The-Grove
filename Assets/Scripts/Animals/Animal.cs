@@ -95,7 +95,6 @@ public class Animal : Entity
         currentState = new IdleState();
         NotifyStateChange();
 
-        base.setLifespan();
         maturityThreshold = speciesLifespan * 0.25f;
 
         dominance = species.baseDominance + Random.Range(-species.dominanceVariation, species.dominanceVariation);
@@ -105,20 +104,7 @@ public class Animal : Entity
         energy = 100;
         matingDrive = 0;
         stamina = species.stamina;
-        health = species.maxHP;
         isFemale = Random.value >= 0.5f;
-    }
-
-    public void InitializeSizeValues(GameObject original)
-    {
-        maxSize = original.transform.localScale;
-        float variation = Random.Range(species.maxSizeVariation.x, species.maxSizeVariation.y);
-        maxSize = maxSize * variation;
-
-        minSize = maxSize * 0.5f;
-
-        size = minSize;
-        prevSize = minSize;
     }
 
     public void UpdateAI(float timeStep)
@@ -168,7 +154,8 @@ public class Animal : Entity
         age += timeStep;
         hunger = Mathf.Min(100f, hunger + species.hungerRate * timeStep);
         thirst = Mathf.Min(100f, thirst + species.thirstRate * timeStep);
-        matingDrive = Mathf.Min(100f, matingDrive + 0.1f * timeStep); //ToDo dependent on age see plants
+        //matingDrive = Mathf.Min(100f, matingDrive + 0.1f * timeStep); //ToDo dependent on age see plants
+        UpdateMatingDrive();
 
         if (isRunning)
         {
@@ -187,6 +174,11 @@ public class Animal : Entity
         }
     }
 
+    private void UpdateMatingDrive()
+    {
+        matingDrive = Mathf.Min(100f, 1 * (0.4f + base.GetGaussianAgeFactor()));
+    }
+
     private void UpdateHealth(float timeStep)
     {
         if (hunger >= 100f || thirst >= 100f || energy <= 0)
@@ -195,7 +187,7 @@ public class Animal : Entity
         }
         else
         {
-            health = Mathf.Min(species.maxHP, health + species.hpRecoveryRate * timeStep);
+            health = Mathf.Min(maxHealth, health + species.hpRecoveryRate * timeStep);
         }
 
         if (health <= 0f || age > speciesLifespan)
@@ -249,7 +241,7 @@ public class Animal : Entity
 
     public void FightOrFlight(Animal enemy)
     {
-        float healthFactor = Mathf.Clamp01(health / species.maxHP);
+        float healthFactor = Mathf.Clamp01(health / maxHealth);
         float hungerFactor = Mathf.Clamp01(hunger / 100);
         bool canEatEnemy = false;
 

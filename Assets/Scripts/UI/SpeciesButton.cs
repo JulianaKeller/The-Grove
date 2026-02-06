@@ -28,6 +28,7 @@ public class SpeciesButton : MonoBehaviour
         if(label != null)
         {
             label.text = data.speciesName;
+
         }
     }
 }

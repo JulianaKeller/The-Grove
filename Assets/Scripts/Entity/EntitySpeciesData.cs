@@ -9,6 +9,7 @@ public abstract class EntitySpeciesData : ScriptableObject
     public Color[] colorVariants;
 
     public float lifespan;
+    public float maxHP;
     [Range(0f, 1f)]
     public float lifespanVariation = 0.1f;
     public float growthRate = 1f;

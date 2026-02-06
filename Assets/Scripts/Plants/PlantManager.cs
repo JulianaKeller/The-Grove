@@ -60,6 +60,8 @@ public class PlantManager : MonoBehaviour
             view.data = data;
             data.view = view;
 
+            data.InitializeSizeValues(original);
+
             views.Add(view);
             plants.Add(data);
 

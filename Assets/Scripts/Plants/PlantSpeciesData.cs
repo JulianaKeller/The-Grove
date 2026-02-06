@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "TheGrove/Species/PlantSpecies")]
 public class PlantSpeciesData : EntitySpeciesData
 {
-    public float maxHP;
     public float waterNeed; //water usage per time step
     public float waterCapacity; //1-100 how much water can be stored in the plant
     public float groundFertilityUsage;

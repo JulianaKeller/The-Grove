@@ -17,4 +17,4 @@ MonoBehaviour:
   chances: []
   clip: {fileID: 8300000, guid: dd66058015ce63d4fb3d528bac66ed19, type: 3}
   playlist: []
-  volume: 1
+  volume: 0.5

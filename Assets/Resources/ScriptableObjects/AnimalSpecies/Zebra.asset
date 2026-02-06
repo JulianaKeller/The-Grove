@@ -18,6 +18,8 @@ MonoBehaviour:
   colorVariants: []
   lifespan: 1350
   lifespanVariation: 0.1
+  growthRate: 1
+  maxSizeVariation: {x: 0.8, y: 1.2}
   nutritionBaseValue: 165
   baseDominance: 4
   dominanceVariation: 1
@@ -32,9 +34,9 @@ MonoBehaviour:
   stealth: 0.15
   energyDepletionRate: 0.0014
   hpRecoveryRate: 0.011
-  hungerRate: 0.35
+  hungerRate: 0.035
   foodNeed: 65
-  thirstRate: 0.0015
+  thirstRate: 0.07
   waterNeed: 60
   isCarnivore: 0
   isHerbivore: 1

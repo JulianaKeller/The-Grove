@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c050c93323f68704d946af945870ef1b, type: 3}
+  m_Name: PineTree
+  m_EditorClassIdentifier: 
+  speciesName: Pine Tree
+  prefabs:
+  - {fileID: 1540538853236373642, guid: da3dcc30562f0cd4db103de1fc3c4ec4, type: 3}
+  - {fileID: 1540538853236373642, guid: e06cf9a09cc7bbd42949d1afedbcb697, type: 3}
+  - {fileID: 1540538853236373642, guid: d741a507da1df2c4eb51d99ca9dfa7f9, type: 3}
+  - {fileID: 1540538853236373642, guid: d2e6123767c14cb47b2f5f61d119c297, type: 3}
+  - {fileID: 1540538853236373642, guid: 65292890285c1e241ada61e5d08b2952, type: 3}
+  colorVariants: []
+  lifespan: 5000
+  lifespanVariation: 1
+  growthRate: 0.007
+  maxSizeVariation: {x: 0.5, y: 2}
+  nutritionBaseValue: 0
+  maxHP: 500
+  waterNeed: 0.0015
+  waterCapacity: 50
+  groundFertilityUsage: 0.0001
+  minGroundFertility: 0.05
+  baseSpreadChance: 0.001
+  spreadingRadius: 10
+  isEdible: 0

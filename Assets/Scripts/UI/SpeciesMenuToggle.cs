@@ -129,7 +129,9 @@ public class SpeciesMenuToggle : MonoBehaviour, IMenu
             sb.AssignSpecies(data);
         }
 
-        scrollRect.vertical = contentRect.sizeDelta.y > menuBounds.y;
+        //scrollRect.vertical = contentRect.sizeDelta.y > menuBounds.y;
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(scrollRect.content);
 
         yield return null;
     }

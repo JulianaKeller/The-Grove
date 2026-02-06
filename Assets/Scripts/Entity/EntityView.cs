@@ -14,12 +14,6 @@ public class EntityView : MonoBehaviour
 
     public void SetSelected(bool selected)
     {
-        /*var outline = GetComponent<AnimalOutline>();
-        if (outline != null)
-        {
-            outline.SetVisible(selected);
-        }*/
-
-        GetComponent<EntityOutline>().SetOutlineVisible(selected);
+        GetComponent<EntityOutline>()?.SetOutlineVisible(selected);
     }
 }

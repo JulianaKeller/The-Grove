@@ -21,7 +21,8 @@ public class Plant : Entity
     {
         base.isAnimal = false;
         base.position = position;
-        
+        this.species = species;
+
         waterMeter = species.waterCapacity;
         spreadChance = 0f;
     }

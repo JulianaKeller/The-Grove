@@ -55,7 +55,8 @@ public class AnimalManager : MonoBehaviour
             Animal data = new Animal(species, pos, nextId++, mother);
 
             Quaternion randomRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
-            GameObject obj = Instantiate(species.prefabs[Random.Range(0, species.prefabs.Length - 1)], pos, randomRotation, spawnedAnimalsParent ? spawnedAnimalsParent.transform : null);
+            GameObject original = species.prefabs[Random.Range(0, species.prefabs.Length - 1)];
+            GameObject obj = Instantiate(original, pos, randomRotation, spawnedAnimalsParent ? spawnedAnimalsParent.transform : null);
 
             if(obj == null)
             {
@@ -70,6 +71,8 @@ public class AnimalManager : MonoBehaviour
 
             views.Add(view);
             animals.Add(data);
+
+            data.InitializeSizeValues(original);
 
             //Initialize thought bubbles:
             var icon = obj.GetComponentInChildren<AnimalStateIcon>();
@@ -114,9 +117,9 @@ public class AnimalManager : MonoBehaviour
             // update 1/3 of animals per tick
             if ((tick + animal.id) % updateSubsetCount == 0)
             {
-                animal.view?.ResetInterpolation();
                 animal.UpdateAI(timeStep * updateSubsetCount);
                 animal.view?.RecalculateGroundedPositions();
+                animal.view?.ResetInterpolation();
             }
         }
     }

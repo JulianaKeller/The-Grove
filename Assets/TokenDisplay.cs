@@ -12,6 +12,8 @@ public class TokenDisplay : MonoBehaviour
     public Color buttonColor = Color.white;
     public Color disabledColor = new Color(0.776f, 0.776f, 0.776f);
 
+    [SerializeField] private GameObject[] leafParts;
+
     void Awake()
     {
         if (buttonBG != null)
@@ -58,7 +60,16 @@ public class TokenDisplay : MonoBehaviour
         int current = ResourceManager.Instance.GetCurrent(tokenType);
         tokenText.text = $"{current}";
         UpdateButtonColor(current);
+
+        ResetLeafParts();
     }
+
+    void ResetLeafParts()
+    {
+        for (int i = 0; i < leafParts.Length; i++)
+            leafParts[i].SetActive(false);
+    }
+
 
     void UpdateButtonColor(int currentAmount)
     {

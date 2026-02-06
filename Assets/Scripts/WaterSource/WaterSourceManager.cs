@@ -12,8 +12,8 @@ public class WaterSourceManager : MonoBehaviour
     [Header("Radius")]
 
     public int waterSourceRadius = 2;
-    public int radiusVariation = 1;
-    private float nextRadius;
+    public int radiusVariation = 0;
+    private int nextRadius;
 
     [Header("Prefabs")]
 
@@ -22,7 +22,7 @@ public class WaterSourceManager : MonoBehaviour
 
     [Header("Influence Controls")]
 
-    public float depth = 0.1f;
+    public float baseDepth = 1f;
     public float baseEvaporationRate = 1f;
     public float influenceRadius = 5f;
     public float fertilityBonus = 0.05f;
@@ -54,15 +54,22 @@ public class WaterSourceManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public float GetNewWaterSourceRadius()
+    private void Start()
+    {
+        nextRadius = waterSourceRadius;
+    }
+
+    public int GetNewWaterSourceRadius()
     {
         nextRadius = waterSourceRadius + Random.Range(-radiusVariation, radiusVariation);
+
+        Debug.Log("Next Radius is now " + nextRadius);
         return nextRadius;
     }
 
-    public void SpawnWaterSource(Vector3 pos, float radius)
+    public void SpawnWaterSource(Vector3 pos, int cellRadius)
     {
-        WaterSource data = new WaterSource(nextId++, radius, pos);
+        WaterSource data = new WaterSource(nextId++, cellRadius, pos);
 
         if(waterSourcePrefab != null)
         {
@@ -81,7 +88,7 @@ public class WaterSourceManager : MonoBehaviour
 
         EnvironmentGrid.Instance.RegisterWaterSource(data);
 
-        Debug.Log("Spwaned a water source at " + pos + " with radius " + radius);
+        Debug.Log("Spwaned a water source at " + pos + " with radius " + cellRadius);
     }
 
     /// <summary>
@@ -89,16 +96,15 @@ public class WaterSourceManager : MonoBehaviour
     /// </summary>
     private Vector3 ComputeScaleForRadius(GameObject obj)
     {
-        float margin = 1.05f;
+        float margin = 1.005f;
 
         float cellSize = EnvironmentGrid.Instance.cellSize;
 
-        float targetDiameter = nextRadius * 2f;
-
+        float targetDiameterWorld = nextRadius * cellSize * 2f;
 
         Renderer r = obj.GetComponentInChildren<Renderer>();
         if (r == null)
-            return Vector3.one * targetDiameter;
+            return Vector3.one * targetDiameterWorld;
 
         Bounds b = r.bounds;
 
@@ -107,7 +113,7 @@ public class WaterSourceManager : MonoBehaviour
         if (meshDiameter <= 0f)
             return Vector3.one;
 
-        float scaleFactor = (targetDiameter * margin) / meshDiameter;
+        float scaleFactor = (targetDiameterWorld * margin) / meshDiameter;
         return new Vector3(scaleFactor, 1f, scaleFactor); ;
     }
 
@@ -133,7 +139,7 @@ public class WaterSourceManager : MonoBehaviour
 
                 float evaporationRate = CalculateEvaporationRate();
 
-                ws.view.ResetInterpolation();
+                //ws.view.ResetInterpolation();
                 ws.UpdateWaterSource(timeStep * updateSubsetCount, evaporationRate);
             }
         }

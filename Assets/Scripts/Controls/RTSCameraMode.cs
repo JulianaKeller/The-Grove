@@ -19,6 +19,14 @@ public class RTSCameraMode : MonoBehaviour
     [Header("Zoom Mode")]
     public ZoomMode zoomMode = ZoomMode.Forward;
 
+    [Header("Pitch")]
+    [Range(-90f, 90f)] public float minPitch = -90f;
+    [Range(-90f, 90f)] public float maxPitch = 70f;
+    public float pitchSpeed = 3f;
+
+    private float currentYaw;
+    private float currentPitch;
+
     [Header("Rotation")]
     [Range(10f, 80f)] public float tiltAngle = 30;
     public float rtsRotateSpeed = 5f;
@@ -46,7 +54,10 @@ public class RTSCameraMode : MonoBehaviour
 
         cameraController.targetPosition = transform.position;
 
-        transform.rotation = Quaternion.Euler(tiltAngle, transform.rotation.eulerAngles.y, 0f);
+        currentYaw = transform.rotation.eulerAngles.y;
+        currentPitch = tiltAngle;
+
+        transform.rotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
     }
 
     public void updateRTSCameraMode()
@@ -116,20 +127,24 @@ public class RTSCameraMode : MonoBehaviour
 
     void HandleMiddleMousePan(float adaptiveSpeed)
     {
+        if (Input.GetMouseButtonDown(2))
+        {
+            cameraController.lastMousePos = Input.mousePosition;
+            return; // no movement on first frame
+        }
+
         if (Input.GetMouseButton(2) && !Input.GetKey(KeyCode.LeftShift))
         {
             // --- ROTATE RTS CAMERA ---
             Vector3 delta = Input.mousePosition - cameraController.lastMousePos;
             cameraController.lastMousePos = Input.mousePosition;
 
-            float yaw = delta.x * rtsRotateSpeed;
+            currentYaw += delta.x * rtsRotateSpeed;
+            currentPitch -= delta.y * pitchSpeed;
 
-            // Rotate around Y only
-            transform.rotation = Quaternion.Euler(
-                tiltAngle,
-                transform.rotation.eulerAngles.y + yaw,
-                0f
-            );
+            currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
+
+            transform.rotation = Quaternion.Euler(currentPitch, currentYaw, 0f);
 
             // do NOT treat this as panning
             return;

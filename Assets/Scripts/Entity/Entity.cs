@@ -9,12 +9,37 @@ public abstract class Entity
     public bool isAnimal = false;
     public bool isBeingEaten = false;
 
-    protected float nutritionValue;
+    public float nutritionValue;
     public float health;
     public float speciesLifespan;
     public float age;
 
-    public virtual void UpdateEntity(float dt) { }
+    public Vector3 size;
+    public Vector3 prevSize;
+    public Vector3 maxSize;
+    public Vector3 minSize;
+
+    public virtual void UpdateEntity(float dt, bool canGrow) {
+        if (canGrow && isAlive)
+        {
+            prevSize = size;
+
+            age += dt;
+            UpdateGrowth();
+        }
+        if (canGrow)
+        {
+            UpdateNutritionValue();
+        }
+    }
+
+    protected virtual void UpdateGrowth()
+    {
+        float effectiveAge = age * species.growthRate;
+        float age01 = Mathf.Clamp01(effectiveAge / speciesLifespan);
+
+        size = Vector3.Lerp(minSize, maxSize, age01);
+    }
 
     public Entity(EntitySpeciesData species, int Id)
     {
@@ -36,7 +61,7 @@ public abstract class Entity
 
     public void BeEaten(float timeStep)
     {
-        GetNutritionValue();
+        UpdateNutritionValue();
         nutritionValue -= 2f * timeStep;
         nutritionValue = Mathf.Max(nutritionValue, 0f);
 
@@ -53,7 +78,7 @@ public abstract class Entity
         }
     }
 
-    public float GetNutritionValue()
+    public float UpdateNutritionValue()
     {
         /*Nutrition follows a bell curve (max in middle age)
         float peakAge = 0.5f;

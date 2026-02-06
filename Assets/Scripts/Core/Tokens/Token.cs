@@ -42,4 +42,15 @@ public class Token
             current++;
         }
     }
+
+    public float RechargeProgress
+    {
+        get
+        {
+            if (current >= definition.maxAmount)
+                return 1f;
+
+            return rechargeTimer / definition.rechargeTime;
+        }
+    }
 }

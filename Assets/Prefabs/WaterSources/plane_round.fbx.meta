@@ -1,34 +1,9 @@
 fileFormatVersion: 2
-guid: a7a17c2502d5b3d4db7c5f71888759ea
+guid: 79aff170113ba4d469afcc011b41cc3c
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Bark_NormalTree
-    second: {fileID: 2100000, guid: 885ce827248f1164d9a43d6f12d36ab1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Leaves_Pine
-    second: {fileID: 2100000, guid: 7e9dc9788f98f09448f0374e733fa880, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Bark_NormalTree
-    second: {fileID: 2800000, guid: feb45882ff8644f42a5e319ae85982bd, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Bark_NormalTree_Normal
-    second: {fileID: 2800000, guid: c2054d49389b4154da1f7231e7b92f6f, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Leaf_Pine_C
-    second: {fileID: 2800000, guid: 18d34f196395bdc44bc9e28ae8fdd9b6, type: 3}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -74,7 +49,7 @@ ModelImporter:
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
-    weldVertices: 0
+    weldVertices: 1
     bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
@@ -94,7 +69,7 @@ ModelImporter:
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 1
+    normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0

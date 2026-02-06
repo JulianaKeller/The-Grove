@@ -11,6 +11,8 @@ public abstract class EntitySpeciesData : ScriptableObject
     public float lifespan;
     [Range(0f, 1f)]
     public float lifespanVariation = 0.1f;
+    public float growthRate = 1f;
+    public Vector2 maxSizeVariation = new Vector2(0.2f, 0.2f);
 
     public float nutritionBaseValue;
 

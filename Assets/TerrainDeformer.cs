@@ -16,8 +16,6 @@ public class TerrainDeformer : MonoBehaviour
 
     public Terrain terrain;
 
-    public float baseDepth = 0.1f;
-
     [Header("Runtime Terrain Handling")]
 
     private TerrainData originalTerrainData;
@@ -72,12 +70,14 @@ public class TerrainDeformer : MonoBehaviour
         terrain.terrainData = runtimeTerrainData;
     }
 
-    public IEnumerable<TerrainPoint> GetTerrainPointsInRadius(Vector3 center, float radius)
+    public IEnumerable<TerrainPoint> GetTerrainPointsInRadius(Vector3 center, int cellRadius)
     {
         if(terrain == null)
             terrain = Terrain.activeTerrain;
         if (terrain == null)
             yield break;
+
+        float radius = cellRadius * EnvironmentGrid.Instance.cellSize;
 
         TerrainData data = terrain.terrainData;
         Vector3 terrainPos = terrain.transform.position;
@@ -88,6 +88,8 @@ public class TerrainDeformer : MonoBehaviour
         float[,] heights = data.GetHeights(0, 0, heightmapWidth, heightmapHeight);
 
         Vector3 size = data.size;
+
+        Vector2 centerXZ = new Vector2(center.x, center.z);
 
         int minX = Mathf.Max(0, Mathf.FloorToInt(((center.x - radius - terrainPos.x) / size.x) * heightmapWidth));
         int maxX = Mathf.Min(heightmapWidth - 1, Mathf.CeilToInt(((center.x + radius - terrainPos.x) / size.x) * heightmapWidth));
@@ -105,7 +107,9 @@ public class TerrainDeformer : MonoBehaviour
                     terrainPos.z + (z / (float)(heightmapHeight - 1)) * size.z
                 );
 
-                if (Vector3.Distance(worldPos, center) <= radius)
+                Vector2 pointXZ = new Vector2(worldPos.x, worldPos.z);
+
+                if (Vector3.Distance(pointXZ, centerXZ) <= radius)
                 {
                     yield return new TerrainPoint
                     {
@@ -140,7 +144,7 @@ public class TerrainDeformer : MonoBehaviour
         terrain.terrainData.SyncHeightmap();
     }
 
-    public void LowerTerrain(Vector3 center, float radius, float depth, float irregularity, out float spawnHeight)
+    public void LowerTerrain(Vector3 center, int cellRadius, float irregularity, out float spawnHeight)
     {
         spawnHeight = 0;
 
@@ -153,32 +157,40 @@ public class TerrainDeformer : MonoBehaviour
             return;
         }
 
+        float radius = cellRadius * EnvironmentGrid.Instance.cellSize;
+
         TerrainData data = terrain.terrainData;
+
+        Debug.Log("Height of Terrain: " + data.size.y);
+        float normalizedDepth = WaterSourceManager.Instance.baseDepth / data.size.y;
 
         float[,] heights = data.GetHeights(0, 0, data.heightmapResolution, data.heightmapResolution);
 
         float localMaxHeight = float.MinValue;
         float localMinHeight = float.MaxValue;
 
-        foreach (var point in GetTerrainPointsInRadius(center, radius*2))
+        Vector2 centerXZ = new Vector2(center.x, center.z);
+
+        foreach (var point in GetTerrainPointsInRadius(center, cellRadius))
         {
             localMinHeight = Mathf.Min(localMinHeight, point.height);
             localMaxHeight = Mathf.Max(localMaxHeight, point.height);
         }
 
-        spawnHeight = terrain.transform.position.y + localMinHeight * terrain.terrainData.size.y;
+        spawnHeight = terrain.transform.position.y + localMinHeight * data.size.y; //Spawn height in world units
 
-        float heightDiff = Mathf.Abs(localMaxHeight - localMinHeight);
-        float targetHeight = localMinHeight - (heightDiff > baseDepth ? heightDiff : baseDepth); // Lower below local min
+        
+        float targetHeight = localMinHeight - normalizedDepth;
 
-        foreach (var point in GetTerrainPointsInRadius(center, radius))
+        foreach (var point in GetTerrainPointsInRadius(center, cellRadius))
         {
-            float dist01 = Vector3.Distance(point.worldPos, center) / radius;
+            Vector2 pointXZ = new Vector2(point.worldPos.x, point.worldPos.z);
+
+            float dist01 = Vector2.Distance(pointXZ, centerXZ) / radius;
             float falloff = Mathf.SmoothStep(1f, 0f, dist01);
-            float noise = Mathf.PerlinNoise(point.x * 0.3f, point.z * 0.3f);
 
             // Interpolate deformation from current height to target height
-            float newHeight = Mathf.Lerp(point.height, targetHeight, falloff /** Mathf.Lerp(1f, noise, irregularity)*/);
+            float newHeight = Mathf.Lerp(point.height, targetHeight, falloff);
 
             heights[point.z, point.x] = Mathf.Clamp01(newHeight);
         }

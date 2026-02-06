@@ -9,15 +9,15 @@ public class WaterSource
 
     public WaterSourceView view;
 
-    public float radius;
+    public int cellRadius;
 
     public float capacity;
     public float currentWater;
 
-    public WaterSource(int Id, float radius, Vector3 center)
+    public WaterSource(int Id, int cellRadius, Vector3 center)
     {
         id = Id;
-        this.radius = radius;
+        this.cellRadius = cellRadius;
         capacity = baseCapacity;
         currentWater = capacity;
         this.center = center;
@@ -40,6 +40,16 @@ public class WaterSource
     {
         currentWater -= evaporationRate * timeStep;
         currentWater = Mathf.Clamp(currentWater, 0f, capacity);
+    }
+
+    public int GetWorldRadius()
+    {
+        return Mathf.CeilToInt(cellRadius * EnvironmentGrid.Instance.cellSize);
+    }
+
+    public float GetCellRadius()
+    {
+        return cellRadius;
     }
 
     public static bool operator ==(WaterSource a, WaterSource b)

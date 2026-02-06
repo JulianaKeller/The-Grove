@@ -33,6 +33,7 @@ public class Animal : Entity
     [Header("Movement")]
     public Vector3 prevPosition = Vector3.zero;
     public Vector3 targetPosition = Vector3.zero;
+    public Vector3 lastRenderedPosition;
 
     [Header("Bezier Curve Movement")]
     private Vector3 pathStart;
@@ -108,8 +109,22 @@ public class Animal : Entity
         isFemale = Random.value >= 0.5f;
     }
 
+    public void InitializeSizeValues(GameObject original)
+    {
+        maxSize = original.transform.localScale;
+        float variation = Random.Range(species.maxSizeVariation.x, species.maxSizeVariation.y);
+        maxSize = maxSize * variation;
+
+        minSize = maxSize * 0.5f;
+
+        size = minSize;
+        prevSize = minSize;
+    }
+
     public void UpdateAI(float timeStep)
     {
+        base.UpdateEntity(timeStep, true);
+
         if (isAlive)
         {
             BiologicalUpdates(timeStep);
@@ -198,7 +213,7 @@ public class Animal : Entity
         currentState = null;
         StopBehaviors();
 
-        GetNutritionValue();
+        UpdateNutritionValue();
 
         //AnimalManager.Instance.RemoveAnimal(this); //removes animal and view from lists and destroys gameobject
     }
@@ -462,6 +477,8 @@ public class Animal : Entity
 
     public void SetMoveTarget(Vector3 targetPos)
     {
+        view?.SyncToCurrentVisualPosition();
+
         ValidateTargetPosition(targetPos);
 
         pathStart = position;
@@ -521,11 +538,13 @@ public class Animal : Entity
             }
         }
 
-        this.targetPosition = targetPos;
+        this.targetPosition = fallbackPos;
     }
 
     public void MoveToTarget(float timeStep)
     {
+        lastRenderedPosition = position;
+
         if (!hasPath)
             return;
 

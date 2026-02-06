@@ -15,7 +15,7 @@ public class EatState : AnimalState
         Debug.Log(a.species.name + " is now eating.");
     }
     public override void Execute(Animal a, float timeStep) {
-        if (targetFood == null || targetFood.GetNutritionValue() < timeStep) //ToDo bite size
+        if (targetFood == null || targetFood.nutritionValue < timeStep) //ToDo bite size
         {
             a.ChangeState(new WanderState());
             return;

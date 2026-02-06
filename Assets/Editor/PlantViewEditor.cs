@@ -23,6 +23,7 @@ public class PlantViewEditor : Editor
             EditorGUILayout.LabelField("=== Plant Runtime Stats ===", EditorStyles.boldLabel);
 
             EditorGUILayout.LabelField("Species", s.speciesName);
+            EditorGUILayout.LabelField("Nutrition", p.nutritionValue.ToString());
             EditorGUILayout.LabelField("Age");
             EditorGUI.ProgressBar(EditorGUILayout.GetControlRect(), p.age / p.speciesLifespan, $"{p.age:F1}/{p.speciesLifespan:F1}");
             EditorGUILayout.LabelField("Health");

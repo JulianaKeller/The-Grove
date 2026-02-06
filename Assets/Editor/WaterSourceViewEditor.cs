@@ -20,7 +20,7 @@ public class WaterSourceViewEditor : Editor
             EditorGUILayout.LabelField("Capacity");
             EditorGUI.ProgressBar(EditorGUILayout.GetControlRect(), ws.currentWater / ws.capacity, $"{ws.currentWater:F1}/{ws.capacity:F1}");
 
-            EditorGUILayout.LabelField("Radius", ws.radius.ToString());
+            EditorGUILayout.LabelField("Radius", ws.cellRadius.ToString());
         }
     }
 }

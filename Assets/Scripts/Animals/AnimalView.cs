@@ -19,6 +19,9 @@ public class AnimalView : EntityView
     private Vector3 prevGroundedPosition = Vector3.zero;
     private Vector3 currGroundedPosition = Vector3.zero;
 
+    private Vector3 prevSize;
+    private Vector3 currSize;
+
     private void Start()
     {
         duration = WorldManager.Instance.timeStep * AnimalManager.Instance.updateSubsetCount;
@@ -34,6 +37,7 @@ public class AnimalView : EntityView
 
         transform.rotation = Quaternion.Slerp(prevRotation, targetRotation, interpolationFactor);
 
+        transform.localScale = Vector3.Lerp(prevSize, currSize, interpolationFactor);
     }
 
     public Vector3 GetInterpolatedPosition()
@@ -48,9 +52,12 @@ public class AnimalView : EntityView
 
     public void RecalculateGroundedPositions()
     {
-        prevGroundedPosition = ApplyGroundFollowing(data.prevPosition);
+        prevGroundedPosition = ApplyGroundFollowing(data.lastRenderedPosition);
         currGroundedPosition = ApplyGroundFollowing(data.position);
-        
+
+        prevSize = data.prevSize;
+        currSize = data.size;
+
         prevRotation = transform.rotation;
         targetRotation = Quaternion.LookRotation(data.facingDirection, Vector3.up);
     }
@@ -109,4 +116,18 @@ public class AnimalView : EntityView
         }
         return pos;
     }
+
+    public void SyncToCurrentVisualPosition()
+    {
+        Vector3 visualPos = transform.position;
+
+        prevGroundedPosition = visualPos;
+        currGroundedPosition = visualPos;
+
+        prevRotation = transform.rotation;
+        targetRotation = transform.rotation;
+
+        interpolationFactor = 0f;
+    }
+
 }

@@ -77,7 +77,7 @@ public class EnvironmentGrid
         return new Vector2Int(x, z);
     }
 
-    public bool IsAreaInsideGrid(Vector3 worldPos, float radius)
+    public bool IsAreaInsideGrid(Vector3 worldPos, float worldRadius)
     {
         float halfSize = gridSize * cellSize * 0.5f;
 
@@ -86,10 +86,22 @@ public class EnvironmentGrid
         float minZ = gridCenter.z - halfSize;
         float maxZ = gridCenter.z + halfSize;
 
-        if (worldPos.x - radius < minX) return false;
-        if (worldPos.x + radius > maxX) return false;
-        if (worldPos.z - radius < minZ) return false;
-        if (worldPos.z + radius > maxZ) return false;
+        if (worldPos.x - worldRadius < minX) return false;
+        if (worldPos.x + worldRadius > maxX) return false;
+        if (worldPos.z - worldRadius < minZ) return false;
+        if (worldPos.z + worldRadius > maxZ) return false;
+
+        return true;
+    }
+
+    public bool IsAreaInsideGrid(Vector3 worldPos, int cellRadius)
+    {
+        Vector2Int centerCell = EnvironmentGrid.Instance.GetCellCoords(worldPos);
+
+        if (centerCell.x - cellRadius < 0) return false;
+        if (centerCell.y - cellRadius < 0) return false;
+        if (centerCell.x + cellRadius >= gridSize) return false;
+        if (centerCell.y + cellRadius >= gridSize) return false;
 
         return true;
     }
@@ -122,10 +134,10 @@ public class EnvironmentGrid
     {
         Vector2Int centerCoords = GetCellCoords(s.center);
 
-        int minX = Mathf.Max(centerCoords.x - Mathf.FloorToInt(s.radius), 0);
-        int maxX = Mathf.Min(centerCoords.x + Mathf.FloorToInt(s.radius), gridSize - 1);
-        int minZ = Mathf.Max(centerCoords.y - Mathf.FloorToInt(s.radius), 0);
-        int maxZ = Mathf.Min(centerCoords.y + Mathf.FloorToInt(s.radius), gridSize - 1);
+        int minX = Mathf.Max(centerCoords.x - s.cellRadius, 0);
+        int maxX = Mathf.Min(centerCoords.x + s.cellRadius, gridSize - 1);
+        int minZ = Mathf.Max(centerCoords.y - s.cellRadius, 0);
+        int maxZ = Mathf.Min(centerCoords.y + s.cellRadius, gridSize - 1);
 
         for (int x = minX; x <= maxX; x++)
         {
@@ -167,10 +179,10 @@ public class EnvironmentGrid
     {
         Vector2Int centerCoords = GetCellCoords(s.center);
 
-        int minX = Mathf.Max(centerCoords.x - Mathf.FloorToInt(s.radius), 0);
-        int maxX = Mathf.Min(centerCoords.x + Mathf.FloorToInt(s.radius), gridSize - 1);
-        int minZ = Mathf.Max(centerCoords.y - Mathf.FloorToInt(s.radius), 0);
-        int maxZ = Mathf.Min(centerCoords.y + Mathf.FloorToInt(s.radius), gridSize - 1);
+        int minX = Mathf.Max(centerCoords.x - s.cellRadius, 0);
+        int maxX = Mathf.Min(centerCoords.x + s.cellRadius, gridSize - 1);
+        int minZ = Mathf.Max(centerCoords.y - s.cellRadius, 0);
+        int maxZ = Mathf.Min(centerCoords.y + s.cellRadius, gridSize - 1);
 
         for (int x = minX; x <= maxX; x++)
         {

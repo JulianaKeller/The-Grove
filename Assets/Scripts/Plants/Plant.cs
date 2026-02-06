@@ -8,10 +8,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class Plant : Entity
 {
     public new PlantSpeciesData species;
-    public Vector3 size;
-    public Vector3 prevSize;
-    public Vector3 maxSize;
-    public Vector3 minSize = new Vector3(0.1f, 0.1f, 0.1f);
+    
     public float waterMeter;
     public float spreadChance;
     public bool canGrow;
@@ -27,7 +24,7 @@ public class Plant : Entity
         this.species = species;
 
         base.setLifespan();
-
+        minSize = new Vector3(0.1f, 0.1f, 0.1f);
         size = minSize;
         prevSize = minSize;
         waterMeter = species.waterCapacity;
@@ -65,23 +62,15 @@ public class Plant : Entity
             canGrow = false;
         }
 
+        base.UpdateEntity(timeStep, canGrow);
+
         //---Growth ---
         if (canGrow)
         {
-            age += timeStep;
             health += species.maxHP * 0.1f;
             health = Mathf.Min(health, species.maxHP);
 
-            // Normalized age 0–1
             float ageFactor = Mathf.Clamp01(age / speciesLifespan);
-
-            //---Age-based values---
-
-            float growth = species.growthRate * timeStep;
-            size += Vector3.one * growth; //ToDo Use a more natural, nonlinear growth pattern based on plant age
-            size.x = Mathf.Clamp(size.x, 0.01f, maxSize.x);
-            size.y = Mathf.Clamp(size.y, 0.01f, maxSize.y);
-            size.z = Mathf.Clamp(size.z, 0.01f, maxSize.z);
 
             spreadChance = species.baseSpreadChance * Mathf.Clamp01(ageFactor);
 

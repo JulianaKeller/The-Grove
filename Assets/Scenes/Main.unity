@@ -1812,10 +1812,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zoomMode: 2
+  minPitch: -90
+  maxPitch: 90
+  pitchSpeed: 1
   tiltAngle: 30
   rtsRotateSpeed: 0.5
-  moveSpeed: 20
-  edgeScrollSpeed: 20
+  moveSpeed: 30
+  edgeScrollSpeed: 40
   edgeThickness: 20
   edgeScrolling: 1
   panSpeed: 0.5
@@ -6944,7 +6947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7e052fc337a9847ac3b14bd207b2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnStartingSpecies: 1
+  spawnStartingSpecies: 0
   updateSubsetCount: 3
   spawnedAnimalsParent: {fileID: 754262262}
   startingSpecies:
@@ -6986,7 +6989,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6aaff5cd5083fdb42bb2484874c0b54d, type: 2}
   - {fileID: 11400000, guid: 72e64f7d080b8034fa851d4421336596, type: 2}
   - {fileID: 11400000, guid: 14fb4dd31c38a554fbc50221ea4511ed, type: 2}
-  initialSpawnAmount: 1
+  initialSpawnAmount: 3
 --- !u!114 &415286988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7030,6 +7033,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce39a0ce46ef994eb030f38d67070b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnHeightOffset: 1
   weatherProfile: {fileID: 0}
   spawnIndicatorPrefab: {fileID: 7823327091382468809, guid: 4f566698012961447b0ed1120d9a000a, type: 3}
   speciesData: {fileID: 0}
@@ -7085,15 +7089,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateSubsetCount: 1
-  waterSourceRadius: 20
-  radiusVariation: 5
+  waterSourceRadius: 2
+  radiusVariation: 0
   waterSourcePrefab: {fileID: 4102032854339766673, guid: ec78b44af13a8954496f3ee659e9fdf9, type: 3}
   waterSourcesParent: {fileID: 272089414}
-  depth: 0.1
+  baseDepth: 150
   baseEvaporationRate: 0.01
   influenceRadius: 5
   fertilityBonus: 0.05
   moistureBonus: 0.05
+  lightRain: 0
+  heavyRain: 0
+  thunderstorm: 0
   refillLight: 2
   refillHeavy: 4
   refillThunderstorm: 4
@@ -7113,7 +7120,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   terrain: {fileID: 568663588}
-  baseDepth: 0.1
 --- !u!1001 &484144714
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10236,7 +10242,7 @@ Transform:
   m_GameObject: {fileID: 819701881}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000000037252899, y: -0, z: -0.0000000074505797, w: 1}
-  m_LocalPosition: {x: 0, y: 235, z: -170}
+  m_LocalPosition: {x: 51.681526, y: 16.596674, z: 13.62463}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18912,7 +18918,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 33.854733, y: 33.854733, z: 33.854733}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1474866577}

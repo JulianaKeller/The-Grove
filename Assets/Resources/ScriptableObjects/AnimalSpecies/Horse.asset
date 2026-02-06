@@ -33,7 +33,7 @@ MonoBehaviour:
   stealth: 0.15
   energyDepletionRate: 0.0013
   hpRecoveryRate: 0.011
-  hungerRate: 0.0015
+  hungerRate: 0.4
   foodNeed: 65
   thirstRate: 0.0015
   waterNeed: 60

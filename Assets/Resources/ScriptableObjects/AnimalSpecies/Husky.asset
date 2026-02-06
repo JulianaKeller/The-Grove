@@ -22,7 +22,7 @@ MonoBehaviour:
   baseDominance: 4
   dominanceVariation: 1
   walkingSpeed: 2.4
-  runningSpeed: 5.0
+  runningSpeed: 5
   stamina: 14
   power: 16
   defense: 0.25
@@ -32,7 +32,7 @@ MonoBehaviour:
   stealth: 0.3
   energyDepletionRate: 0.0016
   hpRecoveryRate: 0.014
-  hungerRate: 0.002
+  hungerRate: 0.3
   foodNeed: 35
   thirstRate: 0.0018
   waterNeed: 30

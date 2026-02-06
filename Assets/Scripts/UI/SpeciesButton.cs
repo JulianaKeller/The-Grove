@@ -18,6 +18,7 @@ public class SpeciesButton : MonoBehaviour
     void OnClicked()
     {
         Debug.Log("Clicked Species Button!");
+        MenuManager.Instance.CloseAll();
         InteractionManager.Instance.ToggleSpawnMode(speciesData);
     }
 

@@ -17,6 +17,7 @@ public class InteractionManager : MonoBehaviour
     [Header("Water Source Creation")]
 
     private bool waterSourcePlacementActive;
+    public float spawnHeightOffset = 1f;
 
     [Header("Weather Control")]
     public WeatherProfile weatherProfile;
@@ -123,17 +124,19 @@ public class InteractionManager : MonoBehaviour
 
         Vector3 pos = activeSpawnIndicator.transform.position;
 
-        float radius = WaterSourceManager.Instance.GetNewWaterSourceRadius();
+        int cellradius = WaterSourceManager.Instance.GetNewWaterSourceRadius();
 
-        if (!EnvironmentGrid.Instance.IsAreaInsideGrid(pos, radius))
+        Debug.Log("Received a cellRadius of " + cellradius);
+
+        if (!EnvironmentGrid.Instance.IsAreaInsideGrid(pos, cellradius))
             return;
 
         if (!ResourceManager.Instance.TryConsume(TokenType.CreateWaterSource))
             return;
 
-        TerrainDeformer.Instance.LowerTerrain(pos, radius, WaterSourceManager.Instance.depth, irregularity: 0.15f, out var spawnHeight);
+        TerrainDeformer.Instance.LowerTerrain(pos, cellradius, irregularity: 0.15f, out var spawnHeight);
 
-        WaterSourceManager.Instance.SpawnWaterSource(new Vector3(pos.x, spawnHeight - 0.2f, pos.z), radius); //ToDo can height map value simply be used for world position of water source prefab?
+        WaterSourceManager.Instance.SpawnWaterSource(new Vector3(pos.x, spawnHeight - spawnHeightOffset, pos.z), cellradius);
 
         ExitWaterSourceCreationMode();
     }

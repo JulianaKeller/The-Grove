@@ -1,11 +1,8 @@
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static EnvironmentGrid;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(ResourceManager))]
 [RequireComponent(typeof(PlantManager))]
@@ -58,6 +55,7 @@ public class WorldManager : MonoBehaviour
         PlantManager.Instance.UpdatePlants(timeStep, tickCount);
         AnimalManager.Instance.UpdateAnimals(timeStep, tickCount);
         WaterSourceManager.Instance.UpdateWaterSources(timeStep, tickCount);
+        //GroundFertilityTexture.Instance.UpdateFertilityTexture();
         //EventManager.Instance.UpdateEvents(timeStep);
 
         if (tickCount % 10 == 0 && groundFertilityTexture != null && groundFertilityTexture.enabled)

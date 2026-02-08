@@ -56,8 +56,8 @@ public class EnvironmentGrid
                 grid[x, z] = new GridCell
                 {
                     temperature = Random.Range(15f, 25f),
-                    moisture = maxMoisture,
-                    fertility = maxFertility,
+                    moisture = 0,
+                    fertility = 0,
                     animals = new List<Animal>(),
                     plants = new List<Plant>(),
                     waterSources = new List<WaterSource>()

@@ -16,16 +16,16 @@ MonoBehaviour:
   prefabs:
   - {fileID: 5019507349984602421, guid: 6d15f76e16afcc3458fbd68b3c71f1b3, type: 3}
   colorVariants: []
-  lifespan: 400
+  lifespan: 4800
+  maxHP: 60
   lifespanVariation: 1
   growthRate: 0.02
   maxSizeVariation: {x: 0.7, y: 2}
   nutritionBaseValue: 0.5
-  maxHP: 60
-  waterNeed: 0.004
+  waterNeed: 0.016
   waterCapacity: 18
   groundFertilityUsage: 0.004
   minGroundFertility: 0.25
-  baseSpreadChance: 0.006
+  baseSpreadChance: 0.075
   spreadingRadius: 10
   isEdible: 1

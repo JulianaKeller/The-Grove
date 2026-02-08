@@ -13,7 +13,7 @@ public class SpawnButton : MonoBehaviour
         button.onClick.AddListener(OnClicked);
     }
 
-    void OnClicked()
+    public void OnClicked()
     {
         InteractionManager.Instance.SetSpawnIndicator(indicatorPrefab);
     }

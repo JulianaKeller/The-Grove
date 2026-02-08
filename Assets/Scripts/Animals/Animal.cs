@@ -99,8 +99,8 @@ public class Animal : Entity
 
         dominance = species.baseDominance + Random.Range(-species.dominanceVariation, species.dominanceVariation);
 
-        hunger = 0;
-        thirst = 0;
+        hunger = 50;
+        thirst = 50;
         energy = 100;
         matingDrive = 0;
         stamina = species.stamina;
@@ -176,7 +176,7 @@ public class Animal : Entity
 
     private void UpdateMatingDrive()
     {
-        matingDrive = Mathf.Min(100f, 1 * (0.4f + base.GetGaussianAgeFactor()));
+        matingDrive = Mathf.Min(100f, 100 * (base.GetGaussianAgeFactor()));
     }
 
     private void UpdateHealth(float timeStep)

@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class GroundFertilityTexture : MonoBehaviour
 {
+    public static GroundFertilityTexture Instance { get; private set; }
+
     public float updateInterval = 20f;  // Update every x timesteps
     public int texSizeMultiplier = 4;
     public int kernelRadius = 2; // 1 = 3x3 box blur
@@ -15,6 +17,20 @@ public class GroundFertilityTexture : MonoBehaviour
     public Color lowFertilityWet = new Color(0.5f, 0.4f, 0.2f);   // medium brown
     public Color highFertilityDry = new Color(0.5f, 0.9f, 0.5f);  // light green
     public Color highFertilityWet = new Color(0.3f, 0.7f, 0.3f);  // medium lush green
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+
+        if (terrain == null)
+            terrain = GetComponent<Terrain>();
+    }
 
     void Start()
     {

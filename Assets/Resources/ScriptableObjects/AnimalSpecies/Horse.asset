@@ -17,7 +17,8 @@ MonoBehaviour:
   - {fileID: 1187656204166601856, guid: 37b108af779cfc04a9def3fe3085143a, type: 3}
   - {fileID: 1889097177570507948, guid: e16319171f0c9dd4db7441094532c899, type: 3}
   colorVariants: []
-  lifespan: 1400
+  lifespan: 700
+  maxHP: 160
   lifespanVariation: 0.1
   growthRate: 1
   maxSizeVariation: {x: 0.8, y: 1.2}
@@ -29,16 +30,15 @@ MonoBehaviour:
   stamina: 20
   power: 28
   defense: 0.4
-  maxHP: 160
   aggression: 0.3
   awarenessRange: 7
   stealth: 0.15
   energyDepletionRate: 0.0013
   hpRecoveryRate: 0.011
-  hungerRate: 0.04
+  hungerRate: 0.02
   foodNeed: 65
-  thirstRate: 0.08
-  waterNeed: 60
+  thirstRate: 0.04
+  waterNeed: 15
   isCarnivore: 0
   isHerbivore: 1
   edibleEntities: []

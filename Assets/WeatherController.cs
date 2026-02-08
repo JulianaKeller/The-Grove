@@ -16,6 +16,7 @@ public class WeatherController : MonoBehaviour
 
     void OnClicked()
     {
+        this.GetComponent<SpawnButton>().OnClicked();
         Debug.Log("Clicked Rain Button!");
         WeatherProfile weatherProfile = (weatherProfiles != null && weatherProfiles.Length > 0) ? weatherProfiles[Random.Range(0, weatherProfiles.Length)] : null;
         InteractionManager.Instance.ToggleSummonWeatherMode(weatherProfile);

@@ -66,9 +66,7 @@ public class Plant : Entity
             health += maxHealth * 0.1f;
             health = Mathf.Min(health, maxHealth);
 
-            float ageFactor = Mathf.Clamp01(age / speciesLifespan);
-
-            spreadChance = species.baseSpreadChance * Mathf.Clamp01(ageFactor);
+            spreadChance = species.baseSpreadChance * (base.GetGaussianAgeFactor());
 
             if (Random.value < spreadChance)
             {

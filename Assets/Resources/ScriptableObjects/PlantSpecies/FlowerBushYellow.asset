@@ -19,16 +19,16 @@ MonoBehaviour:
   - {r: 0.39346024, g: 0.7484276, b: 0, a: 0}
   - {r: 0, g: 0.36477977, b: 0.112647206, a: 0}
   - {r: 0.5409389, g: 0.55345905, b: 0, a: 0}
-  lifespan: 650
+  lifespan: 6000
+  maxHP: 95
   lifespanVariation: 1
   growthRate: 0.011
   maxSizeVariation: {x: 0.7, y: 2}
   nutritionBaseValue: 0.5
-  maxHP: 95
-  waterNeed: 0.007
+  waterNeed: 0.028
   waterCapacity: 30
-  groundFertilityUsage: 0.0025
+  groundFertilityUsage: 0.025
   minGroundFertility: 0.35
-  baseSpreadChance: 0.003
+  baseSpreadChance: 0.05
   spreadingRadius: 18
   isEdible: 1

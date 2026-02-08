@@ -38,7 +38,8 @@ public abstract class Entity
     protected virtual void UpdateGrowth()
     {
         float effectiveAge = age * species.growthRate;
-        float age01 = Mathf.Clamp01(effectiveAge / speciesLifespan);
+
+        float age01 = Mathf.Clamp01(effectiveAge / (speciesLifespan * 0.25f));
 
         size = Vector3.Lerp(minSize, maxSize, age01);
     }
@@ -65,14 +66,10 @@ public abstract class Entity
         float variation = Random.Range(species.maxSizeVariation.x, species.maxSizeVariation.y);
         maxSize = maxSize * variation;
 
-        minSize = maxSize;
-        if(this is Animal)
-        {
-            minSize = maxSize * 0.5f;
-        }
+        minSize = maxSize * 0.5f;
         if(this is Plant)
         {
-            minSize = maxSize * 0.1f;
+            minSize = maxSize * 0.3f;
         }
 
         size = minSize;
@@ -125,7 +122,7 @@ public abstract class Entity
         maxHealth = species.maxHP * (0.4f + gaussianNew);
     }
 
-    public float GetGaussianAgeFactor()
+    public float GetGaussianAgeFactor() //returns values between 0 and 1, with a bell curve peaking at 25% of lifespan
     {
         float ageFactor = Mathf.Clamp01(age / speciesLifespan);
         float peakAge = 0.25f;

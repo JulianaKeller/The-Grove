@@ -68,6 +68,9 @@ public class AnimalManager : MonoBehaviour
 
             data.InitializeSizeValues(original);
 
+            //Add to Overview List:
+            // via AnimalOverviewManager.AddEntry(obj, data)
+
             //Initialize thought bubbles:
             var icon = obj.GetComponentInChildren<AnimalStateIcon>();
             if (icon != null)

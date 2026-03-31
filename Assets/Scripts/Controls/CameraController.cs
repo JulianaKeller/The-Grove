@@ -71,4 +71,9 @@ public class CameraController : MonoBehaviour
     {
         transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
     }
+
+    public void JumpToAnimal(Transform target)
+    {
+        ToggleFocusMode(target);
+    }
 }

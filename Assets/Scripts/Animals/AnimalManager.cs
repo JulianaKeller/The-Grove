@@ -19,6 +19,8 @@ public class AnimalManager : MonoBehaviour
 
     private static int nextId = 0;
 
+    public AnimalOverviewManager overviewManager;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -69,7 +71,7 @@ public class AnimalManager : MonoBehaviour
             data.InitializeSizeValues(original);
 
             //Add to Overview List:
-            // via AnimalOverviewManager.AddEntry(obj, data)
+            overviewManager.AddEntry(obj, data);
 
             //Initialize thought bubbles:
             var icon = obj.GetComponentInChildren<AnimalStateIcon>();
@@ -123,6 +125,8 @@ public class AnimalManager : MonoBehaviour
 
     public void RemoveAnimal(Animal a)
     {
+        overviewManager.RemoveEntry(a);
+
         animals.Remove(a);
         if (a.view != null)
         {

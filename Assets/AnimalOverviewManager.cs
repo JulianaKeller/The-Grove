@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,15 +10,15 @@ public class AnimalOverviewManager : MonoBehaviour
     public ScrollRect scrollRect;
     public RectTransform contentRect;
 
-    // private Map: Animal data -> button instance
+    public CameraController cameraController;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Dictionary<Animal, GameObject> entries = new Dictionary<Animal, GameObject>();
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -25,11 +26,28 @@ public class AnimalOverviewManager : MonoBehaviour
 
     public void AddEntry(GameObject animalObj, Animal data)
     {
-        //Create AnimalOverviewEntryButton and add to list
+        if (entries.ContainsKey(data))
+            return;
+
+        GameObject entry = Instantiate(listEntry, contentRect);
+
+        AnimalOverviewEntryButton button = entry.GetComponent<AnimalOverviewEntryButton>();
+
+        button.animalObject = animalObj;
+        button.animalData = data;
+        button.cameraController = cameraController;
+
+        entries.Add(data, entry);
     }
 
     public void RemoveEntry(Animal data)
     {
+        if (!entries.ContainsKey(data))
+            return;
 
+        GameObject entry = entries[data];
+        entries.Remove(data);
+
+        Destroy(entry);
     }
 }

@@ -23752,15 +23752,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1477321638779678808, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1477321638779678808, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1477321638779678808, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1477321638779678808, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -23768,7 +23768,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1477321638779678808, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1895570168270398527, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_Pivot.x
@@ -23836,7 +23836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1895570168270398527, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.0112915
+      value: 3.0112305
       objectReference: {fileID: 0}
     - target: {fileID: 1895570168270398527, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23908,7 +23908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8865677685328132212, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 140525.23
+      value: 146590.67
       objectReference: {fileID: 0}
     - target: {fileID: 9193282089067709829, guid: d75d00a68d940fb44960b1b147b36fcf, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
